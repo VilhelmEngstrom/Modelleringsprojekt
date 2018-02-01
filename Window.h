@@ -10,7 +10,7 @@ class Window{
         Window(const char* name, int width, int height);
         ~Window();
 
-        // Returns wheather the close button has been clicked
+        // Returns whether the close button has been clicked
         bool closed() const;
 
         // Updates the window by clearing it and swapping buffers
