@@ -3,7 +3,6 @@
 #include "Window.h"
 
 
-
 #define GL_DEBUG 1
 
 #if GL_DEBUG == 1
@@ -21,8 +20,7 @@ int main(int argc, char** argv){
         std::cout << "Could not initialize GLEW\n";
 
 
-    while(!win.closed())
+    while(!win.shouldClose())
         win.update();
-
     return 0;
 }
