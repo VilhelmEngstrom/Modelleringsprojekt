@@ -31,6 +31,8 @@ void Window::init(){
 
     glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GL_TRUE);
 
+    glClearColor(0.3f, 0.5f, 0.8f, 0.6f);
+
 }
 
 bool Window::shouldClose() const{
@@ -42,7 +44,6 @@ void Window::clear() const{
 }
 
 void Window::update() const{
-    clear();
     glfwSwapBuffers(m_window);
     glfwPollEvents();
 }

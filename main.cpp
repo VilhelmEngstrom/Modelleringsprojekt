@@ -20,7 +20,14 @@ int main(int argc, char** argv){
         std::cout << "Could not initialize GLEW\n";
 
 
-    while(!win.shouldClose())
+    while(!win.shouldClose()){
+        win.clear();
+        glBegin(GL_TRIANGLES);
+                glVertex3f(0.25, 0.25, 0.0);
+                glVertex3f(0.75, 0.25, 0.0);
+                glVertex3f(0.75, 0.75, 0.0);
+        glEnd();
         win.update();
+    }
     return 0;
 }
