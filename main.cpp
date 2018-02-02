@@ -1,5 +1,9 @@
 #include <iostream>
-#include "dependencies/include/glew.h"
+
+//GLEW
+#define GLEW_STATIC
+#include <GL/glew.h>
+
 #include "Window.h"
 
 
