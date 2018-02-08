@@ -3,6 +3,17 @@
 
 #include "dependencies/include/glfw3.h"
 
+#ifndef GL_DEBUG
+#define GL_DEBUG 1
+#endif
+
+
+#if GL_DEBUG == 1
+#define LOG(x) std::cout << x << "\n";
+#else
+#define LOG(x)
+#endif
+
 
 
 class Window{

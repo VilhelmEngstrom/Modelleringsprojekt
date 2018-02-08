@@ -18,6 +18,11 @@ void Window::init(){
         return;
     }
 
+    // OpenGL 4
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     m_window = glfwCreateWindow(m_width, m_height, m_title, NULL, NULL);
 
     if(!m_window){
