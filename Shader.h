@@ -6,11 +6,11 @@
 #include <string.h>
 #include "dependencies/include/glew.h"
 
-#ifndef
+#ifndef GLEW_STATIC
 #define GLEW_STATIC
 #endif
 
-#ifndef
+#ifndef GL_DEBUG
 #define GL_DEBUG 1
 #endif
 #if GL_DEBUG == 1
