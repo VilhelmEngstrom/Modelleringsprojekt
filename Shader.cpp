@@ -59,8 +59,8 @@ unsigned int Shader::compileSource(const char* shaderSource, const ShaderType& t
 }
 
 
-unsigned int Shader::linkProgram(GLuint vertexShaderID, GLuint fragmentShaderID){
-    GLuint programID = glCreateProgram();
+unsigned int Shader::linkProgram(unsigned int vertexShaderID, unsigned int fragmentShaderID){
+    unsigned int programID = glCreateProgram();
     // Attach shaders
     glAttachShader(programID, vertexShaderID);
     glAttachShader(programID, fragmentShaderID);
