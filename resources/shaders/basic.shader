@@ -15,5 +15,5 @@ void main(void){
 out vec3 color;
 
 void main(void){
-    color = vec3(1,0,0);
+    color = vec3(0.54,0.76,0.85);
 }

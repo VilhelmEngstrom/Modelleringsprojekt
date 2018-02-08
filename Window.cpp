@@ -33,7 +33,7 @@ void graphics::Window::init(){
 
     glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GL_TRUE);
 
-    glClearColor(0.3f, 0.5f, 0.8f, 0.6f);
+    glClearColor(0.34f, 0.15f, 0.22f, 0.9f);
 
 }
 
