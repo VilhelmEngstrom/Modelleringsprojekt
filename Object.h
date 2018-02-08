@@ -20,7 +20,6 @@
 class Object {
     typedef unsigned int uint;
 
-
     public:
         // Initialize with number of vertices, array of vertices and optinally
         // the number of dimestions (3D by default)
