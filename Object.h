@@ -29,7 +29,7 @@ namespace graphics{
             // float verts[9] = {
             // -1.0f, -1.0f, 0.0f,               // coords for vert 1
             //  1.0f, -1,0f, 0.0f,               // coords for vert 2
-            //  0.0f,  1.0f, 0.0f               // coords for vert 3
+            //  0.0f,  1.0f, 0.0f                // coords for vert 3
             // };
             // Object o(3, verts);
             //
@@ -40,7 +40,7 @@ namespace graphics{
             //  0.0f,  0.0f, 0.0f,               // coords for vert 3
             // -1.0f, -1.0f, 0.0f,               // vert 4
             //  0.0f,  0.0f, 0.0f,               // vert 5
-            // -1.0f,  1.0f, 0.0f               // vert 6
+            // -1.0f,  1.0f, 0.0f                // vert 6
             // };
             //Object o(6, verts);
 
