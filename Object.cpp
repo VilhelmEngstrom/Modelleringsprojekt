@@ -6,7 +6,7 @@ graphics::Object::Object(uint nVerts, float* pos) : nVertices(nVerts), dimension
 
 graphics::Object::Object(uint nVerts, float* pos, uint dim) : nVertices(nVerts){
     if(dim < 2 || dim > 3){
-        std::cout << "Unknown dimesion\n";
+        std::cout << "Unknown dimension\n";
         exit(EXIT_FAILURE);
     }
     dimension = dim;
