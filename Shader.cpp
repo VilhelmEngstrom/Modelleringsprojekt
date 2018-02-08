@@ -1,11 +1,6 @@
 #include "Shader.h"
 
-Shader::Shader() {
-    if(glewInit() != GLEW_OK){
-        std::cout << "Could not initialize GLEW\n";
-        exit(EXIT_FAILURE);
-    }
-}
+Shader::Shader() {}
 Shader::~Shader() {}
 
 unsigned int Shader::compile(const std::string& shaderPath){
