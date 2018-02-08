@@ -1,9 +1,9 @@
 #include "Shader.h"
 
-Shader::Shader() {}
-Shader::~Shader() {}
+graphics::Shader::Shader() {}
+graphics::Shader::~Shader() {}
 
-unsigned int Shader::compile(const std::string& shaderPath){
+unsigned int graphics::Shader::compile(const std::string& shaderPath){
     // Read source code
     ShaderSource source = loadSource(shaderPath);
 
@@ -15,7 +15,7 @@ unsigned int Shader::compile(const std::string& shaderPath){
     return linkProgram(vertexID, fragmentID);
 }
 
-unsigned int Shader::compile(const std::string& vertexPath, const std::string& fragmentPath){
+unsigned int graphics::Shader::compile(const std::string& vertexPath, const std::string& fragmentPath){
     // Read source code
     ShaderSource source = loadSource(vertexPath, fragmentPath);
 
@@ -27,7 +27,7 @@ unsigned int Shader::compile(const std::string& vertexPath, const std::string& f
     return linkProgram(vertexID, fragmentID);
 }
 
-unsigned int Shader::compileSource(const char* shaderSource, const ShaderType& type){
+unsigned int graphics::Shader::compileSource(const char* shaderSource, const ShaderType& type){
     GLenum glShaderType;
 
     // Set shader type
@@ -59,7 +59,7 @@ unsigned int Shader::compileSource(const char* shaderSource, const ShaderType& t
 }
 
 
-unsigned int Shader::linkProgram(unsigned int vertexShaderID, unsigned int fragmentShaderID){
+unsigned int graphics::Shader::linkProgram(unsigned int vertexShaderID, unsigned int fragmentShaderID){
     unsigned int programID = glCreateProgram();
     // Attach shaders
     glAttachShader(programID, vertexShaderID);
@@ -96,7 +96,7 @@ unsigned int Shader::linkProgram(unsigned int vertexShaderID, unsigned int fragm
     return programID;
 }
 
-ShaderSource Shader::loadSource(const std::string& shaderPath){
+ShaderSource graphics::Shader::loadSource(const std::string& shaderPath){
     // C string
     const char* path = &shaderPath[0];
 
@@ -137,7 +137,7 @@ ShaderSource Shader::loadSource(const std::string& shaderPath){
 
 }
 
-ShaderSource Shader::loadSource(const std::string& vertexPath, const std::string& fragmentPath){
+ShaderSource graphics::Shader::loadSource(const std::string& vertexPath, const std::string& fragmentPath){
     // C strings
     const char* vertexShader = &vertexPath[0];
     const char* fragmentShader = &fragmentPath[0];

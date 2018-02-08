@@ -1,18 +1,15 @@
 #include "Window.h"
 
-// For window resizing, cannot be class member
-void windowResize(GLFWwindow* window, int width, int height);
-
-Window::Window(const char* name, int width, int height) : m_width(width), m_height(height), m_title(name){
+graphics::Window::Window(const char* name, int width, int height) : m_width(width), m_height(height), m_title(name){
     init();
 }
 
-Window::~Window() {
+graphics::Window::~Window() {
     glfwTerminate();
 }
 
 
-void Window::init(){
+void graphics::Window::init(){
     if(!glfwInit()){
         std::cout << "Failed to initialize GLFW\n";
         return;
@@ -40,20 +37,20 @@ void Window::init(){
 
 }
 
-bool Window::shouldClose() const{
+bool graphics::Window::shouldClose() const{
     return glfwWindowShouldClose(m_window) || glfwGetKey(m_window, GLFW_KEY_ESCAPE);
 }
 
-void Window::clear() const{
+void graphics::Window::clear() const{
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Window::update() const{
+void graphics::Window::update() const{
     glfwSwapBuffers(m_window);
     glfwPollEvents();
 }
 
 
-void windowResize(GLFWwindow* window, int width, int height){
+void graphics::windowResize(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);
 }
