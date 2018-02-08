@@ -6,8 +6,6 @@
 #ifndef GL_DEBUG
 #define GL_DEBUG 1
 #endif
-
-
 #if GL_DEBUG == 1
 #define LOG(x) std::cout << x << "\n";
 #else

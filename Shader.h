@@ -6,9 +6,13 @@
 #include <string.h>
 #include "dependencies/include/glew.h"
 
+#ifndef
 #define GLEW_STATIC
-#define GL_DEBUG 1
+#endif
 
+#ifndef
+#define GL_DEBUG 1
+#endif
 #if GL_DEBUG == 1
 #define LOG(x) std::cout << x << "\n";
 #else
@@ -35,7 +39,7 @@ class Shader{
         enum class ShaderType {
             NONE=-1, VERTEX, FRAGMENT
         };
-        
+
         // Compile shader, return shader IDs
         static unsigned int compileSource(const char* shaderSource, const ShaderType& type);
 
