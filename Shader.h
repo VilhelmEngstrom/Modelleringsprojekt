@@ -21,9 +21,6 @@ struct ShaderSource{
     std::string fragmentSource;
 };
 
-enum class ShaderType {
-    NONE=-1, VERTEX, FRAGMENT
-};
 
 class Shader{
     public:
@@ -35,6 +32,10 @@ class Shader{
         static unsigned int compile(const std::string& vertexPath, const std::string& fragmentPath);
 
     protected:
+        enum class ShaderType {
+            NONE=-1, VERTEX, FRAGMENT
+        };
+        
         // Compile shader, return shader IDs
         static unsigned int compileSource(const char* shaderSource, const ShaderType& type);
 
