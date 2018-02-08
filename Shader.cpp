@@ -73,16 +73,16 @@ unsigned int Shader::linkProgram(GLuint vertexShaderID, GLuint fragmentShaderID)
     // Link
     glLinkProgram(programID);
 
-    GLint success = GL_FALSE;
-    int logLength;
+    int success = 0;
+    int logLen;
 
 
     // Check that linking succeeded
     glGetProgramiv(programID, GL_LINK_STATUS, &success);
-    glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &logLength);
-    if(logLength){
-        char* errMsg = new char[logLength+1];
-        glGetProgramInfoLog(programID, logLength, NULL, &errMsg[0]);
+    if(!success){
+        glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &logLen);
+        char* errMsg = new char[logLen+1];
+        glGetProgramInfoLog(programID, logLen, NULL, &errMsg[0]);
         printf("%s\n", &errMsg[0]);
         delete[] errMsg;
 
