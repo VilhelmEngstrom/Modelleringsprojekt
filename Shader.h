@@ -4,7 +4,6 @@
 #include <sstream>
 #include <stdio.h>
 #include <string.h>
-#include <utility>
 #include "dependencies/include/glew.h"
 
 #define GLEW_STATIC
