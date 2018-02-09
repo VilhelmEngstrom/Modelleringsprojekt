@@ -24,5 +24,8 @@ public:
 	Vector calculate_gravity_force(float mass);
 	Vector get_position_delta(Vector& currentVelocity, float mass, const Vector drag, const Vector gravity, const Vector external = Vector(0));
 	Vector wind_effect_on_vertex(Vector vertexNormal, Vector windForce);
+
+	Vector get_new_radius(const float mass, const float innerpressure, const float area, const Vector force);
+
 };
 

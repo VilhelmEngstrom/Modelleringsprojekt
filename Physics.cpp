@@ -5,9 +5,9 @@ const float Physics::GRAVITY = -9.82;
 const float Physics::AIR_DENSITY = 1.225;
 const float Physics::AIR_RESISTANCE = 0.47;
 
-const float Physics::SURFACE_TENSION = 0.025f;
+const float Physics::SURFACE_TENSION = 0.025;
 
-const float Physics::STEP = 0.002f;
+const float Physics::STEP = 0.002;
 
 Physics::Physics()
 {
@@ -44,11 +44,15 @@ Vector Physics::get_position_delta( Vector& currentVelocity, float mass, const V
 }
 
 // returns the effect off the force vector
-Vector Physics::wind_effect_on_vertex( Vector vertexNormal, Vector windForce )
+Vector Physics::wind_effect_on_vertex(Vector vertexNormal, Vector windForce)
 {
-	vertexNormal.dotProduct(windForce)
+	vertexNormal.dotProduct(windForce);
 
 }
 
 
-// Vector3.Scale(-sign(currentVelocity), Vector3.Scale(currentVelocity, currentVelocity)) * airRes * Area * airdensity / 2;
+Vector Physics::get_new_radius(const float mass, const float innerpressure, const float area, const Vector force)
+{
+	float pressure = force.length * (1 / mass);
+	Vector new_radius = 4 * SURFACE_TENSION * 1/(innerpressure - pressure);
+}
