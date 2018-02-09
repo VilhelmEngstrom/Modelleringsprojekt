@@ -38,7 +38,6 @@ class Vector {
 		float getY() const;
 		float getZ() const;
     
-    
     private:
 		float x, y, z;
         friend std::ostream& operator<< (std::ostream& os, const Vector& v);
