@@ -7,6 +7,8 @@
 //
 #pragma once
 #include <iostream>
+#include <cmath>
+#include <math.h>       /* acos */
 
 class Vector {
     public:
@@ -22,9 +24,16 @@ class Vector {
 
 		// plus
 		friend Vector operator+(const Vector& v1, const Vector& v2);
+
+		// minus
+		friend Vector operator-(const Vector& v1, const Vector& v2);
     
         //dot product
 		float dotProduct(const Vector& v);
+
+		float angle(const Vector& v);
+		float length();
+		Vector normalized();
     
         //cross product
         Vector crossProduct(const Vector& v);

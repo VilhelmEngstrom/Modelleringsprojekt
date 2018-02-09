@@ -43,5 +43,12 @@ Vector Physics::get_position_delta( Vector& currentVelocity, float mass, const V
 	
 }
 
+// returns the effect off the force vector
+Vector Physics::wind_effect_on_vertex( Vector vertexNormal, Vector windForce )
+{
+	vertexNormal.dotProduct(windForce)
+
+}
+
 
 // Vector3.Scale(-sign(currentVelocity), Vector3.Scale(currentVelocity, currentVelocity)) * airRes * Area * airdensity / 2;
