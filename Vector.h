@@ -22,6 +22,9 @@ class Vector {
 
 		// plus
 		friend Vector operator+(const Vector& v1, const Vector& v2);
+
+		// minus
+		friend Vector operator-(const Vector& v1, const Vector& v2);
     
         //dot product
 		float dotProduct(const Vector& v);
