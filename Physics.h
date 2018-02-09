@@ -14,11 +14,15 @@ public:
 	// Bubble properties
 	static const float SURFACE_TENSION; // surface tension
 
+	// Step size
+	static const float STEP; 
+
 	Physics();
 	~Physics();
 
 	Vector calculate_drag_force(Vector velocity, float area );
 	Vector calculate_gravity_force(float mass);
+	Vector get_position_delta(Vector& currentVelocity, float mass, const Vector drag, const Vector gravity, const Vector external = Vector(0))
 
 };
 

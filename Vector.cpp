@@ -28,7 +28,7 @@ float Vector::dotProduct(const Vector &v) {
 }
 
 Vector Vector::crossProduct(const Vector& v) {
-<<<<<<< HEAD
+
     
 	float e1 = (y*v.z) - (z*v.y);
 	float e2 = -((x*v.z)-(z*v.x));
@@ -37,17 +37,11 @@ Vector Vector::crossProduct(const Vector& v) {
     return Vector(e1, e2, e3);
 }
 
+Vector operator+(const Vector& v1, const Vector& v2) {
 
-=======
-
-	float e1 = (y*v.z) - (z*v.y);
-	float e2 = -((x*v.z)-(z*v.x));
-	float e3 = (x*v.y) - (y*v.x);
-
-    return Vector(e1, e2, e3);
+	return Vector(v1.x+v2.x, v1.y+v2.y, v1.z+v2.z);
 }
 
->>>>>>> 3e247281d8e9303836c73b7b7cf632219fa4e793
 Vector Vector::sign()
 {
 	Vector newV(1.0, 1.0, 1.0);

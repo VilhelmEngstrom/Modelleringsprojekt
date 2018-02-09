@@ -7,6 +7,8 @@ const float Physics::AIR_RESISTANCE = 0.47;
 
 const float Physics::SURFACE_TENSION = 0.025f;
 
+const float Physics::STEP = 0.002f;
+
 Physics::Physics()
 {
 }
@@ -26,6 +28,19 @@ Vector Physics::calculate_gravity_force(float mass)
 {
 	return Vector(0, mass*GRAVITY ,0);
 
+}
+
+Vector Physics::get_position_delta( Vector& currentVelocity, float mass, const Vector drag, const Vector gravity, const Vector external = Vector(0) )
+{
+	// Calculate total force
+	Vector totalForce = drag + gravity + external;
+
+	// beräkna accelerationen
+	Vector acc = totalForce*(1/mass); 
+
+	currentVelocity = currentVelocity + acc * STEP; // beräkna ny hastighet
+	Vector delta = currentVelocity * STEP + (acc*STEP*STEP) / 2; // Beräkna skillnad i position											
+	
 }
 
 
