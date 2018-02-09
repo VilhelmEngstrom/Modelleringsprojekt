@@ -5,7 +5,7 @@
 //  Created by Emma Nilsson on 2018-02-02.
 //  Copyright © 2018 Emma Nilsson. All rights reserved.
 //
-
+#pragma once
 #include <iostream>
 
 class Vector {
@@ -23,7 +23,18 @@ class Vector {
         //dot product
         double dotProduct(const Vector& v);
     
+        //cross product
         Vector crossProduct(const Vector& v);
+    
+        //set variables
+        void setX(double d);
+        void setY(double d);
+        void setZ(double d);
+    
+        double getX();
+        double getY();
+        double getZ();
+    
     
     private:
         double x, y, z;
