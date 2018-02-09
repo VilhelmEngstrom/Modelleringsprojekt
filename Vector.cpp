@@ -83,9 +83,11 @@ Vector Vector::sign()
 	return newV;
 }
 
+
 void Vector::setX(float d) {
     x = d;
 }
+
 
 void Vector::setY(float d) {
     y = d;
