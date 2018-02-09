@@ -14,27 +14,65 @@ Vector::Vector(const Vector& v) {
     z = v.z;
 }
 
-Vector::Vector(double d) {
+Vector::Vector(float d) {
     x = y = z = d;
 }
 
 Vector operator*(const Vector& v1, const Vector& v2) {
-    std::cout << "hej" << std::endl;
-    std::cout << v1 << v2;
+
     return Vector(v1.x*v2.x, v1.y*v2.y, v1.z*v2.z);
 }
 
-double Vector::dotProduct(const Vector &v) {
+float Vector::dotProduct(const Vector &v) {
     return ( (x*v.x) + (y*v.y) + (z*v.z));
 }
 
 Vector Vector::crossProduct(const Vector& v) {
     
-    double e1 = (y*v.z) - (z*v.y);
-    double e2 = -((x*v.z)-(z*v.x));
-    double e3 = (x*v.y) - (y*v.x);
+	float e1 = (y*v.z) - (z*v.y);
+	float e2 = -((x*v.z)-(z*v.x));
+	float e3 = (x*v.y) - (y*v.x);
     
     return Vector(e1, e2, e3);
+}
+
+
+Vector Vector::sign()
+{
+	Vector newV(1.0, 1.0, 1.0);
+
+	if (x < 0)
+		newV.setX(-1.0);
+	if (y < 0)
+		newV.setY(-1.0);
+	if (z < 0)
+		newV.setZ(-1.0);
+
+	return newV;
+}
+
+void Vector::setX(float d) {
+    x = d;
+}
+
+void Vector::setY(float d) {
+    y = d;
+}
+
+void Vector::setZ(float d) {
+    z = d;
+}
+
+float Vector::getX() const {
+    return x;
+}
+
+float Vector::getY() const {
+    return y;
+}
+
+float Vector::getZ() const {
+    return z;
 }
 
 std::ostream& operator<< (std::ostream& os, const Vector& v) {
