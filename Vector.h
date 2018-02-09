@@ -12,32 +12,35 @@ class Vector {
     public:
         Vector()
             :x(0), y(0), z(0) {}
-        Vector(double inX, double inY, double inZ)
+        Vector(float inX, float inY, float inZ)
             :x(inX), y(inY), z(inZ) {}
         Vector(const Vector& v);
-        Vector(double d);
+        Vector(float d);
     
         //elementwise multiplication
         friend Vector operator*(const Vector& v1, const Vector& v2);
     
         //dot product
-        double dotProduct(const Vector& v);
+		float dotProduct(const Vector& v);
     
         //cross product
         Vector crossProduct(const Vector& v);
+
+		// sign of vector
+		Vector sign();
     
         //set variables
-        void setX(double d);
-        void setY(double d);
-        void setZ(double d);
+        void setX(float d);
+        void setY(float d);
+        void setZ(float d);
     
-        double getX();
-        double getY();
-        double getZ();
+		float getX() const;
+		float getY() const;
+		float getZ() const;
     
     
     private:
-        double x, y, z;
+		float x, y, z;
         friend std::ostream& operator<< (std::ostream& os, const Vector& v);
     
 };
