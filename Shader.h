@@ -6,8 +6,8 @@
 #include "dependencies/include/glew.h"
 // Disable deprecation of fopen(...) in MSVC
 #if defined _WIN32 || defined _WIN64
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
+#ifndef _CRT_SECURE_NO_WARNING
+#define _CRT_SECURE_NO_WARNING
 #endif
 #endif
 #include <stdio.h>
