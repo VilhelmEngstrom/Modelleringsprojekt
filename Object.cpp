@@ -18,8 +18,8 @@ graphics::Object::~Object(){
     delete[] vertexPositions;
 }
 
-void graphics::Object::setShader(uint shader){
-    shaderProgram = shader;
+void graphics::Object::setShader(const std::string& shaderPath){
+    shaderProgram = Shader::compile(shaderPath);
 }
 
 void graphics::Object::setDrawMode(const GLenum& mode){

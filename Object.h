@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include "dependencies/include/glew.h"
+#include "Shader.h"
 
 #ifndef GLEW_STATIC
 #define GLEW_STATIC
@@ -48,8 +49,8 @@ namespace graphics{
             Object(uint nVerts, float* pos, uint dim);
             ~Object();
 
-            // Specify shader to be used for object (must be done once)
-            void setShader(uint shader);
+            // Specify path to shader to be used for object (must be done once)
+            void setShader(const std::string& shaderPath);
 
             // Set draw mode (GL_STATIC_DRAW, GL_DYNAMIC_DRAW or GL_STREAM_DRAW)
             void setDrawMode(const GLenum& mode);
