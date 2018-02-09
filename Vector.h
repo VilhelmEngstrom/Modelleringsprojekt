@@ -39,6 +39,16 @@ class Vector {
 		float getZ() const;
     
     
+        //set variables
+        void setX(double d);
+        void setY(double d);
+        void setZ(double d);
+    
+        double getX();
+        double getY();
+        double getZ();
+    
+    
     private:
 		float x, y, z;
         friend std::ostream& operator<< (std::ostream& os, const Vector& v);

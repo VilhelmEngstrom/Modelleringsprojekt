@@ -36,7 +36,6 @@ Vector Vector::crossProduct(const Vector& v) {
     return Vector(e1, e2, e3);
 }
 
-
 Vector Vector::sign()
 {
 	Vector newV(1.0, 1.0, 1.0);
@@ -72,8 +71,9 @@ float Vector::getY() const {
 }
 
 float Vector::getZ() const {
-    return z;
+	return z
 }
+
 
 std::ostream& operator<< (std::ostream& os, const Vector& v) {
     
