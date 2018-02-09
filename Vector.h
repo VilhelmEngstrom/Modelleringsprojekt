@@ -32,8 +32,10 @@ class Vector {
 		float dotProduct(const Vector& v);
 
 		float angle(const Vector& v);
+
 		float length();
-		Vector normalized();
+
+		Vector normalized(); 
     
         //cross product
         Vector crossProduct(const Vector& v);
