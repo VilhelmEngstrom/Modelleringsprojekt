@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string.h>
 #include "dependencies/include/glew.h"
-// Disable deprecation of fread(...) in MSVC
+// Disable deprecation of fopen(...) in MSVC
 #if defined _WIN32 || defined _WIN64
 #ifndef _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_DEPRECATE
