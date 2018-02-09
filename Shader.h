@@ -2,9 +2,15 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <stdio.h>
 #include <string.h>
 #include "dependencies/include/glew.h"
+// Disable deprecation of fread(...) in MSVC
+#if defined _WIN32 || defined _WIN64
+#ifndef _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_DEPRECATE
+#endif
+#endif
+#include <stdio.h>
 
 #ifndef GLEW_STATIC
 #define GLEW_STATIC
