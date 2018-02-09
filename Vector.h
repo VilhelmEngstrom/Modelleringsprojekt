@@ -37,16 +37,7 @@ class Vector {
 		float getX() const;
 		float getY() const;
 		float getZ() const;
-    
-    
-        //set variables
-        void setX(double d);
-        void setY(double d);
-        void setZ(double d);
-    
-        double getX();
-        double getY();
-        double getZ();
+
     
     
     private:
