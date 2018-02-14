@@ -69,6 +69,7 @@ uint MatrixStack::getDepth() const{
 // Matrix tranforms
 
 void MatrixStack::unit(){
+    // Set diagonal to 1.0f
     for(int i = 0; i < MAT4_SIZE; i++)
         i % 5 == 0 ? current->v[i] = 1.0f : current->v[i] = 0.0f;
 }
@@ -79,7 +80,6 @@ void MatrixStack::unit(float mat[]){
 }
 
 void MatrixStack::scale(float magnitude){
-    // Scaling matric
     float m[16];
     unit(m);
 
@@ -138,7 +138,7 @@ void MatrixStack::rotate(RotationAxis axis, float angle){
 void MatrixStack::print() const{
     Mat4* it = current;
 
-    printf("Stack content:\n\n");
+    printf("Stack contents:\n\n");
     while(it){
         printMatrix(it->v);
         it = it->previous;
