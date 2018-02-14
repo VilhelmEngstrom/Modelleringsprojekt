@@ -74,11 +74,6 @@ void MatrixStack::unit(){
         i % 5 == 0 ? current->v[i] = 1.0f : current->v[i] = 0.0f;
 }
 
-void MatrixStack::unit(float mat[]){
-    for(int i = 0; i < MAT4_SIZE; i++)
-        i % 5 == 0 ? mat[i] = 1.0f : mat[i] = 0.0f;
-}
-
 void MatrixStack::scale(float magnitude){
     float m[16];
     unit(m);
@@ -102,7 +97,6 @@ void MatrixStack::translate(const Vec3& vec){
 }
 
 void MatrixStack::translate(float x, float y, float z){
-    // Call translate with Vec3 argument
     translate({x,y,z});
 }
 
@@ -152,6 +146,11 @@ void MatrixStack::print() const{
 void MatrixStack::printMatrix(float* mat) const{
     for(int i = 0; i < 4; i++)
         printf("%4.2f %4.2f %4.2f %4.2f\n", mat[i+0], mat[i+4], mat[i+8],  mat[i+12]);
+}
+
+void MatrixStack::unit(float mat[]){
+    for(int i = 0; i < MAT4_SIZE; i++)
+        i % 5 == 0 ? mat[i] = 1.0f : mat[i] = 0.0f;
 }
 
 void MatrixStack::multiply(float m1[], float m2[], float out[]){

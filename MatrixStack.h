@@ -76,11 +76,8 @@ class MatrixStack{
         uint getDepth() const;
 
         // Matrix transforms
-        // Make current matrix a unit
+        // Make current matrix a unit matrix
         void unit();
-
-        // Make mat a unit
-        static void unit(float mat[]);
 
         // Uniform scaling
         void scale(float magnitude);
@@ -106,6 +103,8 @@ class MatrixStack{
         // Print single matrix
         void printMatrix(float* mat) const;
 
+        // Make mat a unit matrix
+        static void unit(float mat[]);
         // Multiply m1 with m2, store in out (out = m1 * m2)
         static void multiply(float m1[], float m2[], float out[]);
         // Multiply matrix with scalar
