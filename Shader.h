@@ -13,7 +13,7 @@
 
 
 #ifndef GL_DEBUG
-#define GL_DEBUG 1
+#define GL_DEBUG 0
 #endif
 #if GL_DEBUG == 1
 #define LOG(x) std::cout << x << "\n";

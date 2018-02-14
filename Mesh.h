@@ -11,11 +11,11 @@
 
 #include "dependencies/include/glew.h"
 
-#ifndef MESH_DEBUG
-#define MESH_DEBUG 1
+#ifndef GL_DEBUG
+#define GL_DEBUG 0
 #endif
 
-#if MESH_DEBUG == 1
+#if GL_DEBUG == 1
 #define LOG(x) std::cout << x << "\n";
 #else
 #define LOG(x)
@@ -23,17 +23,28 @@
 
 typedef unsigned int uint;
 
+#ifndef VEC3_H
+#define VEC3_H
+
+struct Vec3{
+    float x,y,z;
+};
+
+#endif
+
+#ifndef VEC2_H
+#define VEC2_H
+
+struct Vec2{
+    float s,t;
+};
+
+#endif
+
 #ifndef VERTEX_H
 #define VERTEX_H
 
 struct Vertex{
-    struct Vec3{
-        float x,y,z;
-    };
-    struct Vec2{
-        float s,t;
-    };
-
     Vec3 position;
     Vec3 normal;
     Vec2 texCoords;

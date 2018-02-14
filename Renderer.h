@@ -9,24 +9,34 @@
 
 #include "dependencies/include/glew.h"
 
+#ifndef VEC3_H
+#define VEC3_H
+
+struct Vec3{
+    float x,y,z;
+};
+
+#endif
+
+#ifndef VEC2_H
+#define VEC2_H
+
+struct Vec2{
+    float s,t;
+};
+
+#endif
+
 #ifndef VERTEX_H
 #define VERTEX_H
 
 struct Vertex{
-    struct Vec3{
-        float x,y,z;
-    };
-    struct Vec2{
-        float s,t;
-    };
-
     Vec3 position;
     Vec3 normal;
     Vec2 texCoords;
 };
 
 #endif
-
 namespace graphics{
     class Renderer {
         public:
