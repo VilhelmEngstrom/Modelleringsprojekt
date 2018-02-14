@@ -108,5 +108,5 @@ class MatrixStack{
         // Multiply m1 with m2, store in out (out = m1 * m2)
         static void multiply(float m1[], float m2[], float out[]);
         // Multiply matrix with scalar
-        static void multiply(float mat1[], float multiplier, float out[]);
+        static void multiply(float m1[], float multiplier, float out[]);
 };
