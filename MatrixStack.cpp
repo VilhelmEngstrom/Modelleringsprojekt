@@ -110,10 +110,10 @@ void MatrixStack::rotate(RotationAxis axis, float angle){
     float m[16];
     unit(m);
 
-    // Index 1 :  cos(angle)
-    // Index 2 :  sin(angle)
-    // Index 3 : -sin(angle)
-    // Index 4 :  cos(angle)
+    // Index 0 :  cos(angle)
+    // Index 1 :  sin(angle)
+    // Index 2 : -sin(angle)
+    // Index 3 :  cos(angle)
     std::array<int, 4> indices;
 
 
