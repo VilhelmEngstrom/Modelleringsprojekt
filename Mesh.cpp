@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh() : vertices(NULL), indices(NULL){
+Mesh::Mesh() : vertices(NULL), indices(NULL), renderer(NULL){
     if(glewInit() != GLEW_OK){
         std::cout << "Could not initialize GLEW\n";
         exit(EXIT_FAILURE);
