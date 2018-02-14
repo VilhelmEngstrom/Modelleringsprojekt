@@ -5,6 +5,7 @@ graphics::Window::Window(const char* name, int width, int height) : m_width(widt
 }
 
 graphics::Window::~Window() {
+    glfwDestroyWindow(m_window);
     glfwTerminate();
 }
 
@@ -33,7 +34,7 @@ void graphics::Window::init(){
 
     glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GL_TRUE);
 
-    glClearColor(0.34f, 0.15f, 0.22f, 0.9f);
+    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 
 }
 
@@ -41,8 +42,15 @@ bool graphics::Window::shouldClose() const{
     return glfwWindowShouldClose(m_window) || glfwGetKey(m_window, GLFW_KEY_ESCAPE);
 }
 
+
 void graphics::Window::clear() const{
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+}
+
+void graphics::Window::cullBackFace() const{
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 }
 
 void graphics::Window::update() const{

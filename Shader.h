@@ -4,11 +4,13 @@
 #include <sstream>
 #include <stdio.h>
 #include <string.h>
-#include "dependencies/include/glew.h"
-
+#if defined _WIN32 || defined _WIN64
 #ifndef GLEW_STATIC
 #define GLEW_STATIC
 #endif
+#endif
+#include "dependencies/include/glew.h"
+
 
 #ifndef GL_DEBUG
 #define GL_DEBUG 1
@@ -23,7 +25,6 @@ struct ShaderSource{
     std::string vertexSource;
     std::string fragmentSource;
 };
-
 
 namespace graphics{
     class Shader{
