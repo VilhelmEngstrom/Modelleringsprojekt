@@ -35,7 +35,7 @@ void Mesh::genRenderer(){
 
 void Mesh::setShader(const std::string& shaderFile) const{
     if(renderer == NULL){
-        printf("Renderer has been generated, cannot set shader\n");
+        printf("No renderer has been generated, cannot set shader\n");
         return;
     }
     renderer->setShader(shaderFile);
@@ -43,7 +43,7 @@ void Mesh::setShader(const std::string& shaderFile) const{
 
 void Mesh::render() const{
     if(renderer == NULL){
-        printf("Renderer has been generated\n");
+        printf("No renderer has been generated\n");
         return;
     }
     renderer->render();
