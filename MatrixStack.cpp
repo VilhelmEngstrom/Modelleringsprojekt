@@ -163,7 +163,7 @@ void MatrixStack::multiply(float m1[], float m2[], float out[]){
         }
     }
     // Copy to out variable
-    std::copy(tempMat, tempMat+16, out);
+    std::copy(tempMat, tempMat+MAT4_SIZE, out);
 }
 
 void MatrixStack::multiply(float m1[], float multiplier, float out[]){
