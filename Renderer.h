@@ -1,5 +1,4 @@
 #pragma once
-#include "Mesh.h"
 #include "Shader.h"
 
 #if defined _WIN32 || defined _WIN_64
@@ -10,11 +9,28 @@
 
 #include "dependencies/include/glew.h"
 
+#ifndef VERTEX_H
+#define VERTEX_H
+
+struct Vertex{
+    struct Vec3{
+        float x,y,z;
+    };
+    struct Vec2{
+        float s,t;
+    };
+
+    Vec3 position;
+    Vec3 normal;
+    Vec2 texCoords;
+};
+
+#endif
+
 namespace graphics{
     class Renderer {
         public:
-            // Takes any class derived from Mesh as argument
-            explicit Renderer(const Mesh& mesh);
+            explicit Renderer(Vertex* vertices, uint nVerts, uint* indices, uint nInds);
             ~Renderer();
 
             // Draw the object
@@ -32,7 +48,7 @@ namespace graphics{
             uint shaderProgram;
 
             // Initialize
-            void init(const Mesh& mesh);
+            void init();
             // Pass vertex array to OpenGL
             void setupVertexBuffer();
             // Pass index array to OpenGL

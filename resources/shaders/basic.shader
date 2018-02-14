@@ -1,19 +1,31 @@
 #shader vertex
 #version 330 core
 
-layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 normal;
+layout(location = 2) in vec2 texCoords;
+
+out vec3 interpolatedNormal;
+out vec2 st;
 
 void main(void){
-    gl_Position.xyz = vertexPosition_modelspace;
-    gl_Position.w = 1.0;
+    gl_Position =  vec4(position, 1.0);
+    interpolatedNormal = normal;
+    st = texCoords;
 }
 
 
 #shader fragment
 #version 330 core
 
-out vec3 color;
+in vec3 interpolatedNormal;
+in vec2 st;
+
+out vec4 color;
 
 void main(void){
-    color = vec3(0.54,0.76,0.85);
+    vec4 col = vec4(1.0, 0.5, 1.0, 1.0);
+    vec3 normNormal = normalize(interpolatedNormal);
+    float diffuse = max(0.0, normNormal.z);
+    color = col * diffuse;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <math.h>
+#include "Renderer.h"
 
 #if defined _WIN32 || defined _WIN_64
 #ifndef GLEW_STATIC
@@ -22,6 +23,9 @@
 
 typedef unsigned int uint;
 
+#ifndef VERTEX_H
+#define VERTEX_H
+
 struct Vertex{
     struct Vec3{
         float x,y,z;
@@ -34,6 +38,8 @@ struct Vertex{
     Vec3 normal;
     Vec2 texCoords;
 };
+
+#endif
 
 class Mesh{
     public:
@@ -53,9 +59,19 @@ class Mesh{
         // Generate index list for reusing vertices
         virtual void generateIndices() = 0;
 
+        // Set shader (uses Renderer*)
+        void setShader(const std::string& shaderFile) const;
+        // Render object (uses Renderer*)
+        void render() const;
+
     protected:
         Vertex* vertices;
         uint* indices;
 
         uint nVertices, nIndices;
+
+        graphics::Renderer* renderer;
+
+        // initialize renderer
+        void genRenderer();
 };

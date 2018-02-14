@@ -1,9 +1,8 @@
 #include "Renderer.h"
 
-
-graphics::Renderer::Renderer(const Mesh& mesh)
-: vertexArray(NULL), indexArray(NULL), nVertices(mesh.getNumberOfVertices()), nIndices(mesh.getNumberOfIndices()){
-    init(mesh);
+graphics::Renderer::Renderer(Vertex* vertices, uint nVerts, uint* indices, uint nInds)
+: vertexArray(vertices), indexArray(indices), nVertices(nVerts), nIndices(nInds){
+    init();
 }
 
 graphics::Renderer::~Renderer(){
@@ -32,10 +31,7 @@ void graphics::Renderer::setShader(const std::string& shaderFile){
     shaderProgram = Shader::compile(shaderFile);
 }
 
-void graphics::Renderer::init(const Mesh& mesh){
-    vertexArray = mesh.getVertices();
-    indexArray = mesh.getIndices();
-
+void graphics::Renderer::init(){
     glGenVertexArrays(1, &vertexArrayObj);
     glBindVertexArray(vertexArrayObj);
 

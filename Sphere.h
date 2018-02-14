@@ -2,6 +2,7 @@
 #include <iostream>
 #include <initializer_list>
 #include "Mesh.h"
+#include "Renderer.h"
 
 class Sphere : public Mesh{
     public:
