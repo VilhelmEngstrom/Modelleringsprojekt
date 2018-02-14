@@ -37,6 +37,7 @@ struct Vertex{
 };
 
 #endif
+
 namespace graphics{
     class Renderer {
         public:

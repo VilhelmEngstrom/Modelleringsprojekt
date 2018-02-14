@@ -21,10 +21,15 @@
 #define LOG(x)
 #endif
 
+#ifndef SHADERSOURCE_H
+#define SHADERSOURCE_H
+
 struct ShaderSource{
     std::string vertexSource;
     std::string fragmentSource;
 };
+
+#endif
 
 namespace graphics{
     class Shader{

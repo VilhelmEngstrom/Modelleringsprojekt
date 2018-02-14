@@ -11,6 +11,7 @@
 
 #include "dependencies/include/glew.h"
 
+
 #ifndef GL_DEBUG
 #define GL_DEBUG 0
 #endif
@@ -21,7 +22,6 @@
 #define LOG(x)
 #endif
 
-typedef unsigned int uint;
 
 #ifndef VEC3_H
 #define VEC3_H
@@ -51,6 +51,8 @@ struct Vertex{
 };
 
 #endif
+
+typedef unsigned int uint;
 
 class Mesh{
     public:
