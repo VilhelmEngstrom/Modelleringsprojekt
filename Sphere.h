@@ -1,8 +1,13 @@
 #pragma once
 #include <iostream>
 #include <initializer_list>
+#include <math.h>
 #include "Mesh.h"
 #include "Renderer.h"
+
+#ifndef M_PI
+#define M_PI 3.1415926535
+#endif
 
 class Sphere : public Mesh{
     public:

@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <math.h>
 #include "Renderer.h"
 
 #if defined _WIN32 || defined _WIN_64
