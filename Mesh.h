@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "Shader.h"
 #include "Renderer.h"
 
 #if defined _WIN32 || defined _WIN_64
@@ -71,16 +72,16 @@ class Mesh{
         // Generate index list for reusing vertices
         virtual void generateIndices() = 0;
 
-        // Set shader (uses Renderer*)
-        void setShader(const std::string& shaderFile) const;
+        // Set shader
+        void setShader(const std::string& shaderFile);
         // Render object (uses Renderer*)
         void render() const;
 
     protected:
         Vertex* vertices;
         uint* indices;
-
         uint nVertices, nIndices;
+        uint shaderProgram;
 
         graphics::Renderer* renderer;
 

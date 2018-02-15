@@ -11,25 +11,14 @@ graphics::Renderer::~Renderer(){
 
 
 void graphics::Renderer::render() const{
-    if(!shaderProgram){
-        printf("No shader has been set\n");
-        return;
-    }
-    // Use shader
-    glUseProgram(shaderProgram);
     // Bind the VAO
     glBindVertexArray(vertexArrayObj);
     // Draw
     glDrawElements(GL_TRIANGLES, nIndices, GL_UNSIGNED_INT, (void*)0);
-     // Unbind VAO and shader
+     // Unbind VAO
     glBindVertexArray(0);
-    glUseProgram(0);
 }
 
-
-void graphics::Renderer::setShader(const std::string& shaderFile){
-    shaderProgram = Shader::compile(shaderFile);
-}
 
 void graphics::Renderer::init(){
     glGenVertexArrays(1, &vertexArrayObj);

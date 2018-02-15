@@ -33,12 +33,8 @@ void Mesh::genRenderer(){
     renderer = new graphics::Renderer(vertices, nVertices, indices, nIndices);
 }
 
-void Mesh::setShader(const std::string& shaderFile) const{
-    if(renderer == NULL){
-        printf("No renderer has been generated, cannot set shader\n");
-        return;
-    }
-    renderer->setShader(shaderFile);
+void Mesh::setShader(const std::string& shaderFile){
+    shaderProgram = graphics::Shader::compile(shaderFile);
 }
 
 void Mesh::render() const{
@@ -46,5 +42,12 @@ void Mesh::render() const{
         printf("No renderer has been generated\n");
         return;
     }
+    // Use shader
+    glUseProgram(shaderProgram);
+
+    // Render geometry
     renderer->render();
+
+    // Deactivate shader
+    glUseProgram(0);
 }

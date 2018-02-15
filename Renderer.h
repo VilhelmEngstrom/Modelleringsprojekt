@@ -1,5 +1,5 @@
 #pragma once
-#include "Shader.h"
+#include <stdio.h>
 
 #if defined _WIN32 || defined _WIN_64
 #ifndef GLEW_STATIC
@@ -38,6 +38,8 @@ struct Vertex{
 
 #endif
 
+typedef unsigned int uint;
+
 namespace graphics{
     class Renderer {
         public:
@@ -47,16 +49,13 @@ namespace graphics{
             // Draw the object
             void render() const;
 
-            // Set the shader, argument is the path to the shader file
-            void setShader(const std::string& shaderFile);
-
         protected:
             uint vertexArrayObj, vertexBuffer, indexBuffer;
             Vertex* vertexArray;
             uint* indexArray;
 
             uint nVertices, nIndices;
-            uint shaderProgram;
+
 
             // Initialize
             void init();
