@@ -49,7 +49,7 @@ struct MatrixNode{
 #endif
 
 class MatrixStack{
-    typedef MatrixNode Mat4;
+    typedef MatrixNode M4Node;
 
     public:
         MatrixStack();
@@ -86,7 +86,7 @@ class MatrixStack{
         void translate(const Vec3& vec);
         void translate(float x, float y, float z);
 
-        // Rotate. angle in radians. Use macro M_PI for pi
+        // Rotate. angle in radians. Use M_PI for pi
         // axis is given by RotationAxis::X, RotationAxis::Y or RotationAxis::Z
         // eg:
         // rotate(RotationAxis::X, M_PI); will rotate the object
@@ -97,9 +97,10 @@ class MatrixStack{
         // Print every matrix on the stack
         void print() const;
 
-        // Topmost matrix
-        Mat4* current;
     protected:
+        // Topmost matrix
+        M4Node* current;
+
         // Print single matrix
         void printMatrix(float* mat) const;
 

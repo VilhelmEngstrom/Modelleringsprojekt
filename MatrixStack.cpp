@@ -2,7 +2,7 @@
 
 
 MatrixStack::MatrixStack(){
-    current = new Mat4();
+    current = new M4Node();
     init();
 }
 
@@ -19,7 +19,7 @@ void MatrixStack::init(){
 }
 
 void MatrixStack::push(){
-    Mat4* newMat = new Mat4;
+    M4Node* newMat = new M4Node;
 
     newMat->previous = current;
     std::copy(current->v, current->v+MAT4_SIZE, newMat->v);
@@ -33,7 +33,7 @@ void MatrixStack::pop(){
         return;
     }
 
-    Mat4* last = current;
+    M4Node* last = current;
     current = current->previous;
     delete last;
 }
@@ -54,7 +54,7 @@ float* MatrixStack::getTopMatrix() const{
 
 
 uint MatrixStack::getDepth() const{
-    Mat4* it = current;
+    M4Node* it = current;
 
     uint depth = 0;
     while(it){
@@ -79,7 +79,7 @@ void MatrixStack::scale(float magnitude){
     unit(m);
 
     // Multiply diagonal
-    for(int i = 0; i < MAT4_SIZE; i += 5)
+    for(int i = 0; i < MAT4_SIZE-4; i += 5)
         m[i] = m[i] * magnitude;
 
     // Scale current matrix
@@ -130,7 +130,7 @@ void MatrixStack::rotate(RotationAxis axis, float angle){
 // IO
 
 void MatrixStack::print() const{
-    Mat4* it = current;
+    M4Node* it = current;
 
     printf("Stack contents:\n\n");
     while(it){
