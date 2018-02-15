@@ -73,7 +73,7 @@ class MatrixStack{
         float* getTopMatrix() const;
 
         // Get number of matrices in stack
-        uint getDepth() const;
+        unsigned int getDepth() const;
 
         // Matrix transforms
         // Make current matrix a unit matrix

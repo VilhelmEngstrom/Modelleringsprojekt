@@ -53,10 +53,10 @@ float* MatrixStack::getTopMatrix() const{
 }
 
 
-uint MatrixStack::getDepth() const{
+unsigned int MatrixStack::getDepth() const{
     M4Node* it = current;
 
-    uint depth = 0;
+    unsigned int depth = 0;
     while(it){
         depth++;
         it = it->previous;
