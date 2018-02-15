@@ -72,8 +72,6 @@ class Mesh{
         // Generate index list for reusing vertices
         virtual void generateIndices() = 0;
 
-        // Set shader
-        void setShader(const std::string& shaderFile);
         // Render object (uses Renderer*)
         void render() const;
 
@@ -81,7 +79,6 @@ class Mesh{
         Vertex* vertices;
         uint* indices;
         uint nVertices, nIndices;
-        uint shaderProgram;
 
         graphics::Renderer* renderer;
 

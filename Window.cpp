@@ -58,7 +58,7 @@ void graphics::Window::update() const{
     glfwPollEvents();
 }
 
-
 void graphics::windowResize(GLFWwindow* window, int width, int height){
     glViewport(0, 0, width, height);
+
 }

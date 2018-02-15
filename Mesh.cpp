@@ -29,12 +29,9 @@ uint* Mesh::getIndices() const{
     return indices;
 }
 
+
 void Mesh::genRenderer(){
     renderer = new graphics::Renderer(vertices, nVertices, indices, nIndices);
-}
-
-void Mesh::setShader(const std::string& shaderFile){
-    shaderProgram = graphics::Shader::compile(shaderFile);
 }
 
 void Mesh::render() const{
@@ -42,12 +39,7 @@ void Mesh::render() const{
         printf("No renderer has been generated\n");
         return;
     }
-    // Use shader
-    glUseProgram(shaderProgram);
 
     // Render geometry
     renderer->render();
-
-    // Deactivate shader
-    glUseProgram(0);
 }

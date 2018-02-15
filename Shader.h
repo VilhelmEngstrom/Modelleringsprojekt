@@ -4,6 +4,8 @@
 #include <sstream>
 #include <stdio.h>
 #include <string.h>
+#include <map>
+
 #if defined _WIN32 || defined _WIN64
 #ifndef GLEW_STATIC
 #define GLEW_STATIC
@@ -21,6 +23,10 @@
 #define LOG(x)
 #endif
 
+#ifndef MAT4_SIZE
+#define MAT4_SIZE 16
+#endif
+
 #ifndef SHADERSOURCE_H
 #define SHADERSOURCE_H
 
@@ -34,14 +40,54 @@ struct ShaderSource{
 namespace graphics{
     class Shader{
         public:
-            Shader();
+            Shader(const std::string& shaderFile);
             ~Shader();
+
+            void activate() const;
+            void deactivate() const;
+
 
             // Compile and link shaders, return 0 if this fails
             static unsigned int compile(const std::string& shaderPath);
             static unsigned int compile(const std::string& vertexPath, const std::string& fragmentPath);
 
+            // Generate a perspective projection matrix
+            void generatePerspectiveProjectionMatrix(float f, float zNear, float zFar, float aspect);
+
+            // Add uniform from shader, handle is the name of the variable in the
+            // shader
+            void addLocation(const std::string& handle);
+
+            // Pass perspective projection mastrix to shader, handle is the
+            // name of the matrix in the shader
+            void passPerspectiveMatrix(const std::string& handle) const;
+
+            // Pass scalar to shader, handle is the name of the variable in
+            // the shader
+            void passScalar(const std::string& handle, int uniform) const;
+            void passScalar(const std::string& handle, float uniform) const;
+
+            // Pass Mat4 to shader, handle is the name of the uniform in the shader,
+            // matrix is a poirnter to the Mat4 (a float[16])
+            void passMat4(const std::string& handle, float* matrix) const;
+            void passMat4(const std::string& handle, const float* matrix) const;
+
         protected:
+            unsigned int shaderProgramID;
+
+            // Matrix indices:
+            // [0] [4] [8]  [12]
+            // [1] [5] [9]  [13]
+            // [2] [6] [10] [14]
+            // [3] [7] [11] [15]
+            float perspectiveMatrix[MAT4_SIZE];
+
+            // Stores uniform locations, accessed by the string key.
+            // Eg: locations.at(stack) yields the int associated with the
+            // uniform stack in the shader
+            std::map<std::string, int> locations;
+
+
             enum class ShaderType {
                 NONE=-1, VERTEX, FRAGMENT
             };

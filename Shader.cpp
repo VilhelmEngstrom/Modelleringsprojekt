@@ -1,7 +1,14 @@
 #include "Shader.h"
 
-graphics::Shader::Shader() {}
+graphics::Shader::Shader(const std::string& shaderFile) : shaderProgramID(compile(shaderFile)) {}
 graphics::Shader::~Shader() {}
+
+void graphics::Shader::activate() const{
+    glUseProgram(shaderProgramID);
+}
+void graphics::Shader::deactivate() const{
+    glUseProgram(0);
+}
 
 unsigned int graphics::Shader::compile(const std::string& shaderPath){
     // Read source code
@@ -185,4 +192,40 @@ ShaderSource graphics::Shader::loadSource(const std::string& vertexPath, const s
 
     // Return shader source object
     return {ss[0].str(), ss[1].str()};
+}
+
+
+void graphics::Shader::generatePerspectiveProjectionMatrix(float f, float zNear, float zFar, float aspect){
+    for(int i = 0; i < MAT4_SIZE; i++)
+        perspectiveMatrix[i] = 0;
+
+    perspectiveMatrix[0]  = f/aspect;
+    perspectiveMatrix[5]  = f;
+    perspectiveMatrix[10] = (zFar + zNear) / (zNear-zFar);
+    perspectiveMatrix[11] = -1;
+    perspectiveMatrix[14] = 2 * zFar * zNear / (zNear - zFar);
+}
+
+
+void graphics::Shader::addLocation(const std::string& handle){
+    locations[handle] = glGetUniformLocation(shaderProgramID, &handle[0]);
+}
+
+void graphics::Shader::passPerspectiveMatrix(const std::string& handle) const{
+    passMat4(handle, perspectiveMatrix);
+}
+
+void graphics::Shader::passScalar(const std::string& handle, int uniform) const{
+    glUniform1i(locations.at(handle), uniform);
+}
+
+void graphics::Shader::passScalar(const std::string& handle, float uniform) const{
+    glUniform1f(locations.at(handle), uniform);
+}
+
+void graphics::Shader::passMat4(const std::string& handle, float* matrix) const{
+    glUniformMatrix4fv(locations.at(handle), 1, GL_FALSE, matrix);
+}
+void graphics::Shader::passMat4(const std::string& handle, const float* matrix) const{
+    glUniformMatrix4fv(locations.at(handle), 1, GL_FALSE, matrix);
 }
