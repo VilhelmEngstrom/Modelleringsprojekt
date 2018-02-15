@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "dependencies/include/glew.h"
 #include "dependencies/include/glfw3.h"
 
 #ifndef GL_DEBUG
