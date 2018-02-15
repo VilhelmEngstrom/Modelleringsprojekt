@@ -60,7 +60,7 @@ namespace graphics{
 
             // Pass perspective projection mastrix to shader, handle is the
             // name of the matrix in the shader
-            void passPerspectiveMatrix(const std::string& handle) const;
+            void passPerspectiveMatrix(const std::string& handle);
 
             // Pass scalar to shader, handle is the name of the variable in
             // the shader
@@ -70,7 +70,6 @@ namespace graphics{
             // Pass Mat4 to shader, handle is the name of the uniform in the shader,
             // matrix is a poirnter to the Mat4 (a float[16])
             void passMat4(const std::string& handle, float* matrix) const;
-            void passMat4(const std::string& handle, const float* matrix) const;
 
         protected:
             unsigned int shaderProgramID;

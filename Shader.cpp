@@ -211,7 +211,7 @@ void graphics::Shader::addLocation(const std::string& handle){
     locations[handle] = glGetUniformLocation(shaderProgramID, &handle[0]);
 }
 
-void graphics::Shader::passPerspectiveMatrix(const std::string& handle) const{
+void graphics::Shader::passPerspectiveMatrix(const std::string& handle){
     passMat4(handle, perspectiveMatrix);
 }
 
@@ -224,8 +224,5 @@ void graphics::Shader::passScalar(const std::string& handle, float uniform) cons
 }
 
 void graphics::Shader::passMat4(const std::string& handle, float* matrix) const{
-    glUniformMatrix4fv(locations.at(handle), 1, GL_FALSE, matrix);
-}
-void graphics::Shader::passMat4(const std::string& handle, const float* matrix) const{
     glUniformMatrix4fv(locations.at(handle), 1, GL_FALSE, matrix);
 }
