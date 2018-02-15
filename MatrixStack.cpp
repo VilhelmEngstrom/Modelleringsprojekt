@@ -145,7 +145,7 @@ void MatrixStack::print() const{
 
 void MatrixStack::printMatrix(float* mat) const{
     for(int i = 0; i < 4; i++)
-        printf("%4.2f %4.2f %4.2f %4.2f\n", mat[i+0], mat[i+4], mat[i+8],  mat[i+12]);
+        printf("%-6.2f %-6.2f %-6.2f %-6.2f\n", mat[i+0], mat[i+4], mat[i+8],  mat[i+12]);
 }
 
 void MatrixStack::unit(float mat[]){
