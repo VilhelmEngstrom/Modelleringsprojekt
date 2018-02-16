@@ -1,7 +1,14 @@
 #include "Shader.h"
 
-graphics::Shader::Shader() {}
+graphics::Shader::Shader(const std::string& shaderFile) : shaderProgramID(compile(shaderFile)) {}
 graphics::Shader::~Shader() {}
+
+void graphics::Shader::activate() const{
+    glUseProgram(shaderProgramID);
+}
+void graphics::Shader::deactivate() const{
+    glUseProgram(0);
+}
 
 unsigned int graphics::Shader::compile(const std::string& shaderPath){
     // Read source code
@@ -185,4 +192,20 @@ ShaderSource graphics::Shader::loadSource(const std::string& vertexPath, const s
 
     // Return shader source object
     return {ss[0].str(), ss[1].str()};
+}
+
+void graphics::Shader::addLocation(const std::string& handle){
+    locations[handle] = glGetUniformLocation(shaderProgramID, &handle[0]);
+}
+
+void graphics::Shader::passScalar(const std::string& handle, int uniform) const{
+    glUniform1i(locations.at(handle), uniform);
+}
+
+void graphics::Shader::passScalar(const std::string& handle, float uniform) const{
+    glUniform1f(locations.at(handle), uniform);
+}
+
+void graphics::Shader::passMat4(const std::string& handle, float* matrix) const{
+    glUniformMatrix4fv(locations.at(handle), 1, GL_FALSE, matrix);
 }
