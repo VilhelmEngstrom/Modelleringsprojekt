@@ -13,16 +13,6 @@
 #endif
 #include "dependencies/include/glew.h"
 
-
-#ifndef GL_DEBUG
-#define GL_DEBUG 0
-#endif
-#if GL_DEBUG == 1
-#define LOG(x) std::cout << x << "\n";
-#else
-#define LOG(x)
-#endif
-
 #ifndef MAT4_SIZE
 #define MAT4_SIZE 16
 #endif
@@ -51,16 +41,9 @@ namespace graphics{
             static unsigned int compile(const std::string& shaderPath);
             static unsigned int compile(const std::string& vertexPath, const std::string& fragmentPath);
 
-            // Generate a perspective projection matrix
-            void generatePerspectiveProjectionMatrix(float f, float zNear, float zFar, float aspect);
-
             // Add uniform from shader, handle is the name of the variable in the
             // shader
             void addLocation(const std::string& handle);
-
-            // Pass perspective projection mastrix to shader, handle is the
-            // name of the matrix in the shader
-            void passPerspectiveMatrix(const std::string& handle);
 
             // Pass scalar to shader, handle is the name of the variable in
             // the shader
@@ -74,18 +57,10 @@ namespace graphics{
         protected:
             unsigned int shaderProgramID;
 
-            // Matrix indices:
-            // [0] [4] [8]  [12]
-            // [1] [5] [9]  [13]
-            // [2] [6] [10] [14]
-            // [3] [7] [11] [15]
-            float perspectiveMatrix[MAT4_SIZE];
-
             // Stores uniform locations, accessed by the string key.
             // Eg: locations.at(stack) yields the int associated with the
-            // uniform stack in the shader
+            // uniform 'stack' in the shader
             std::map<std::string, int> locations;
-
 
             enum class ShaderType {
                 NONE=-1, VERTEX, FRAGMENT
@@ -102,7 +77,6 @@ namespace graphics{
             static ShaderSource loadSource(const std::string& shaderPath);
             // Read shader source code from separate files
             static ShaderSource loadSource(const std::string& vertexPath, const std::string& fragmentPath);
-
 
     };
 }

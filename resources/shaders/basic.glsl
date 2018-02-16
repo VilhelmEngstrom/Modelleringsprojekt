@@ -14,7 +14,7 @@ out vec2 st;
 
 void main(void){
     gl_Position = (stack) * vec4(position, 1.0);
-    interpolatedNormal = normal;
+    interpolatedNormal = mat3(stack) * normal;
     st = texCoords;
 }
 
