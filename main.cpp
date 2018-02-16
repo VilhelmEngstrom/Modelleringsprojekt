@@ -5,6 +5,7 @@
 #include "MatrixStack.h"
 #include "Shader.h"
 #include "utility.h"
+#include "Bubble.h"
 
 #ifndef WIN_DEBUG
 #define WIN_DEBUG 1
@@ -41,6 +42,10 @@ int main(int argc, char** argv) {
 	Window win("Engine", 540, 540);
 	// Create sphere, radius 1.0f, 30 vertical segments
 	Sphere sphere(1.0f, 30);
+
+	// creat a bubble
+	Bubble bubble(0.00007, &sphere);
+
 	// Specify, compile and pass shader program to OpenGL
 	Shader shader("resources/shaders/basic.glsl");
 
@@ -74,6 +79,7 @@ int main(int argc, char** argv) {
 		// Add new matrix to stack
 		matStack.push();
 		// Translate 5 units towards user
+		bubble.update();
 		matStack.translate({ 0.0f, 0.0f, -5.0f });
 
 		// Model transformations
@@ -82,7 +88,8 @@ int main(int argc, char** argv) {
 		// Scale the object
 		matStack.scale(0.5f);
 		// Translate to the right
-		matStack.translate({ 1.0f,0.0f,0.0f });
+		matStack.translate({ bubble.get_pos().getX(),bubble.get_pos().getY(),bubble.get_pos().getZ() });
+		std::cout << bubble.get_pos() << '\n';
 		// Pass topmost matrix in the stack to the shader
 		shader.passMat4("stack", matStack.getTopMatrix());
 		// Render the sphere

@@ -13,7 +13,9 @@ class Sphere : public Mesh{
     public:
         // Initialize with radius and number of vertical segments
         Sphere(float rad, uint segs);
+		Sphere(const Sphere&) = delete;
         ~Sphere();
+		float getRadius() const { return radius; }
 
     protected:
         float radius;
