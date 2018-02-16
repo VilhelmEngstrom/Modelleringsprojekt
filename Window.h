@@ -31,6 +31,9 @@ namespace graphics{
             // Updates the window by clearing it and swapping buffers
             void update() const;
 
+            // Get window pointer, for size adjustment
+            GLFWwindow* getWindow() const;
+
         protected:
             GLFWwindow* m_window;
             int m_width, m_height;

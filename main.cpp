@@ -47,9 +47,6 @@ int main(int argc, char** argv){
     // Perspective projection matrix
     float perspective[16];
     utility::generatePerspectiveProjectionMatrix(perspective, 4, 3, 7, 1);
-    for(int i = 0;  i < 4; i++){
-        printf("%-6.2f %-6.2f %-6.2f %-6.2f\n", perspective[i+0], perspective[i+4], perspective[i+8],  perspective[i+12]);
-    }
 
     // Add locations of uniforms (variables in shader to be set from C++-code)
     shader.addLocation("perspective");
@@ -66,21 +63,35 @@ int main(int argc, char** argv){
 
         // Use the shader
         shader.activate();
-        // Pass perspective projectin matrix to shader
+
+        // Adjust projection matrix if window has been resized
+        utility::adjustAspect(perspective, win);
+        // Pass perspective projection matrix to shader
         shader.passMat4("perspective", perspective);
 
-        // Add new matrix to the stack
+
+        // Camera transfomations
+        // Add new matrix to stack
         matStack.push();
-            // Scale the object
-            matStack.scale(0.5f);
-            // Translate to the right
-            matStack.translate({1.0f,0.0f,0.0f});
-            // Pass topmost matrix in the stack to the shader
-            shader.passMat4("stack", matStack.getTopMatrix());
-            // Render the sphere
-            sphere.render();
-        // Restore stack to default
+            // Translate 5 units towards user
+            matStack.translate({0.0f, 0.0f, -5.0f});
+
+            // Model transformations
+            // Add new matrix to the stack
+            matStack.push();
+                // Scale the object
+                matStack.scale(0.5f);
+                // Translate to the right
+                matStack.translate({1.0f,0.0f,0.0f});
+                // Pass topmost matrix in the stack to the shader
+                shader.passMat4("stack", matStack.getTopMatrix());
+                // Render the sphere
+                sphere.render();
+            // Remove topmost matrix from stack
+            matStack.pop();
+        // Remove topmost matric from stack
         matStack.pop();
+
         // Deactivate shader
         shader.deactivate();
 
