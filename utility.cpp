@@ -18,7 +18,7 @@ void utility::generatePerspectiveProjectionMatrix(float* matrix, float f, float 
 }
 
 void utility::adjustAspect(float* matrix, const graphics::Window& win){
-    int height, width;
+    int width, height;
 
     glfwGetWindowSize(win.getWindow(), &width, &height);
 

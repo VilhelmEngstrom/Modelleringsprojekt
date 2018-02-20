@@ -30,7 +30,7 @@ uint* Mesh::getIndices() const{
 }
 
 
-void Mesh::genRenderer(){
+void Mesh::generateRenderer(){
     renderer = new graphics::Renderer(vertices, nVertices, indices, nIndices);
 }
 

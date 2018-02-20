@@ -1,19 +1,17 @@
 #pragma once
 #include <iostream>
+#if defined _WIN32 || defined _WIN64
+#ifndef GLEW_STATIC
+#define GLEW_STATIC
+#endif
+#endif
 #include "dependencies/include/glew.h"
 #include "dependencies/include/glfw3.h"
 
-#ifndef GL_DEBUG
-#define GL_DEBUG 0
-#endif
-#if GL_DEBUG == 1
-#define LOG(x) std::cout << x << "\n";
-#else
-#define LOG(x)
-#endif
-
-
+#ifndef WINDOW_H
+#define WINDOW_H
 namespace graphics{
+
     class Window{
         public:
             Window(const char* name, int width, int height);
@@ -34,7 +32,7 @@ namespace graphics{
             // Get window pointer, for size adjustment
             GLFWwindow* getWindow() const;
 
-        protected:
+        private:
             GLFWwindow* m_window;
             int m_width, m_height;
             const char* m_title;
@@ -43,6 +41,9 @@ namespace graphics{
             void init();
     };
 
+
     // For window resizing, cannot be class member
     void windowResize(GLFWwindow* window, int width, int height);
+
 }
+#endif

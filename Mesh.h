@@ -11,18 +11,6 @@
 
 #include "dependencies/include/glew.h"
 
-
-#ifndef GL_DEBUG
-#define GL_DEBUG 0
-#endif
-
-#if GL_DEBUG == 1
-#define LOG(x) std::cout << x << "\n";
-#else
-#define LOG(x)
-#endif
-
-
 #ifndef VEC3_H
 #define VEC3_H
 
@@ -52,9 +40,13 @@ struct Vertex{
 
 #endif
 
-typedef unsigned int uint;
+#ifndef MESH_H
+#define MESH_H
 
 class Mesh{
+    protected:
+        typedef unsigned int uint;
+
     public:
         Mesh();
         virtual ~Mesh();
@@ -83,5 +75,7 @@ class Mesh{
         graphics::Renderer* renderer;
 
         // initialize renderer
-        void genRenderer();
+        void generateRenderer();
 };
+
+#endif

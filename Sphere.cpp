@@ -3,7 +3,7 @@
 Sphere::Sphere(float rad, uint segs) : radius(rad), verticalSegs(segs > 3 ? segs : 3){
     init();
     create();
-    genRenderer();
+    generateRenderer();
 }
 
 Sphere::~Sphere() {}

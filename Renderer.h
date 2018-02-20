@@ -6,7 +6,6 @@
 #define GLEW_STATIC
 #endif
 #endif
-
 #include "dependencies/include/glew.h"
 
 #ifndef VEC3_H
@@ -38,10 +37,14 @@ struct Vertex{
 
 #endif
 
-typedef unsigned int uint;
+#ifndef RENDERER_H
+#define RENDERER_H
 
 namespace graphics{
     class Renderer {
+        private:
+            typedef unsigned int uint;
+
         public:
             explicit Renderer(Vertex* vertices, uint nVerts, uint* indices, uint nInds);
             ~Renderer();
@@ -49,7 +52,8 @@ namespace graphics{
             // Draw the object
             void render() const;
 
-        protected:
+        private:
+
             uint vertexArrayObj, vertexBuffer, indexBuffer;
             Vertex* vertexArray;
             uint* indexArray;
@@ -68,3 +72,5 @@ namespace graphics{
 
     };
 }
+
+#endif

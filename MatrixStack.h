@@ -4,10 +4,6 @@
 #include <algorithm>
 #include <array>
 
-#ifndef MAT4_SIZE
-#define MAT4_SIZE 16
-#endif
-
 #ifndef M_PI
 #define M_PI 3.1415926535
 #endif
@@ -42,11 +38,15 @@ struct MatrixNode{
     // v[2] v[6]  v[10] v[14]
     // v[3] v[7]  v[11] v[15]
 
-    float v[MAT4_SIZE];
+    float v[16];
     MatrixNode* previous;
 };
 
 #endif
+
+#ifndef MATRIXSTACK_H
+#define MATRIXSTACK_H
+
 
 class MatrixStack{
     typedef MatrixNode M4Node;
@@ -97,7 +97,9 @@ class MatrixStack{
         // Print every matrix on the stack
         void print() const;
 
-    protected:
+        static const unsigned short MAT4_SIZE;
+
+    private:
         // Topmost matrix
         M4Node* current;
 
@@ -111,3 +113,5 @@ class MatrixStack{
         // Multiply matrix with scalar
         static void multiply(float m1[], float multiplier, float out[]);
 };
+
+#endif

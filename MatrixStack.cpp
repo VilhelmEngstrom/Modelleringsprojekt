@@ -1,5 +1,6 @@
 #include "MatrixStack.h"
 
+const unsigned short MatrixStack::MAT4_SIZE = 16;
 
 MatrixStack::MatrixStack(){
     current = new M4Node();

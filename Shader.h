@@ -13,10 +13,6 @@
 #endif
 #include "dependencies/include/glew.h"
 
-#ifndef MAT4_SIZE
-#define MAT4_SIZE 16
-#endif
-
 #ifndef SHADERSOURCE_H
 #define SHADERSOURCE_H
 
@@ -26,6 +22,9 @@ struct ShaderSource{
 };
 
 #endif
+
+#ifndef SHADER_H
+#define SHADER_H
 
 namespace graphics{
     class Shader{
@@ -54,7 +53,7 @@ namespace graphics{
             // matrix is a poirnter to the Mat4 (a float[16])
             void passMat4(const std::string& handle, float* matrix) const;
 
-        protected:
+        private:
             unsigned int shaderProgramID;
 
             // Stores uniform locations, accessed by the string key.
@@ -80,3 +79,5 @@ namespace graphics{
 
     };
 }
+
+#endif

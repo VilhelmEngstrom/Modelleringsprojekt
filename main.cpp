@@ -14,8 +14,7 @@
 #define STACK_DEBUG 0
 #endif
 
-// Fix aspect ratio
-// Send stack to shader
+// Model rotation
 
 
 
