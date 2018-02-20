@@ -46,9 +46,11 @@ namespace graphics{
             typedef unsigned int uint;
 
         public:
-            explicit Renderer(Vertex* vertices, uint nVerts, uint* indices, uint nInds);
+            Renderer(Vertex* vertices, uint nVerts, uint* indices, uint nInds);
+            Renderer(const Renderer&) = delete;
             ~Renderer();
 
+            Renderer operator=(const Renderer&) = delete;
             // Draw the object
             void render() const;
 

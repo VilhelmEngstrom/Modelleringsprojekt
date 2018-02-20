@@ -15,7 +15,10 @@ namespace graphics{
     class Window{
         public:
             Window(const char* name, int width, int height);
+            Window(const Window&) = delete;
             ~Window();
+
+            Window operator=(const Window&) = delete;
 
             // Returns whether the close button or the escape key has been triggered
             bool shouldClose() const;

@@ -16,8 +16,10 @@ class Sphere : public Mesh{
     public:
         // Initialize with radius and number of vertical segments
         Sphere(float rad, uint segs);
+        Sphere(const Sphere& s);
         ~Sphere();
 
+        Sphere& operator=(const Sphere& rhs);
     private:
         float radius;
         uint verticalSegs, flatSegs;

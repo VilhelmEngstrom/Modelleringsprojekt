@@ -53,7 +53,10 @@ class MatrixStack{
 
     public:
         MatrixStack();
+        MatrixStack(const MatrixStack&) = delete;
         ~MatrixStack();
+
+        MatrixStack operator=(const MatrixStack&) = delete;
 
         // Stack operations
         // Initialize

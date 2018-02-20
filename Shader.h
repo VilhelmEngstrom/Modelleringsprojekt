@@ -29,8 +29,11 @@ struct ShaderSource{
 namespace graphics{
     class Shader{
         public:
-            Shader(const std::string& shaderFile);
+            explicit Shader(const std::string& shaderFile);
+            Shader(const Shader&) = delete;
             ~Shader();
+
+            Shader operator=(const Shader&) = delete;
 
             void activate() const;
             void deactivate() const;

@@ -6,7 +6,27 @@ Sphere::Sphere(float rad, uint segs) : radius(rad), verticalSegs(segs > 3 ? segs
     generateRenderer();
 }
 
+Sphere::Sphere(const Sphere& s) : radius(s.radius), verticalSegs(s.verticalSegs), flatSegs(s.flatSegs){
+    nVertices = s.nVertices;
+    nIndices = s.nIndices;
+
+    vertices = new Vertex[nVertices];
+    indices = new uint[nIndices];
+
+    std::copy(s.vertices, s.vertices+s.nVertices, vertices);
+    std::copy(s.indices, s.indices+s.nIndices, indices);
+
+    generateRenderer();
+}
+
 Sphere::~Sphere() {}
+
+Sphere& Sphere::operator=(const Sphere& rhs){
+    Sphere copy = rhs;
+    std::swap(*this, copy);
+    return *this;
+}
+
 
 void Sphere::init(){
     // Number flat segments
@@ -78,7 +98,7 @@ void Sphere::generateIndices(){
 }
 
 void Sphere::setVertexValues(uint index, std::initializer_list<float> values){
-    auto it = values.begin();
+    const auto& it = values.begin();
     vertices[index].position.x  = *it;
     vertices[index].position.y  = *(it+1);
     vertices[index].position.z  = *(it+2);

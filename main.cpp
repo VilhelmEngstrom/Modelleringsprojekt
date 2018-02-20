@@ -43,6 +43,9 @@ int main(int argc, char** argv){
     // Specify, compile and pass shader program to OpenGL
     Shader shader("resources/shaders/basic.glsl");
 
+
+    Sphere s2 = sphere;
+
     // Perspective projection matrix
     float perspective[16];
     utility::generatePerspectiveProjectionMatrix(perspective, 4, 3, 7, 1);
@@ -86,6 +89,10 @@ int main(int argc, char** argv){
                 shader.passMat4("stack", matStack.getTopMatrix());
                 // Render the sphere
                 sphere.render();
+
+                matStack.translate(-2.0f, 0.0f, 0.0f);
+                shader.passMat4("stack", matStack.getTopMatrix());
+                s2.render();
             // Remove topmost matrix from stack
             matStack.pop();
         // Remove topmost matric from stack
