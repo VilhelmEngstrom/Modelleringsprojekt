@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <initializer_list>
 #include "Shader.h"
 #include "Renderer.h"
 
@@ -67,6 +68,8 @@ class Mesh{
         // Render object (uses Renderer*)
         void render() const;
 
+        void render(unsigned int texID) const;
+
     protected:
         Vertex* vertices;
         uint* indices;
@@ -76,6 +79,8 @@ class Mesh{
 
         // initialize renderer
         void generateRenderer();
+
+        void setVertexValues(uint index, std::initializer_list<float> values);
 };
 
 #endif

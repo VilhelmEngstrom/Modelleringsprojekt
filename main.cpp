@@ -5,6 +5,8 @@
 #include "MatrixStack.h"
 #include "Shader.h"
 #include "utility.h"
+#include "Box.h"
+#include "CubemapTexture.h"
 
 #ifndef WIN_DEBUG
 #define WIN_DEBUG 1
@@ -15,6 +17,7 @@
 #endif
 
 // Model rotation
+// z-component of texcoord in skybox.glsl
 
 
 
@@ -43,8 +46,8 @@ int main(int argc, char** argv){
     // Specify, compile and pass shader program to OpenGL
     Shader shader("resources/shaders/basic.glsl");
 
+    Sphere s2 = Sphere(1.0f, 30);
 
-    Sphere s2 = sphere;
 
     // Perspective projection matrix
     float perspective[16];
@@ -56,6 +59,43 @@ int main(int argc, char** argv){
 
     // Create new matrix stack
     MatrixStack matStack;
+
+
+
+    // ******
+    // Skybox
+    // ******
+
+    Box skybox(2.0f);
+    std::string location = "resources/textures/skybox/";
+
+    CubemapTexture tex(location + "right.tga", location + "left.tga", location + "up.tga",
+                       location + "down.tga", location + "front.tga", location + "back.tga");
+
+    //unsigned int texID = tex.getTexID();
+    Shader skyboxShader("resources/shaders/skybox.glsl");
+    skyboxShader.addLocation("view");
+    skyboxShader.addLocation("perspective");
+
+
+    float viewMatrix[16] = {
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, -5.0f, 1.0f
+    };
+
+
+
+
+
+    unsigned int texID = tex.getTexID();
+
+
+
+
+
+
 
     while(!win.shouldClose()){
         // Erase everything from the previous frame
@@ -70,7 +110,6 @@ int main(int argc, char** argv){
         utility::adjustAspect(perspective, win);
         // Pass perspective projection matrix to shader
         shader.passMat4("perspective", perspective);
-
 
         // Camera transfomations
         // Add new matrix to stack
@@ -92,7 +131,8 @@ int main(int argc, char** argv){
 
                 matStack.translate(-2.0f, 0.0f, 0.0f);
                 shader.passMat4("stack", matStack.getTopMatrix());
-                s2.render();
+                //s2.render();
+
             // Remove topmost matrix from stack
             matStack.pop();
         // Remove topmost matric from stack
@@ -100,6 +140,24 @@ int main(int argc, char** argv){
 
         // Deactivate shader
         shader.deactivate();
+
+
+
+        skyboxShader.activate();
+
+
+        skyboxShader.passMat4("view", viewMatrix);
+        skyboxShader.passMat4("perspective", perspective);
+
+
+
+        skybox.render(texID);
+
+
+
+
+
+        skyboxShader.deactivate();
 
         // Swap buffers and get poll events
         win.update();

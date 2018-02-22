@@ -54,6 +54,8 @@ namespace graphics{
             // Draw the object
             void render() const;
 
+            void render(unsigned int texID) const;
+
         private:
 
             uint vertexArrayObj, vertexBuffer, indexBuffer;

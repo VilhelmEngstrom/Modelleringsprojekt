@@ -97,18 +97,6 @@ void Sphere::generateIndices(){
 
 }
 
-void Sphere::setVertexValues(uint index, std::initializer_list<float> values){
-    const auto& it = values.begin();
-    vertices[index].position.x  = *it;
-    vertices[index].position.y  = *(it+1);
-    vertices[index].position.z  = *(it+2);
-    vertices[index].normal.x    = *(it+3);
-    vertices[index].normal.y    = *(it+4);
-    vertices[index].normal.z    = *(it+5);
-    vertices[index].texCoords.s = *(it+6);
-    vertices[index].texCoords.t = *(it+7);
-}
-
 void Sphere::setIndexValues(uint index, std::initializer_list<uint> values){
     for(int i = 0; i < (values.end() - values.begin()); i++){
         indices[index+i] = *(values.begin()+i);

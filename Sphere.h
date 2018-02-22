@@ -34,7 +34,6 @@ class Sphere : public Mesh{
         void generateIndices() override;
 
         // Initialize values
-        void setVertexValues(uint index, std::initializer_list<float> values);
         void setIndexValues(uint index, std::initializer_list<uint> values);
 };
 

@@ -43,3 +43,26 @@ void Mesh::render() const{
     // Render geometry
     renderer->render();
 }
+
+void Mesh::render(unsigned int texID) const{
+    if(renderer == NULL){
+        printf("No renderer has been generated\n");
+        return;
+    }
+
+    // Render geometry
+    renderer->render(texID);
+}
+
+
+void Mesh::setVertexValues(uint index, std::initializer_list<float> values){
+    const auto& it = values.begin();
+    vertices[index].position.x  = *it;
+    vertices[index].position.y  = *(it+1);
+    vertices[index].position.z  = *(it+2);
+    vertices[index].normal.x    = *(it+3);
+    vertices[index].normal.y    = *(it+4);
+    vertices[index].normal.z    = *(it+5);
+    vertices[index].texCoords.s = *(it+6);
+    vertices[index].texCoords.t = *(it+7);
+}
