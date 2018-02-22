@@ -56,6 +56,7 @@ void Box::generateVertices(){
     // vert 0 -> vert 2 -> vert 3
 
     // Square facing positive z-direction
+    //                       posx      posy        posz   nx  ny  nz  s  t
     setVertexValues(0,  {-halfSide,  halfSide,  halfSide,  0,  0,  1, 0, 0});
     setVertexValues(1,  {-halfSide, -halfSide,  halfSide,  0,  0,  1, 0, 1});
     setVertexValues(2,  { halfSide, -halfSide,  halfSide,  0,  0,  1, 1, 1});
