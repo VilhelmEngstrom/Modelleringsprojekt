@@ -38,11 +38,6 @@ namespace graphics{
             void activate() const;
             void deactivate() const;
 
-
-            // Compile and link shaders, return 0 if this fails
-            static unsigned int compile(const std::string& shaderPath);
-            static unsigned int compile(const std::string& vertexPath, const std::string& fragmentPath);
-
             // Add uniform from shader, handle is the name of the variable in the
             // shader
             void addLocation(const std::string& handle);
@@ -67,6 +62,11 @@ namespace graphics{
             enum class ShaderType {
                 NONE=-1, VERTEX, FRAGMENT
             };
+
+
+            // Compile and link shaders, return 0 if this fails
+            static unsigned int compile(const std::string& shaderPath);
+            static unsigned int compile(const std::string& vertexPath, const std::string& fragmentPath);
 
             // Compile shader, return shader IDs
             static unsigned int compileSource(const char* shaderSource, const ShaderType& type);
