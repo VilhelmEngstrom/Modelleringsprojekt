@@ -49,10 +49,10 @@ void Box::generateVertices(){
     //
     // vert 1    vert 2
 
-    // Traingle 1 for each face:
+    // Triangle 1 for each face:
     // vert 0 -> vert 1 -> vert 2
     //
-    //Traingle 2 for each face:
+    //Triangle 2 for each face:
     // vert 0 -> vert 2 -> vert 3
 
     // Square facing positive z-direction
