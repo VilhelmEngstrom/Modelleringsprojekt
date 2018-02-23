@@ -6,7 +6,7 @@ graphics::Shader::~Shader() {}
 void graphics::Shader::use() const{
     glUseProgram(shaderProgramID);
 }
-void graphics::Shader::detach(){
+void graphics::Shader::detachAll(){
     glUseProgram(0);
 }
 

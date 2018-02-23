@@ -1,5 +1,7 @@
 #include "Skybox.h"
 
+graphics::Skybox::Skybox() : vertexPositions(0), VAO(0), VBO(0), cMapTexID(0) {}
+
 graphics::Skybox::Skybox(const CubemapTexture& texture) : cMapTexID(texture.getTexID()){
     if(glewInit() != GLEW_OK)
         std::cout << "Error initializing glew\n";

@@ -40,7 +40,7 @@ namespace graphics{
             Shader operator=(const Shader&) = delete;
 
             void use() const;
-            static void detach();
+            static void detachAll();
 
             // Pass scalar to shader, handle is the name of the variable in
             // the shader

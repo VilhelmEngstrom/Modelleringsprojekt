@@ -1,7 +1,7 @@
 #include "Texture.h"
 
 // REALLY ugly but has to be done since stb_image can only be included in a single file.
-// Putting this in the header causes redefinition whenever that header is included,
+// Putting this in a header causes redefinition whenever that header is included,
 // this is a problem with the class, nothing I can do about it.
 #ifndef STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION

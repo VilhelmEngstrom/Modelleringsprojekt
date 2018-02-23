@@ -86,7 +86,7 @@ int main(int argc, char** argv){
 
 
 
-
+        Shader::detachAll();
 
         win.update();
     }

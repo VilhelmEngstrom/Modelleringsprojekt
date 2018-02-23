@@ -25,17 +25,23 @@ enum class CameraMovement{
 
 class Camera{
     public:
+        // Initialize values
         Camera(const glm::vec3& position = glm::vec3(0.0f, 0.0f, 0.0f), const glm::vec3& up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
         Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 
+        // Get the camera view matrix
         glm::mat4 getViewMatrix() const;
 
+        // Move camera
         void processKeyboardInput(CameraMovement dir, float deltaTime);
 
+        // Chagne view direction
         void processMouseInput(float xOffset, float yOffset, bool constrainPitch = true);
 
+        // Zoom
         void processMouseScroll(float yOffset);
 
+        // Get the current zoom value
         float getZoom() const;
 
 
@@ -53,8 +59,8 @@ class Camera{
         float m_MouseSensitivity;
         float m_Zoom;
 
+        // Updates internal vectors
         void updateVectors();
-
 };
 
 #endif

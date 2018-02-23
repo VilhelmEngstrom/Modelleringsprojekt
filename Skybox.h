@@ -20,15 +20,20 @@ namespace graphics{
             explicit Skybox(const CubemapTexture& texture);
             ~Skybox();
 
+            // Render skybox
             void render() const;
 
         private:
             std::vector<float> vertexPositions;
 
+            // Vertex array and vertex buffer objects
             unsigned int VAO, VBO;
+            // Cubemap texture
             unsigned int cMapTexID;
 
+            // Create cube, hardcoded postions that fit OpenGL
             void generateVertexPositions();
+            // Generate and bind vertex array and buffer data
             void generateRenderingData();
     };
 }

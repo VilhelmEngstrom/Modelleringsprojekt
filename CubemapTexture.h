@@ -20,21 +20,20 @@
 namespace graphics{
     class CubemapTexture{
         public:
+            // Initalize with paths to the texture files
             CubemapTexture(std::array<std::string, 6> files);
-
             ~CubemapTexture();
 
+            // Get the cubemap's texture id
             unsigned int getTexID() const;
-
         private:
-
+            // Filenames
             std::array<std::string, 6> faces;
-
-            int width, height, bitDepth;
+            // Texture id
             unsigned int texID;
 
+            // Load the invividual textures and pass the to OpenGL
             void loadCubemap();
-
     };
 }
 
