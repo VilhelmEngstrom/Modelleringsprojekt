@@ -8,6 +8,8 @@
 #include "dependencies/include/glew.h"
 #include "dependencies/include/glfw3.h"
 
+#include "Camera.h"
+
 #ifndef WINDOW_H
 #define WINDOW_H
 namespace graphics{
@@ -28,6 +30,8 @@ namespace graphics{
             // Cull back faces
             void cullBackFace() const;
 
+            void processInput(Camera* camera) const;
+
             // Updates the window by clearing it and swapping buffers
             void update() const;
 
@@ -39,6 +43,8 @@ namespace graphics{
             mutable int m_Width;
             mutable int m_Height;
             const char* m_Title;
+
+            mutable float m_CurrentFrame, m_DeltaTime, m_LastFrame;
 
             // Initialize window
             void init();

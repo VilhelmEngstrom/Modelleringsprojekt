@@ -1,6 +1,7 @@
 #include "Window.h"
 
-graphics::Window::Window(const char* name, int width, int height) : m_Width(width), m_Height(height), m_Title(name){
+graphics::Window::Window(const char* name, int width, int height)
+: m_Width(width), m_Height(height), m_Title(name), m_CurrentFrame(0.0f), m_DeltaTime(0.0f), m_LastFrame(0.0f){
     init();
 }
 
@@ -45,7 +46,7 @@ void graphics::Window::init(){
 }
 
 bool graphics::Window::shouldClose() const{
-    return glfwWindowShouldClose(m_Window) || glfwGetKey(m_Window, GLFW_KEY_ESCAPE);
+    return glfwWindowShouldClose(m_Window);
 }
 
 
@@ -58,10 +59,29 @@ void graphics::Window::cullBackFace() const{
     glCullFace(GL_BACK);
 }
 
+void graphics::Window::processInput(Camera* camera) const{
+    if(glfwGetKey(m_Window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(m_Window, true);
+
+    if (glfwGetKey(m_Window, GLFW_KEY_W) == GLFW_PRESS)
+        camera->processKeyboardInput(CameraMovement::FORWARD, m_DeltaTime);
+    if (glfwGetKey(m_Window, GLFW_KEY_S) == GLFW_PRESS)
+        camera->processKeyboardInput(CameraMovement::BACKWARD, m_DeltaTime);
+    if (glfwGetKey(m_Window, GLFW_KEY_A) == GLFW_PRESS)
+        camera->processKeyboardInput(CameraMovement::LEFT,m_DeltaTime);
+    if (glfwGetKey(m_Window, GLFW_KEY_D) == GLFW_PRESS)
+        camera->processKeyboardInput(CameraMovement::RIGHT, m_DeltaTime);
+
+
+}
+
 void graphics::Window::update() const{
     // Ugly, shouldn't be called every frame...
     glfwGetWindowSize(m_Window, &m_Width, &m_Height);
 
+    m_CurrentFrame = glfwGetTime();
+    m_DeltaTime = m_CurrentFrame - m_LastFrame;
+    m_LastFrame = m_CurrentFrame;
 
     glfwSwapBuffers(m_Window);
     glfwPollEvents();

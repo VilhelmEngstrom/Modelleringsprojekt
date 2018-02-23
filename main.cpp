@@ -28,8 +28,6 @@
 // Model rotation
 // z-component of texcoord in skybox.glsl
 
-
-
 int main(int argc, char** argv){
     using namespace graphics;
 
@@ -44,8 +42,6 @@ int main(int argc, char** argv){
     std::array<std::string, 6> faces = {location + "right.jpg", location + "left.jpg", location + "top.jpg",
                                         location + "bottom.jpg", location + "front.jpg", location + "back.jpg"};
 
-
-
     CubemapTexture tex(faces);
     Skybox skybox(tex);
 
@@ -55,22 +51,22 @@ int main(int argc, char** argv){
     skyboxShader.passScalar("skybox", 0);
 
 
-    float currentFrame;
-    float deltaTime = 0.0f;
-    float lastFrame = 0.0f;
-
-
     glm::mat4 view, projection;
+
+    Sphere sphere(1.0f, 30);
+    Shader sphereShader("resources/shaders/bubble.glsl");
+
+    MatrixStack model;
 
     while(!win.shouldClose()){
         win.clear();
-
-        currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        win.processInput(&camera);
 
         projection = glm::perspective(glm::radians(camera.getZoom()), (float)win.getWidth()/(float)win.getHeight(), 0.1f, 100.0f);
 
+        // *************
+        //    Skybox
+        // *************
 
         skyboxShader.use();
 
@@ -79,8 +75,24 @@ int main(int argc, char** argv){
         skyboxShader.passMat4("view", view);
         skyboxShader.passMat4("projection", projection);
 
-
         skybox.render();
+
+        // *************
+        //    Bubble
+        // *************
+
+        sphereShader.use();
+        sphereShader.passMat4("view", view);
+        sphereShader.passMat4("projection", projection);
+
+        model.push();
+            model.translate({-1.0f, 0.3f, -8.0f});
+
+            sphereShader.passMat4("model", model.getTopMatrix());
+            // Render the sphere
+            sphere.render();
+        model.pop();
+
 
 
 

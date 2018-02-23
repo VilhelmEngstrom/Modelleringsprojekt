@@ -78,9 +78,8 @@ void Camera::updateVectors(){
     m_Up = glm::normalize(glm::cross(m_Right, m_Front));
 }
 
-
-const float Camera::YAW = -90.0f;
+const float Camera::YAW = 90.0f;
 const float Camera::PITCH = 0.0f;
-const float Camera::SPEED = 2.5f;
+const float Camera::SPEED = 20.5f;
 const float Camera::SENSITIVITY = 0.1f;
 const float Camera::ZOOM = 45.0f;
