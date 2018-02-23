@@ -42,6 +42,24 @@ bool graphics::Window::shouldClose() const{
     return glfwWindowShouldClose(m_window) || glfwGetKey(m_window, GLFW_KEY_ESCAPE);
 }
 
+Vector graphics::Window::addKeyInput() const {
+	Vector force(0);
+	if (glfwGetKey(m_window, GLFW_KEY_UP))
+		force.setY(1);
+		
+	if (glfwGetKey(m_window, GLFW_KEY_RIGHT))
+		force.setX(1);
+		
+	if (glfwGetKey(m_window, GLFW_KEY_DOWN))
+		force.setY(-1); 
+		
+	if (glfwGetKey(m_window, GLFW_KEY_LEFT))
+		force.setX(-1);
+
+	return force;
+}
+
+
 
 void graphics::Window::clear() const{
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

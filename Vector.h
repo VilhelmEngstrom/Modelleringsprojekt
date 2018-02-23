@@ -2,7 +2,16 @@
 #pragma once
 #include <iostream>
 #include <cmath>
-#include <math.h>       /* acos */
+#include <math.h> 
+
+#ifndef VEC3_H
+#define VEC3_H
+
+struct Vec3 {
+	float x, y, z;
+};
+
+#endif
 
 class Vector {
 public:
@@ -12,6 +21,8 @@ public:
 		:x(inX), y(inY), z(inZ) {}
 	Vector(const Vector& v);
 	Vector(float d);
+	Vector(Vec3 v);
+	Vec3 returnVec3();
 
 	//elementwise multiplication
 	friend Vector operator*(const Vector& v1, const Vector& v2);
@@ -23,11 +34,11 @@ public:
 	friend Vector operator-(const Vector& v1, const Vector& v2);
 
 	//dot product
-	float dotProduct(const Vector& v);
+	float dotProduct(const Vector& v) const;
 
-	float angle(const Vector& v);
+	float angle(const Vector& v) const;
 
-	float length();
+	float length() const ;
 
 	Vector normalized();
 

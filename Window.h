@@ -2,6 +2,7 @@
 #include <iostream>
 #include "dependencies/include/glew.h"
 #include "dependencies/include/glfw3.h"
+#include "Vector.h"
 
 #ifndef GL_DEBUG
 #define GL_DEBUG 0
@@ -33,6 +34,9 @@ namespace graphics{
 
             // Get window pointer, for size adjustment
             GLFWwindow* getWindow() const;
+
+			// check if keyinput is used
+			Vector addKeyInput() const;
 
         protected:
             GLFWwindow* m_window;

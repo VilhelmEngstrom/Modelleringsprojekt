@@ -41,10 +41,10 @@ int main(int argc, char** argv) {
 	// Open a window
 	Window win("Engine", 540, 540);
 	// Create sphere, radius 1.0f, 30 vertical segments
-	Sphere sphere(1.0f, 30);
+	Sphere sphere(1.0f, 5);
 
-	// creat a bubble
-	Bubble bubble(0.00007, &sphere);
+	// create a bubble
+	Bubble bubble(0.00007f, 0.5f, &sphere);
 
 	// Specify, compile and pass shader program to OpenGL
 	Shader shader("resources/shaders/basic.glsl");
@@ -79,21 +79,25 @@ int main(int argc, char** argv) {
 		// Add new matrix to stack
 		matStack.push();
 		// Translate 5 units towards user
-		bubble.update();
 		matStack.translate({ 0.0f, 0.0f, -5.0f });
 
 		// Model transformations
 		// Add new matrix to the stack
 		matStack.push();
 		// Scale the object
-		matStack.scale(0.5f);
-		// Translate to the right
-		matStack.translate({ bubble.get_pos().getX(),bubble.get_pos().getY(),bubble.get_pos().getZ() });
-		std::cout << bubble.get_pos() << '\n';
+		matStack.scale(bubble.getRadius());		 
+	
+		// update and translate
+		bubble.update(win.addKeyInput());
+		matStack.translate({ bubble.getPos().getX(),bubble.getPos().getY(),bubble.getPos().getZ() });
+		
+
 		// Pass topmost matrix in the stack to the shader
 		shader.passMat4("stack", matStack.getTopMatrix());
 		// Render the sphere
 		sphere.render();
+
+
 		// Remove topmost matrix from stack
 		matStack.pop();
 		// Remove topmost matric from stack

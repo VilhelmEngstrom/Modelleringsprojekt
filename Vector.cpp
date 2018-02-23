@@ -10,32 +10,45 @@ Vector::Vector(float d) {
 	x = y = z = d;
 }
 
+Vector::Vector(Vec3 v)
+{
+	x = v.x;
+	y = v.y;
+	z = v.z;
+}
+
+Vec3 Vector::returnVec3()
+{
+	return { x,y,z };
+}
+
+
+
 Vector operator*(const Vector& v1, const Vector& v2) {
 
 	return Vector(v1.x*v2.x, v1.y*v2.y, v1.z*v2.z);
 }
 
-float Vector::dotProduct(const Vector &v) {
+float Vector::dotProduct(const Vector &v) const{
 	return ((x*v.x) + (y*v.y) + (z*v.z));
 }
 
-/*
-float Vector::angle(const Vector& v)
-{
-Vector dot = this->dotProduct(v);
-return Math.acos(dot*( 1 / this->length()*v.length() ));
-} */
 
-float Vector::length()
+float Vector::angle(const Vector& v) const
+{
+	return this->dotProduct(v) / (this->length()*v.length() );
+} 
+
+float Vector::length() const
 {
 	return sqrt(x * x + y * y + z * z);
 }
 
-/*
+
 Vector Vector::normalized()
 {
-return (1 / this->length() )*this;
-} */
+return (1 / this->length() )*(*this);
+} 
 
 Vector Vector::crossProduct(const Vector& v) {
 

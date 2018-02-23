@@ -6,22 +6,27 @@ class Bubble
 {
 public:
 
-	Bubble(float m, Sphere* s, Vector pos = Vector(0))
-		:mass(m), position(pos), sphere(s), currentVelocity(0) {
-		area = s->getRadius()*s->getRadius()*3.14f;
+	Bubble(float m,float r, Sphere* s, Vector pos = Vector(0))
+		:mass(m), position(pos), radius(r), sphere(s), currentVelocity(0), currentAcc(0) {
+		area = r*r*3.14f;
 	}
 	~Bubble();
 
-	void update();
-	Vector get_pos() const { return position; }
+	void update(const Vector& externalForce);
+	Vector getPos() const { return position; }
+	float getRadius() const { return radius; }
 
+	
+	
 
 private:
 		float mass;
 		Vector position;
-		Sphere* sphere;
+		float radius;
 		Vector currentVelocity;
+		Vector currentAcc;
 		float area;
+		Sphere* sphere;
 		
 
 
