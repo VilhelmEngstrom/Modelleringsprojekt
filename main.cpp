@@ -4,12 +4,20 @@
 #include "Sphere.h"
 #include "MatrixStack.h"
 #include "Shader.h"
-#include "utility.h"
 #include "Box.h"
+#include "Texture.h"
 #include "CubemapTexture.h"
+#include "Camera.h"
 
-#ifndef WIN_DEBUG
-#define WIN_DEBUG 1
+
+#include "dependencies/include/glm/glm.hpp"
+#include "dependencies/include/glm/gtc/matrix_transform.hpp"
+#include "dependencies/include/glm/gtc/type_ptr.hpp"
+
+
+
+#ifndef GLM_DEBUG
+#define GLM_DEBUG 1
 #endif
 
 #ifndef STACK_DEBUG
@@ -24,21 +32,138 @@
 int main(int argc, char** argv){
     using namespace graphics;
 
-    #if STACK_DEBUG == 1
+    #if GLM_DEBUG == 1
+
+    Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+    Window win("glm test", 1280, 720);
 
 
-    MatrixStack matStack;
-    //matStack.translate(1.0f, 2.0f, 1.0f);
-    matStack.rotate(RotationAxis::X, M_PI);
-    //matStack.scale(2.0f);
 
-    matStack.print();
+    float skyboxVertices[] = {
+        // positions
+        -1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        -1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f
+    };
+
+
+    glewInit();
+
+
+    unsigned int skyboxVAO, skyboxVBO;
+   glGenVertexArrays(1, &skyboxVAO);
+   glGenBuffers(1, &skyboxVBO);
+   glBindVertexArray(skyboxVAO);
+   glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+   glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+   glEnableVertexAttribArray(0);
+   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+
+    std::string location = "resources/textures/skybox/";
+    std::array<std::string, 6> faces = {location + "right.jpg", location + "left.jpg", location + "top.jpg",
+                                        location + "bottom.jpg", location + "front.jpg", location + "back.jpg"};
+
+
+
+    CubemapTexture tex(faces);
+
+    Shader skyboxShader("resources/shaders/skybox.glsl");
+
+    skyboxShader.use();
+    skyboxShader.passScalar("skybox", 0);
+
+
+    float currentFrame;
+    float deltaTime = 0.0f;
+    float lastFrame = 0.0f;
+
+
+    glm::mat4 view, projection;
+
+    while(!win.shouldClose()){
+        win.clear();
+
+        currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        projection = glm::perspective(glm::radians(camera.getZoom()), (float)win.getWidth()/(float)win.getHeight(), 0.1f, 100.0f);
+
+        glDepthFunc(GL_LEQUAL);
+        skyboxShader.use();
+
+        view = glm::mat4(glm::mat3(camera.getViewMatrix()));
+
+        skyboxShader.passMat4("view", view);
+        skyboxShader.passMat4("projection", projection);
+
+        glBindVertexArray(skyboxVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, tex.getTexID());
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(0);
+        glDepthFunc(GL_LESS);
+
+
+
+
+
+
+
+
+        win.update();
+    }
+
+
+
 
 
 
     #endif
 
-    #if WIN_DEBUG == 1
+
+    #if STACK_DEBUG == 1
+
     // Open a window
     Window win("Engine", 540, 540);
     // Create sphere, radius 1.0f, 30 vertical segments
@@ -70,7 +195,7 @@ int main(int argc, char** argv){
     std::string location = "resources/textures/skybox/";
 
     CubemapTexture tex(location + "right.tga", location + "left.tga", location + "up.tga",
-                       location + "down.tga", location + "front.tga", location + "back.tga");
+                       location + "down.tga", location + "back.tga", location + "front.tga");
 
     //unsigned int texID = tex.getTexID();
     Shader skyboxShader("resources/shaders/skybox.glsl");
@@ -104,7 +229,7 @@ int main(int argc, char** argv){
         win.cullBackFace();
 
         // Use the shader
-        shader.activate();
+        shader.use();
 
         // Adjust projection matrix if window has been resized
         utility::adjustAspect(perspective, win);
@@ -138,12 +263,11 @@ int main(int argc, char** argv){
         // Remove topmost matric from stack
         matStack.pop();
 
-        // Deactivate shader
-        shader.deactivate();
 
 
 
-        skyboxShader.activate();
+
+        skyboxShader.use();
 
 
         skyboxShader.passMat4("view", viewMatrix);
@@ -157,12 +281,12 @@ int main(int argc, char** argv){
 
 
 
-        skyboxShader.deactivate();
+        Shader::detach();
 
         // Swap buffers and get poll events
         win.update();
     }
-    #endif
 
+    #endif
     return 0;
 }

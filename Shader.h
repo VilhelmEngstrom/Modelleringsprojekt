@@ -13,6 +13,10 @@
 #endif
 #include "dependencies/include/glew.h"
 
+#include "dependencies/include/glm/glm.hpp"
+#include "dependencies/include/glm/gtc/matrix_transform.hpp"
+#include "dependencies/include/glm/gtc/type_ptr.hpp"
+
 #ifndef SHADERSOURCE_H
 #define SHADERSOURCE_H
 
@@ -35,12 +39,8 @@ namespace graphics{
 
             Shader operator=(const Shader&) = delete;
 
-            void activate() const;
-            void deactivate() const;
-
-            // Add uniform from shader, handle is the name of the variable in the
-            // shader
-            void addLocation(const std::string& handle);
+            void use() const;
+            static void detach();
 
             // Pass scalar to shader, handle is the name of the variable in
             // the shader
@@ -50,14 +50,10 @@ namespace graphics{
             // Pass Mat4 to shader, handle is the name of the uniform in the shader,
             // matrix is a poirnter to the Mat4 (a float[16])
             void passMat4(const std::string& handle, float* matrix) const;
+            void passMat4(const std::string& handle, const glm::mat4& matrix) const;
 
         private:
             unsigned int shaderProgramID;
-
-            // Stores uniform locations, accessed by the string key.
-            // Eg: locations.at(stack) yields the int associated with the
-            // uniform 'stack' in the shader
-            std::map<std::string, int> locations;
 
             enum class ShaderType {
                 NONE=-1, VERTEX, FRAGMENT

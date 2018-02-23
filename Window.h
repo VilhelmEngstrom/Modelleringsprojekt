@@ -11,7 +11,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 namespace graphics{
-
     class Window{
         public:
             Window(const char* name, int width, int height);
@@ -32,13 +31,14 @@ namespace graphics{
             // Updates the window by clearing it and swapping buffers
             void update() const;
 
-            // Get window pointer, for size adjustment
-            GLFWwindow* getWindow() const;
+            int getWidth() const;
+            int getHeight() const;
 
         private:
-            GLFWwindow* m_window;
-            int m_width, m_height;
-            const char* m_title;
+            GLFWwindow* m_Window;
+            mutable int m_Width;
+            mutable int m_Height;
+            const char* m_Title;
 
             // Initialize window
             void init();

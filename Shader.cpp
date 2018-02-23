@@ -3,10 +3,10 @@
 graphics::Shader::Shader(const std::string& shaderFile) : shaderProgramID(compile(shaderFile)) {}
 graphics::Shader::~Shader() {}
 
-void graphics::Shader::activate() const{
+void graphics::Shader::use() const{
     glUseProgram(shaderProgramID);
 }
-void graphics::Shader::deactivate() const{
+void graphics::Shader::detach(){
     glUseProgram(0);
 }
 
@@ -194,18 +194,18 @@ ShaderSource graphics::Shader::loadSource(const std::string& vertexPath, const s
     return {ss[0].str(), ss[1].str()};
 }
 
-void graphics::Shader::addLocation(const std::string& handle){
-    locations[handle] = glGetUniformLocation(shaderProgramID, &handle[0]);
-}
-
 void graphics::Shader::passScalar(const std::string& handle, int uniform) const{
-    glUniform1i(locations.at(handle), uniform);
+    glUniform1i(glGetUniformLocation(shaderProgramID, &handle[0]), uniform);
 }
 
 void graphics::Shader::passScalar(const std::string& handle, float uniform) const{
-    glUniform1f(locations.at(handle), uniform);
+    glUniform1f(glGetUniformLocation(shaderProgramID, &handle[0]), uniform);
 }
 
 void graphics::Shader::passMat4(const std::string& handle, float* matrix) const{
-    glUniformMatrix4fv(locations.at(handle), 1, GL_FALSE, matrix);
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, &handle[0]), 1, GL_FALSE, matrix);
+}
+
+void graphics::Shader::passMat4(const std::string& handle, const glm::mat4& matrix) const{
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, &handle[0]), 1, GL_FALSE, &matrix[0][0]);
 }
