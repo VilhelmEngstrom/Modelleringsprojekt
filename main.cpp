@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "CubemapTexture.h"
 #include "Camera.h"
+#include "Skybox.h"
 
 
 #include "dependencies/include/glm/glm.hpp"
@@ -39,66 +40,6 @@ int main(int argc, char** argv){
     Window win("glm test", 1280, 720);
 
 
-
-    float skyboxVertices[] = {
-        // positions
-        -1.0f,  1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-
-        -1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f, -1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-
-        -1.0f, -1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f,
-        -1.0f, -1.0f,  1.0f,
-
-        -1.0f,  1.0f, -1.0f,
-         1.0f,  1.0f, -1.0f,
-         1.0f,  1.0f,  1.0f,
-         1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f,  1.0f,
-        -1.0f,  1.0f, -1.0f,
-
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f, -1.0f,
-         1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f,  1.0f,
-         1.0f, -1.0f,  1.0f
-    };
-
-
-    glewInit();
-
-
-    unsigned int skyboxVAO, skyboxVBO;
-   glGenVertexArrays(1, &skyboxVAO);
-   glGenBuffers(1, &skyboxVBO);
-   glBindVertexArray(skyboxVAO);
-   glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-   glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-   glEnableVertexAttribArray(0);
-   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-
     std::string location = "resources/textures/skybox/";
     std::array<std::string, 6> faces = {location + "right.jpg", location + "left.jpg", location + "top.jpg",
                                         location + "bottom.jpg", location + "front.jpg", location + "back.jpg"};
@@ -106,6 +47,7 @@ int main(int argc, char** argv){
 
 
     CubemapTexture tex(faces);
+    Skybox skybox(tex);
 
     Shader skyboxShader("resources/shaders/skybox.glsl");
 
@@ -129,7 +71,7 @@ int main(int argc, char** argv){
 
         projection = glm::perspective(glm::radians(camera.getZoom()), (float)win.getWidth()/(float)win.getHeight(), 0.1f, 100.0f);
 
-        glDepthFunc(GL_LEQUAL);
+
         skyboxShader.use();
 
         view = glm::mat4(glm::mat3(camera.getViewMatrix()));
@@ -137,13 +79,8 @@ int main(int argc, char** argv){
         skyboxShader.passMat4("view", view);
         skyboxShader.passMat4("projection", projection);
 
-        glBindVertexArray(skyboxVAO);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, tex.getTexID());
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindVertexArray(0);
-        glDepthFunc(GL_LESS);
 
+        skybox.render();
 
 
 
