@@ -39,15 +39,19 @@ Vector Physics::get_position_delta( Vector& currentVelocity, float mass, const V
 	Vector acc = totalForce*(1/mass); 
 
 	currentVelocity = currentVelocity + acc * STEP; // beräkna ny hastighet
-	Vector delta = currentVelocity * STEP + (acc*STEP*STEP) / 2; // Beräkna skillnad i position											
+	Vector delta = currentVelocity * STEP; // + (acc*STEP*STEP) / 2; // Beräkna skillnad i position											
 	
+	return delta;
 }
 
 // returns the effect off the force vector
 Vector Physics::wind_effect_on_vertex( Vector vertexNormal, Vector windForce )
 {
-	vertexNormal.dotProduct(windForce)
+	float dot = vertexNormal.dotProduct(windForce);
 
+	std::cout << "Dot: " <<  dot << std::endl;
+
+	return Vector(1, 1, 1);
 }
 
 
