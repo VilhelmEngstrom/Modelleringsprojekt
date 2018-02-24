@@ -3,10 +3,30 @@
 Sphere::Sphere(float rad, uint segs) : radius(rad), verticalSegs(segs > 3 ? segs : 3){
     init();
     create();
-    genRenderer();
+    generateRenderer();
+}
+
+Sphere::Sphere(const Sphere& s) : radius(s.radius), verticalSegs(s.verticalSegs), flatSegs(s.flatSegs){
+    nVertices = s.nVertices;
+    nIndices = s.nIndices;
+
+    vertices = new Vertex[nVertices];
+    indices = new uint[nIndices];
+
+    std::copy(s.vertices, s.vertices+s.nVertices, vertices);
+    std::copy(s.indices, s.indices+s.nIndices, indices);
+
+    generateRenderer();
 }
 
 Sphere::~Sphere() {}
+
+Sphere& Sphere::operator=(const Sphere& rhs){
+    Sphere copy = rhs;
+    std::swap(*this, copy);
+    return *this;
+}
+
 
 void Sphere::init(){
     // Number flat segments
@@ -75,18 +95,6 @@ void Sphere::generateIndices(){
         setIndexValues(offset+3*i, {nVertices-1, nVertices-2-i, nVertices-3-i});
     }
 
-}
-
-void Sphere::setVertexValues(uint index, std::initializer_list<float> values){
-    auto it = values.begin();
-    vertices[index].position.x  = *it;
-    vertices[index].position.y  = *(it+1);
-    vertices[index].position.z  = *(it+2);
-    vertices[index].normal.x    = *(it+3);
-    vertices[index].normal.y    = *(it+4);
-    vertices[index].normal.z    = *(it+5);
-    vertices[index].texCoords.s = *(it+6);
-    vertices[index].texCoords.t = *(it+7);
 }
 
 void Sphere::setIndexValues(uint index, std::initializer_list<uint> values){

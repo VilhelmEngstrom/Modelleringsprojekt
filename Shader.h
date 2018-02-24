@@ -13,9 +13,9 @@
 #endif
 #include "dependencies/include/glew.h"
 
-#ifndef MAT4_SIZE
-#define MAT4_SIZE 16
-#endif
+#include "dependencies/include/glm/glm.hpp"
+#include "dependencies/include/glm/gtc/matrix_transform.hpp"
+#include "dependencies/include/glm/gtc/type_ptr.hpp"
 
 #ifndef SHADERSOURCE_H
 #define SHADERSOURCE_H
@@ -27,23 +27,20 @@ struct ShaderSource{
 
 #endif
 
+#ifndef SHADER_H
+#define SHADER_H
+
 namespace graphics{
     class Shader{
         public:
-            Shader(const std::string& shaderFile);
+            explicit Shader(const std::string& shaderFile);
+            Shader(const Shader&) = delete;
             ~Shader();
 
-            void activate() const;
-            void deactivate() const;
+            Shader operator=(const Shader&) = delete;
 
-
-            // Compile and link shaders, return 0 if this fails
-            static unsigned int compile(const std::string& shaderPath);
-            static unsigned int compile(const std::string& vertexPath, const std::string& fragmentPath);
-
-            // Add uniform from shader, handle is the name of the variable in the
-            // shader
-            void addLocation(const std::string& handle);
+            void use() const;
+            static void detachAll();
 
             // Pass scalar to shader, handle is the name of the variable in
             // the shader
@@ -53,18 +50,19 @@ namespace graphics{
             // Pass Mat4 to shader, handle is the name of the uniform in the shader,
             // matrix is a poirnter to the Mat4 (a float[16])
             void passMat4(const std::string& handle, float* matrix) const;
+            void passMat4(const std::string& handle, const glm::mat4& matrix) const;
 
-        protected:
+        private:
             unsigned int shaderProgramID;
-
-            // Stores uniform locations, accessed by the string key.
-            // Eg: locations.at(stack) yields the int associated with the
-            // uniform 'stack' in the shader
-            std::map<std::string, int> locations;
 
             enum class ShaderType {
                 NONE=-1, VERTEX, FRAGMENT
             };
+
+
+            // Compile and link shaders, return 0 if this fails
+            static unsigned int compile(const std::string& shaderPath);
+            static unsigned int compile(const std::string& vertexPath, const std::string& fragmentPath);
 
             // Compile shader, return shader IDs
             static unsigned int compileSource(const char* shaderSource, const ShaderType& type);
@@ -80,3 +78,5 @@ namespace graphics{
 
     };
 }
+
+#endif

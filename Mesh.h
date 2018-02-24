@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <initializer_list>
 #include "Shader.h"
 #include "Renderer.h"
 
@@ -10,18 +11,6 @@
 #endif
 
 #include "dependencies/include/glew.h"
-
-
-#ifndef GL_DEBUG
-#define GL_DEBUG 0
-#endif
-
-#if GL_DEBUG == 1
-#define LOG(x) std::cout << x << "\n";
-#else
-#define LOG(x)
-#endif
-
 
 #ifndef VEC3_H
 #define VEC3_H
@@ -52,9 +41,13 @@ struct Vertex{
 
 #endif
 
-typedef unsigned int uint;
+#ifndef MESH_H
+#define MESH_H
 
 class Mesh{
+    protected:
+        typedef unsigned int uint;
+
     public:
         Mesh();
         virtual ~Mesh();
@@ -75,6 +68,8 @@ class Mesh{
         // Render object (uses Renderer*)
         void render() const;
 
+        void render(unsigned int texID) const;
+
     protected:
         Vertex* vertices;
         uint* indices;
@@ -83,5 +78,9 @@ class Mesh{
         graphics::Renderer* renderer;
 
         // initialize renderer
-        void genRenderer();
+        void generateRenderer();
+
+        void setVertexValues(uint index, std::initializer_list<float> values);
 };
+
+#endif

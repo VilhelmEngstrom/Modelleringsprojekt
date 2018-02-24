@@ -4,45 +4,124 @@
 #include "Sphere.h"
 #include "MatrixStack.h"
 #include "Shader.h"
-#include "utility.h"
+#include "Box.h"
+#include "Texture.h"
+#include "CubemapTexture.h"
+#include "Camera.h"
+#include "Skybox.h"
 
-#ifndef WIN_DEBUG
-#define WIN_DEBUG 1
+
+#include "dependencies/include/glm/glm.hpp"
+#include "dependencies/include/glm/gtc/matrix_transform.hpp"
+#include "dependencies/include/glm/gtc/type_ptr.hpp"
+
+
+
+#ifndef GLM_DEBUG
+#define GLM_DEBUG 1
 #endif
 
 #ifndef STACK_DEBUG
 #define STACK_DEBUG 0
 #endif
 
-// Fix aspect ratio
-// Send stack to shader
-
-
+// Model rotation
+// z-component of texcoord in skybox.glsl
 
 int main(int argc, char** argv){
     using namespace graphics;
 
-    #if STACK_DEBUG == 1
+    #if GLM_DEBUG == 1
+
+    Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+    Window win("glm test", 1280, 720);
 
 
-    MatrixStack matStack;
-    //matStack.translate(1.0f, 2.0f, 1.0f);
-    matStack.rotate(RotationAxis::X, M_PI);
-    //matStack.scale(2.0f);
+    std::string location = "resources/textures/skybox/";
+    std::array<std::string, 6> faces = {location + "right.jpg", location + "left.jpg", location + "top.jpg",
+                                        location + "bottom.jpg", location + "front.jpg", location + "back.jpg"};
 
-    matStack.print();
+    CubemapTexture tex(faces);
+    Skybox skybox(tex);
+
+    Shader skyboxShader("resources/shaders/skybox.glsl");
+
+    skyboxShader.use();
+    skyboxShader.passScalar("skybox", 0);
+
+
+    glm::mat4 view, projection;
+
+    Sphere sphere(1.0f, 30);
+    Shader sphereShader("resources/shaders/bubble.glsl");
+
+    MatrixStack model;
+
+    while(!win.shouldClose()){
+        win.clear();
+        win.processInput(&camera);
+
+        projection = glm::perspective(glm::radians(camera.getZoom()), (float)win.getWidth()/(float)win.getHeight(), 0.1f, 100.0f);
+
+        // *************
+        //    Skybox
+        // *************
+
+        skyboxShader.use();
+
+        view = glm::mat4(glm::mat3(camera.getViewMatrix()));
+
+        skyboxShader.passMat4("view", view);
+        skyboxShader.passMat4("projection", projection);
+
+        skybox.render();
+
+        // *************
+        //    Bubble
+        // *************
+
+        sphereShader.use();
+        sphereShader.passMat4("view", view);
+        sphereShader.passMat4("projection", projection);
+
+        model.push();
+            model.translate({-1.0f, 0.3f, -8.0f});
+
+            sphereShader.passMat4("model", model.getTopMatrix());
+            // Render the sphere
+            sphere.render();
+        model.pop();
+
+
+
+
+
+
+        Shader::detachAll();
+
+        win.update();
+    }
+
+
+
 
 
 
     #endif
 
-    #if WIN_DEBUG == 1
+
+    #if STACK_DEBUG == 1
+
     // Open a window
     Window win("Engine", 540, 540);
     // Create sphere, radius 1.0f, 30 vertical segments
     Sphere sphere(1.0f,30);
     // Specify, compile and pass shader program to OpenGL
     Shader shader("resources/shaders/basic.glsl");
+
+    Sphere s2 = Sphere(1.0f, 30);
+
 
     // Perspective projection matrix
     float perspective[16];
@@ -55,6 +134,43 @@ int main(int argc, char** argv){
     // Create new matrix stack
     MatrixStack matStack;
 
+
+
+    // ******
+    // Skybox
+    // ******
+
+    Box skybox(2.0f);
+    std::string location = "resources/textures/skybox/";
+
+    CubemapTexture tex(location + "right.tga", location + "left.tga", location + "up.tga",
+                       location + "down.tga", location + "back.tga", location + "front.tga");
+
+    //unsigned int texID = tex.getTexID();
+    Shader skyboxShader("resources/shaders/skybox.glsl");
+    skyboxShader.addLocation("view");
+    skyboxShader.addLocation("perspective");
+
+
+    float viewMatrix[16] = {
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, -5.0f, 1.0f
+    };
+
+
+
+
+
+    unsigned int texID = tex.getTexID();
+
+
+
+
+
+
+
     while(!win.shouldClose()){
         // Erase everything from the previous frame
         win.clear();
@@ -62,13 +178,12 @@ int main(int argc, char** argv){
         win.cullBackFace();
 
         // Use the shader
-        shader.activate();
+        shader.use();
 
         // Adjust projection matrix if window has been resized
         utility::adjustAspect(perspective, win);
         // Pass perspective projection matrix to shader
         shader.passMat4("perspective", perspective);
-
 
         // Camera transfomations
         // Add new matrix to stack
@@ -87,18 +202,40 @@ int main(int argc, char** argv){
                 shader.passMat4("stack", matStack.getTopMatrix());
                 // Render the sphere
                 sphere.render();
+
+                matStack.translate(-2.0f, 0.0f, 0.0f);
+                shader.passMat4("stack", matStack.getTopMatrix());
+                //s2.render();
+
             // Remove topmost matrix from stack
             matStack.pop();
         // Remove topmost matric from stack
         matStack.pop();
 
-        // Deactivate shader
-        shader.deactivate();
+
+
+
+
+        skyboxShader.use();
+
+
+        skyboxShader.passMat4("view", viewMatrix);
+        skyboxShader.passMat4("perspective", perspective);
+
+
+
+        skybox.render(texID);
+
+
+
+
+
+        Shader::detach();
 
         // Swap buffers and get poll events
         win.update();
     }
-    #endif
 
+    #endif
     return 0;
 }
