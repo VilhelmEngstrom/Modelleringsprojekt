@@ -21,7 +21,7 @@ uint Mesh::getNumberOfIndices() const{
     return nIndices;
 }
 
-Vertex* Mesh::getVertices() const{
+Vertex* Mesh::getVertices() {
     return vertices;
 }
 

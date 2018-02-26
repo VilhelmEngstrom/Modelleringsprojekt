@@ -6,8 +6,9 @@ class Bubble
 {
 public:
 
-	Bubble(float m,float r, Sphere* s, Vector pos = Vector(0))
-		:mass(m), position(pos), radius(r), sphere(s), currentVelocity(0), currentAcc(0) {
+	Bubble(float r, Sphere* s, Vector pos = Vector(0))
+		:position(pos), radius(r), sphere(s), currentVelocity(0), currentAcc(0) {
+		mass =  M_PI * radius * radius * Physics::THICKNESS;
 		area = r*r*3.14f;
 	}
 	~Bubble();
@@ -27,7 +28,14 @@ private:
 		Vector currentAcc;
 		float area;
 		Sphere* sphere;
-		
+
+		Vector gravity = Vector(0);
+		Vector drag = Vector(0);
+		Vector noise = Vector(0);
+		Vector external = Vector(0);
+		Vector totalForce = Vector(0);
+		bool alive = true;
+		int lifetime = 0;
 
 
 };

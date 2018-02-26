@@ -4,6 +4,7 @@
 const float Physics::GRAVITY = -9.82f;
 const float Physics::AIR_DENSITY = 1.225f;
 const float Physics::AIR_RESISTANCE = 0.47f;
+const float Physics::THICKNESS = 0.00006;
 
 const float Physics::SURFACE_TENSION = 0.025f;
 
@@ -25,10 +26,8 @@ Vector Physics::calculate_gravity_force(float mass)
 
 }
 
-Vector Physics::get_position_delta(Vector& currentAcc, Vector& currentVelocity, float mass, const Vector drag, const Vector gravity, const Vector external)
+Vector Physics::getPositionDelta(Vector& currentAcc, Vector& currentVelocity, float mass, const Vector& totalForce)
 {
-	// Calculate total force
-	Vector totalForce = drag + gravity + external;
 
 	// beräkna accelerationen
 	Vector acc = currentAcc + (totalForce * (1 / mass));
@@ -85,5 +84,20 @@ void Physics::makeItWobble(Mesh* mesh, float radius, float area,const Vector& fo
 	}
 }
 
-// Vector3.Scale(-sign(currentVelocity), Vector3.Scale(currentVelocity, currentVelocity)) * airRes * Area * airdensity / 2;
+Vector Physics::addNoice(Vector& position)
+{
+	float scaling = 0.1;
+	return scaling *Vector(sin(position.getX()), 2 * cos(position.getY()), 4 * sin(position.getZ()));
+}
+
+
+
+Vector Physics::addWind(const Vector& external, const Vector& position)
+{
+	Vector wind(external.getX() / (1 + abs(-2*external.getX() - position.getX())), external.getY() / (1 + abs(-2*external.getY() - position.getY())), 0);
+	wind = wind * 0.0005f;
+	return wind;
+}
+
+
 

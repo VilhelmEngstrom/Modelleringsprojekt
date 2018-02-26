@@ -63,7 +63,7 @@ class Mesh{
         uint getNumberOfIndices() const;
 
         // Return pointer to list of vertices
-        Vertex* getVertices() const;
+        Vertex* getVertices();
         // Return pointer to list of indices
         uint* getIndices() const;
 

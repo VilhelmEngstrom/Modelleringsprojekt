@@ -8,11 +8,19 @@ Bubble::~Bubble()
 
 void Bubble::update(const Vector& externalForce)
 {
-	Vector gravity = Physics::calculate_gravity_force(mass);
-	Vector drag = Physics::calculate_drag_force(currentVelocity, area);
-	Vector external = externalForce * mass * 100;
-	Vector totalForce = gravity + drag + external;
-	Physics::makeItWobble(sphere , radius , area, totalForce);
-	position = position + Physics::get_position_delta(currentAcc, currentVelocity, mass, drag, gravity,external);
+	if (alive)
+	{
+		gravity = Physics::calculate_gravity_force(mass);
+		drag = Physics::calculate_drag_force(currentVelocity, area);
+		noise = Physics::addNoice(position);
+		external = Physics::addWind(externalForce, position);
+		totalForce = gravity + drag + external, noise;
+		//Physics::makeItWobble(sphere , radius , area, totalForce);
+		position = position + Physics::getPositionDelta(currentAcc, currentVelocity, mass, totalForce);
+		
+		++lifetime; // Uppdatera livstiden
+		if (lifetime > 100/Physics::STEP)
+			alive = false;
+	}
 	
 }

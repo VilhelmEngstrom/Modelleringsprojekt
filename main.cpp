@@ -6,6 +6,7 @@
 #include "Shader.h"
 #include "utility.h"
 #include "Bubble.h"
+#include "BubbleSystem.h"
 
 #ifndef WIN_DEBUG
 #define WIN_DEBUG 1
@@ -43,8 +44,16 @@ int main(int argc, char** argv) {
 	// Create sphere, radius 1.0f, 30 vertical segments
 	Sphere sphere(1.0f, 5);
 
-	// create a bubble
-	Bubble bubble(0.00007f, 0.5f, &sphere);
+	BubbleSystem bubbleSystem;
+	
+
+	// create a bubble and add to the system
+	bubbleSystem.addBubble(&sphere);
+	bubbleSystem.addBubble(&sphere);
+	bubbleSystem.addBubble(&sphere);
+	bubbleSystem.addBubble(&sphere);
+	
+	
 
 	// Specify, compile and pass shader program to OpenGL
 	Shader shader("resources/shaders/basic.glsl");
@@ -81,27 +90,35 @@ int main(int argc, char** argv) {
 		// Translate 5 units towards user
 		matStack.translate({ 0.0f, 0.0f, -5.0f });
 
-		// Model transformations
-		// Add new matrix to the stack
-		matStack.push();
-		// Scale the object
-		matStack.scale(bubble.getRadius());		 
-	
-		// update and translate
-		bubble.update(win.addKeyInput());
-		matStack.translate({ bubble.getPos().getX(),bubble.getPos().getY(),bubble.getPos().getZ() });
+		for (int i = 0; i < bubbleSystem.getNumberOfBubbles(); ++i)
+		{
+			// Model transformations
+			// Add new matrix to the stack
+			matStack.push();
+			
+			bubbleSystem.myBubblyBubbles[i].update(win.addKeyInput());
+			matStack.translate({ bubbleSystem.myBubblyBubbles[i].getPos().getX(),bubbleSystem.myBubblyBubbles[i].getPos().getY(),bubbleSystem.myBubblyBubbles[i].getPos().getZ() });
+
+			// Scale the object
+			matStack.scale(bubbleSystem.myBubblyBubbles[i].getRadius());
+
+
+			//std::cout << bubbleSystem.myBubblyBubbles[i].getPos();
+
+			// Pass topmost matrix in the stack to the shader
+			shader.passMat4("stack", matStack.getTopMatrix());
+			// Render the sphere
+			sphere.render();
+
+
+			// Remove topmost matrix from stack
+			matStack.pop();
+		}
 		
-
-		// Pass topmost matrix in the stack to the shader
-		shader.passMat4("stack", matStack.getTopMatrix());
-		// Render the sphere
-		sphere.render();
-
-
-		// Remove topmost matrix from stack
-		matStack.pop();
 		// Remove topmost matric from stack
 		matStack.pop();
+
+
 
 		// Deactivate shader
 		shader.deactivate();

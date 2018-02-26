@@ -2,6 +2,7 @@
 
 #include "Vector.h"
 #include "Mesh.h"
+#include <cmath>
 
 #ifndef VEC2_H
 #define VEC2_H
@@ -31,7 +32,7 @@ public:
 	static const float GRAVITY;
 	static const float AIR_DENSITY; // luftdensitet ( density of the fluid )
 	static const float AIR_RESISTANCE; // luftmotståndskonstant ( drag coeff )
-
+	static const float THICKNESS;
 									   // Bubble properties
 	static const float SURFACE_TENSION; // surface tension
 
@@ -42,9 +43,11 @@ public:
 
 	static Vector calculate_drag_force(Vector velocity, float area);
 	static Vector calculate_gravity_force(float mass);
-	static Vector get_position_delta(Vector& currentAcc, Vector& currentVelocity, float mass, const Vector drag, const Vector gravity, const Vector external = Vector(0));
+	static Vector getPositionDelta(Vector& currentAcc, Vector& currentVelocity, float mass, const Vector& totalForce);
 	static Vector wind_effect_on_vertex(Vector vertexNormal, Vector windForce);
 	static void makeItWobble(Mesh* mesh,float radius, float area, const Vector& force);
+	static Vector addNoice(Vector& position);
+	static Vector addWind(const Vector& external,const Vector& position);
 
 private:
 		Physics() {}
