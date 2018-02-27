@@ -1,8 +1,6 @@
 #include "CubemapTexture.h"
 
 graphics::CubemapTexture::CubemapTexture(std::array<std::string, 6> files) : faces(files){
-    if(glewInit() != GLEW_OK)
-        std::cout << "Error initializing glew\n";
     loadCubemap();
 }
 

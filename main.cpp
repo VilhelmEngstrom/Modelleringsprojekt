@@ -4,8 +4,6 @@
 #include "Sphere.h"
 #include "MatrixStack.h"
 #include "Shader.h"
-#include "Box.h"
-#include "Texture.h"
 #include "CubemapTexture.h"
 #include "Camera.h"
 #include "Skybox.h"
@@ -25,11 +23,18 @@
 #define STACK_DEBUG 0
 #endif
 
-// Model rotation
-// z-component of texcoord in skybox.glsl
+// Mouse input
+
 
 int main(int argc, char** argv){
     using namespace graphics;
+
+
+
+
+
+
+
 
     #if GLM_DEBUG == 1
 
@@ -37,6 +42,7 @@ int main(int argc, char** argv){
 
     Window win("glm test", 1280, 720);
 
+    
 
     std::string location = "resources/textures/skybox/";
     std::array<std::string, 6> faces = {location + "right.jpg", location + "left.jpg", location + "top.jpg",

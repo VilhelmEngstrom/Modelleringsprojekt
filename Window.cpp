@@ -36,6 +36,15 @@ void graphics::Window::init(){
     }
 
     glfwMakeContextCurrent(m_Window);
+
+    // Load OpenGL extensions
+    glewExperimental = GL_TRUE;
+    if(GLEW_OK != glewInit()){
+        std::cout << "Error initalizing glew\n";
+        return;
+    }
+
+
     glfwSetWindowSizeCallback(m_Window, windowResize);
 
     glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GL_TRUE);

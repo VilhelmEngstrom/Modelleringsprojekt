@@ -29,8 +29,8 @@ graphics::Texture& graphics::Texture::operator=(Texture&& rhs){
     if(this != &rhs){
         stbi_image_free(data);
 
-        width = std::move(rhs.width);
-        height = std::move(rhs.height);
+        width    = std::move(rhs.width);
+        height   = std::move(rhs.height);
         bitDepth = std::move(rhs.bitDepth);
 
         data = rhs.data;
