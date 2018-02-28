@@ -8,11 +8,11 @@ Mesh::~Mesh() {
     delete[] indices;
 }
 
-uint Mesh::getNumberOfVertices() const{
+unsigned int Mesh::getNumberOfVertices() const{
     return nVertices;
 }
 
-uint Mesh::getNumberOfIndices() const{
+unsigned int Mesh::getNumberOfIndices() const{
     return nIndices;
 }
 
@@ -20,7 +20,7 @@ Vertex* Mesh::getVertices() const{
     return vertices;
 }
 
-uint* Mesh::getIndices() const{
+unsigned int* Mesh::getIndices() const{
     return indices;
 }
 
@@ -50,7 +50,7 @@ void Mesh::render(unsigned int texID) const{
 }
 
 
-void Mesh::setVertexValues(uint index, std::initializer_list<float> values){
+void Mesh::setVertexValues(unsigned int index, std::initializer_list<float> values){
     const auto& it = values.begin();
     vertices[index].position.x  = *it;
     vertices[index].position.y  = *(it+1);

@@ -45,20 +45,17 @@ struct Vertex{
 #define MESH_H
 
 class Mesh{
-    protected:
-        typedef unsigned int uint;
-
     public:
         Mesh();
         virtual ~Mesh();
 
-        uint getNumberOfVertices() const;
-        uint getNumberOfIndices() const;
+        unsigned int getNumberOfVertices() const;
+        unsigned int getNumberOfIndices() const;
 
         // Return pointer to list of vertices
         Vertex* getVertices() const;
         // Return pointer to list of indices
-        uint* getIndices() const;
+        unsigned int* getIndices() const;
 
         // Construct the mesh
         virtual void generateVertices() = 0;
@@ -72,15 +69,15 @@ class Mesh{
 
     protected:
         Vertex* vertices;
-        uint* indices;
-        uint nVertices, nIndices;
+        unsigned int* indices;
+        unsigned int nVertices, nIndices;
 
         graphics::Renderer* renderer;
 
         // initialize renderer
         void generateRenderer();
 
-        void setVertexValues(uint index, std::initializer_list<float> values);
+        void setVertexValues(unsigned int index, std::initializer_list<float> values);
 };
 
 #endif

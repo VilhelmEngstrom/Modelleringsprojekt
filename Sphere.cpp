@@ -1,6 +1,6 @@
 #include "Sphere.h"
 
-Sphere::Sphere(float rad, uint segs) : radius(rad), verticalSegs(segs > 3 ? segs : 3){
+Sphere::Sphere(float rad, unsigned int segs) : radius(rad), verticalSegs(segs > 3 ? segs : 3){
     init();
     create();
     generateRenderer();
@@ -11,7 +11,7 @@ Sphere::Sphere(const Sphere& s) : radius(s.radius), verticalSegs(s.verticalSegs)
     nIndices = s.nIndices;
 
     vertices = new Vertex[nVertices];
-    indices = new uint[nIndices];
+    indices = new unsigned int[nIndices];
 
     std::copy(s.vertices, s.vertices+s.nVertices, vertices);
     std::copy(s.indices, s.indices+s.nIndices, indices);
@@ -36,7 +36,7 @@ void Sphere::init(){
     nIndices =  3 * (2 * flatSegs + (verticalSegs-2) * flatSegs*2);
     // Allocate
     vertices = new Vertex[nVertices];
-    indices = new uint[nIndices];
+    indices = new unsigned int[nIndices];
 }
 
 void Sphere::create(){
@@ -55,14 +55,14 @@ void Sphere::generateVertices(){
     double theta, phi;
     float x, y, z;
     float sinTheta;
-    uint index;
+    unsigned int index;
 
-    for(uint i = 0; i < verticalSegs-1; ++i){
+    for(unsigned int i = 0; i < verticalSegs-1; ++i){
         // theta in interval [0 , 3.14]
         theta = (double)(i+1)/verticalSegs*M_PI;
         y = cos(theta);
         sinTheta = sin(theta);
-        for(uint j = 0; j <= flatSegs; ++j){
+        for(unsigned int j = 0; j <= flatSegs; ++j){
             // phi in interval [0, 2*3.14]
             phi = (double)j/flatSegs*2.0*M_PI;
             x = sinTheta*sin(phi);
@@ -75,14 +75,14 @@ void Sphere::generateVertices(){
 
 void Sphere::generateIndices(){
     // Top
-    for(uint i = 0; i < flatSegs; i++){
+    for(unsigned int i = 0; i < flatSegs; i++){
         setIndexValues(3*i, {0, i+1, i+2});
     }
 
     // Middle
-    uint offset, val;
-    for(uint i = 0; i < verticalSegs-2; i++){
-        for(uint j = 0; j < flatSegs; j++){
+    unsigned int offset, val;
+    for(unsigned int i = 0; i < verticalSegs-2; i++){
+        for(unsigned int j = 0; j < flatSegs; j++){
             offset = 3*(flatSegs+2*(i*flatSegs+j));
             val = 1 + i*(flatSegs+1) + j;
             setIndexValues(offset, {val, val+flatSegs+1, val+1, val+1, val+flatSegs+1, val+flatSegs+2});
@@ -91,13 +91,13 @@ void Sphere::generateIndices(){
 
     // Bottom
     offset = 3 * (flatSegs + 2 * (verticalSegs-2) * flatSegs);
-    for(uint i = 0; i < flatSegs; i++){
+    for(unsigned int i = 0; i < flatSegs; i++){
         setIndexValues(offset+3*i, {nVertices-1, nVertices-2-i, nVertices-3-i});
     }
 
 }
 
-void Sphere::setIndexValues(uint index, std::initializer_list<uint> values){
+void Sphere::setIndexValues(unsigned int index, std::initializer_list<unsigned int> values){
     for(int i = 0; i < (values.end() - values.begin()); i++){
         indices[index+i] = *(values.begin()+i);
     }

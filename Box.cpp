@@ -10,7 +10,7 @@ Box::Box(const Box& b){
     nIndices = b.nIndices;
 
     vertices = new Vertex[nVertices];
-    indices = new uint[nIndices];
+    indices = new unsigned int[nIndices];
 
     std::copy(b.vertices, b.vertices+b.nVertices, vertices);
     std::copy(b.indices, b.indices+b.nIndices, indices);
@@ -33,7 +33,7 @@ void Box::create(){
     nIndices = 36;
 
     vertices = new Vertex[nVertices];
-    indices = new uint[nIndices];
+    indices = new unsigned int[nIndices];
 
     generateVertices();
     generateIndices();
@@ -95,11 +95,11 @@ void Box::generateVertices(){
 
 void Box::generateIndices(){
     // Index for box face
-    uint face = -1;
+    unsigned int face = -1;
     // Vertex number
-    uint vertexNo = 0;
+    unsigned int vertexNo = 0;
 
-    for(uint i = 0; i < nIndices; i++){
+    for(unsigned int i = 0; i < nIndices; i++){
         // Next face
         if(i % 6 == 0)
             ++face;

@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <string>
 #if defined _WIN32 || defined _WIN64
 #ifndef GLEW_STATIC
 #define GLEW_STATIC
@@ -15,7 +16,8 @@
 namespace graphics{
     class Window{
         public:
-            Window(const char* name, int width, int height);
+			static Window& getInstance(const std::string& name, int width, int height);
+
             Window(const Window&) = delete;
             ~Window();
 
@@ -46,6 +48,8 @@ namespace graphics{
 
             mutable float m_CurrentFrame, m_DeltaTime, m_LastFrame;
 
+            Window(const char* name, int width, int height);
+			
             // Initialize window
             void init();
     };

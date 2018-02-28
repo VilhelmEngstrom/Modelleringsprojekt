@@ -15,14 +15,14 @@
 class Sphere : public Mesh{
     public:
         // Initialize with radius and number of vertical segments
-        Sphere(float rad, uint segs);
+        Sphere(float rad, unsigned int segs);
         Sphere(const Sphere& s);
         ~Sphere();
 
         Sphere& operator=(const Sphere& rhs);
     private:
         float radius;
-        uint verticalSegs, flatSegs;
+        unsigned int verticalSegs, flatSegs;
 
         void init();
         // Create the sphere, the methods below it
@@ -34,7 +34,7 @@ class Sphere : public Mesh{
         void generateIndices() override;
 
         // Initialize values
-        void setIndexValues(uint index, std::initializer_list<uint> values);
+        void setIndexValues(unsigned int index, std::initializer_list<unsigned int> values);
 };
 
 #endif

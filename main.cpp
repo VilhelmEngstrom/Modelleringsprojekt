@@ -40,7 +40,7 @@ int main(int argc, char** argv){
 
     Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
-    Window win("glm test", 1280, 720);
+	Window& win = Window::getInstance("glm test", 960, 540);
 
     
 
