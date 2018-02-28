@@ -30,12 +30,6 @@ int main(int argc, char** argv){
     using namespace graphics;
 
 
-
-
-
-
-
-
     #if GLM_DEBUG == 1
 
     Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
