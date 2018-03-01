@@ -11,7 +11,7 @@ public:
 		mass =  M_PI * radius * radius * Physics::THICKNESS;
 		area = r*r*3.14f;
 		
-		lifetime = rand() % 20000 + 60000;
+		lifetime = rand() % 30000 + 40000;
 		
 	}
 	~Bubble();
@@ -19,7 +19,7 @@ public:
 	void update(const Vector& externalForce);
 	Vector getPos() const { return position; }
 	float getRadius() const { return radius; }
-
+	bool alive = true;
 	
 	
 
@@ -37,7 +37,7 @@ private:
 		Vector noise = Vector(0);
 		Vector external = Vector(0);
 		Vector totalForce = Vector(0);
-		bool alive = true;
+
 		int life = 0;
 		int lifetime;
 

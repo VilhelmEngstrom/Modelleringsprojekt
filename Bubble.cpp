@@ -12,9 +12,11 @@ void Bubble::update(const Vector& externalForce)
 	{
 		gravity = Physics::calculate_gravity_force(mass);
 		drag = Physics::calculate_drag_force(currentVelocity, area);
-		noise = Physics::addNoice(position);
+		//noise = Physics::addNoice(position);
 		external = Physics::addWind(externalForce, position);
-		totalForce = gravity + drag + external, noise;
+		Vector bla(mass*sin(20 * position.getY()), abs(5*mass*sin(20 * position.getY())), 0);
+		//std::cout << bla << "\n";
+		totalForce = gravity + drag + external + noise + bla;
 		//Physics::makeItWobble(sphere , radius , area, totalForce);
 		position = position + Physics::getPositionDelta(currentAcc, currentVelocity, mass, totalForce);
 		

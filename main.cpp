@@ -42,18 +42,13 @@ int main(int argc, char** argv) {
 	// Open a window
 	Window win("Engine", 540, 540);
 	// Create sphere, radius 1.0f, 30 vertical segments
-	Sphere sphere(1.0f, 5);
-
+	Sphere sphere(1.0f, 15);
+	
+	// random tid 
+	srand(time(0));
+	// definiera ett partikelsystem
 	BubbleSystem bubbleSystem;
-	
 
-	// create a bubble and add to the system
-	bubbleSystem.addBubble(&sphere);
-	bubbleSystem.addBubble(&sphere);
-	bubbleSystem.addBubble(&sphere);
-	bubbleSystem.addBubble(&sphere);
-	
-	
 
 	// Specify, compile and pass shader program to OpenGL
 	Shader shader("resources/shaders/basic.glsl");
@@ -89,30 +84,43 @@ int main(int argc, char** argv) {
 		matStack.push();
 		// Translate 5 units towards user
 		matStack.translate({ 0.0f, 0.0f, -5.0f });
-
+		
+		
+		// Kolla om vi aktiverar space
+		if (win.spaceActive())
+		{
+			int randome = rand() % 1500;
+			if(randome == 1)
+				bubbleSystem.addBubble(&sphere); // lägg till ny bubbla i systemet
+		}
+		
+		// rendera bubblorna i systemet om de "lever"
 		for (int i = 0; i < bubbleSystem.getNumberOfBubbles(); ++i)
 		{
-			// Model transformations
-			// Add new matrix to the stack
-			matStack.push();
 			
-			bubbleSystem.myBubblyBubbles[i].update(win.addKeyInput());
-			matStack.translate({ bubbleSystem.myBubblyBubbles[i].getPos().getX(),bubbleSystem.myBubblyBubbles[i].getPos().getY(),bubbleSystem.myBubblyBubbles[i].getPos().getZ() });
+			if (bubbleSystem.myBubblyBubbles[i].alive)
+			{
+				// Model transformations
+				// Add new matrix to the stack
+				matStack.push();
 
-			// Scale the object
-			matStack.scale(bubbleSystem.myBubblyBubbles[i].getRadius());
+				bubbleSystem.myBubblyBubbles[i].update(win.addKeyInput());
+				matStack.translate({ bubbleSystem.myBubblyBubbles[i].getPos().getX(),bubbleSystem.myBubblyBubbles[i].getPos().getY(),bubbleSystem.myBubblyBubbles[i].getPos().getZ() });
 
+				// Scale the object
+				matStack.scale(bubbleSystem.myBubblyBubbles[i].getRadius());
+				//std::cout << bubbleSystem.myBubblyBubbles[i].getPos();
 
-			//std::cout << bubbleSystem.myBubblyBubbles[i].getPos();
+				// Pass topmost matrix in the stack to the shader
+				shader.passMat4("stack", matStack.getTopMatrix());
+				// Render the sphere
+				sphere.render();
 
-			// Pass topmost matrix in the stack to the shader
-			shader.passMat4("stack", matStack.getTopMatrix());
-			// Render the sphere
-			sphere.render();
-
-
-			// Remove topmost matrix from stack
-			matStack.pop();
+				// Remove topmost matrix from stack
+				matStack.pop();
+			}
+			
+			
 		}
 		
 		// Remove topmost matric from stack

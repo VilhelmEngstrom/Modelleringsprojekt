@@ -77,17 +77,28 @@ void Physics::makeItWobble(Mesh* mesh, float radius, float area,const Vector& fo
 		Vector temp = Vector(pointer->position);
 		temp = temp;
 		pointer->position = temp.returnVec3();
-		
 
-		++pointer;
-		
+		++pointer;	
 	}
 }
 
 Vector Physics::addNoice(Vector& position)
 {
-	float scaling = 0.1;
-	return scaling *Vector(sin(position.getX()), 2 * cos(position.getY()), 4 * sin(position.getZ()));
+	float a = -3.00;
+	float b = -3.00;
+	float c = 1.48;
+	float d = -0.27;
+	float e = 1.00;
+	float f = 1.00;
+
+	float i = a * position.getX() + b * position.getY();
+	float j = c * position.getX() + d * position.getY();
+	float k = e * position.getX() + f * position.getY();
+
+	Vector vectorField = Vector(i, j, k);
+
+	float scaling = 0.000001;
+	return scaling * vectorField;
 }
 
 

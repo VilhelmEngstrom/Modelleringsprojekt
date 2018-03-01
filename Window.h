@@ -38,6 +38,8 @@ namespace graphics{
 			// check if keyinput is used
 			Vector addKeyInput() const;
 
+			bool spaceActive();
+
         protected:
             GLFWwindow* m_window;
             int m_width, m_height;

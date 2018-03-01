@@ -59,6 +59,14 @@ Vector graphics::Window::addKeyInput() const {
 	return force;
 }
 
+bool graphics::Window::spaceActive()
+{
+	if (glfwGetKey(m_window, GLFW_KEY_SPACE))
+		return true;
+	else
+		return false;
+}
+
 
 
 void graphics::Window::clear() const{
