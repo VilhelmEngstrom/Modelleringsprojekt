@@ -52,8 +52,9 @@ namespace graphics {
 			return;
 		}
 
-
-		glfwSetWindowSizeCallback(m_Window, windowResize);
+		glfwSetWindowUserPointer(m_Window, this);
+		glfwSetWindowSizeCallback(m_Window, window_resize);
+		
 
 		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GL_TRUE);
 
@@ -93,10 +94,8 @@ namespace graphics {
 	}
 
 	void Window::update() const {
-		// Ugly, shouldn't be called every frame...
-		glfwGetWindowSize(m_Window, &m_Width, &m_Height);
 
-		m_CurrentFrame = glfwGetTime();
+		m_CurrentFrame = (float)glfwGetTime();
 		m_DeltaTime = m_CurrentFrame - m_LastFrame;
 		m_LastFrame = m_CurrentFrame;
 
@@ -112,7 +111,10 @@ namespace graphics {
 		return m_Height;
 	}
 
-	void windowResize(GLFWwindow* window, int width, int height) {
+	void Window::window_resize(GLFWwindow* window, int width, int height) {
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+		win->m_Width = width;
+		win->m_Height = height;
 		glViewport(0, 0, width, height);
 	}
 

@@ -42,8 +42,7 @@ namespace graphics{
 
         private:
             GLFWwindow* m_Window;
-            mutable int m_Width;
-            mutable int m_Height;
+            int m_Width, m_Height;
             const char* m_Title;
 
             mutable float m_CurrentFrame, m_DeltaTime, m_LastFrame;
@@ -52,11 +51,12 @@ namespace graphics{
 			
             // Initialize window
             void init();
+
+			static void window_resize(GLFWwindow* window, int width, int height);
     };
 
 
-    // For window resizing, cannot be class member
-    void windowResize(GLFWwindow* window, int width, int height);
+    
 
 }
 #endif
