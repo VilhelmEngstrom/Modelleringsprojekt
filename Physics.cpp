@@ -8,7 +8,7 @@ const float Physics::THICKNESS = 0.00006;
 
 const float Physics::SURFACE_TENSION = 0.025f;
 
-const float Physics::STEP = 0.002f;
+const float Physics::STEP = 0.001f;
 
 
 

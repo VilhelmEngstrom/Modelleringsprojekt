@@ -3,6 +3,7 @@
 #include "Vector.h"
 #include "Mesh.h"
 #include <cmath>
+#include <ctime>
 
 #ifndef VEC2_H
 #define VEC2_H

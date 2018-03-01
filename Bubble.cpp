@@ -18,8 +18,8 @@ void Bubble::update(const Vector& externalForce)
 		//Physics::makeItWobble(sphere , radius , area, totalForce);
 		position = position + Physics::getPositionDelta(currentAcc, currentVelocity, mass, totalForce);
 		
-		++lifetime; // Uppdatera livstiden
-		if (lifetime > 100/Physics::STEP)
+		++life; // Uppdatera livstiden
+		if (life > lifetime)
 			alive = false;
 	}
 	

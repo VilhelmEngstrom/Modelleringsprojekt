@@ -10,6 +10,9 @@ public:
 		:position(pos), radius(r), sphere(s), currentVelocity(0), currentAcc(0) {
 		mass =  M_PI * radius * radius * Physics::THICKNESS;
 		area = r*r*3.14f;
+		
+		lifetime = rand() % 20000 + 60000;
+		
 	}
 	~Bubble();
 
@@ -35,7 +38,8 @@ private:
 		Vector external = Vector(0);
 		Vector totalForce = Vector(0);
 		bool alive = true;
-		int lifetime = 0;
+		int life = 0;
+		int lifetime;
 
 
 };
