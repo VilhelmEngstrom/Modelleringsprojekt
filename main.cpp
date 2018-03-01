@@ -56,6 +56,12 @@ int main(int argc, char** argv){
     Sphere sphere(1.0f, 30);
     Shader sphereShader("resources/shaders/bubble.glsl");
 
+	
+	sphereShader.use();
+	//										1.0f, 2.5f, 0.0f
+	sphereShader.passVec3("fresnelValues", {1.0f, 2.5f, 0.0f});
+	
+
     MatrixStack model;
 
     while(!win.shouldClose()){
