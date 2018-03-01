@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
 	// Window & camera
 	// ***************
 
-	// Create the window, this must e done thorugh getInstance as the class 
+	// Create the window, this must e done thorugh getInstance as the class
 	// uses the singleton design pattern (all ctors are either private or deleted)
 	Window& win = Window::getInstance("glm test", 960, 540);
 
@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 	// ********************
 	//    Skybox setup
 	// ********************
-	
+
 	// Path to folder containing skybox images
 	std::string location = "resources/textures/skybox/";
 	// Skybox images
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
 	skyboxShader.passScalar("skybox", 0);
 
 
-	
+
 
 
 	// *************
@@ -91,16 +91,16 @@ int main(int argc, char** argv) {
 
 
 
-	// random tid 
+	// random tid
 	srand((unsigned int)time(0));
 	// definiera ett partikelsystem
 	BubbleSystem bubbleSystem;
-	
 
-	
+
+
 
 	while (!win.shouldClose()) {
-		
+
 		win.clear();
 		win.processInput(&camera);
 

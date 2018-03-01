@@ -46,10 +46,6 @@ float fast_fresnel(vec3 I, vec3 N, vec3 fresnelValues){
     return bias + scale * pow(1.0 - dot(I,N), power);
 }
 
-float weighted_mix(vec3 refraction, vec3 reflection, vec3 fresnal, vec3 wights){
-    
-}
-
 void main(void){
 
     vec3 I = normalize(Position - cameraPos);
