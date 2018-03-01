@@ -34,30 +34,32 @@ in vec3 Normal;
 
 // Uniforms
 uniform vec3 cameraPos;
+// power, scale and bias
 uniform vec3 fresnelValues;
+// Ratios for rgb refractions
+uniform vec3 colorRatios;
 uniform samplerCube skybox;
 
-// Fresnel model
+// Empirical approximation of fresnel reflection
 float fast_fresnel(vec3 I, vec3 N, vec3 fresnelValues){
     float power = fresnelValues.x;
     float scale = fresnelValues.y;
     float bias = fresnelValues.z;
 
-    return bias + pow(1.0 - dot(I,N), power) * scale;
+    return bias + scale * pow(1.0 - dot(I,N), power);
 }
 
 
 
 void main(void){
-    float ratio = 1.00 / 1.34;
 
     vec3 I = normalize(Position - cameraPos);
     vec3 normalVec = normalize(Normal);
     vec3 refractColor;
 
-    refractColor.r = textureCube(skybox, refract(I, normalVec, ratio)).r;
-    refractColor.g = textureCube(skybox, refract(I, normalVec, ratio)).g;
-    refractColor.b = textureCube(skybox, refract(I, normalVec, ratio)).b;
+    refractColor.r = textureCube(skybox, refract(I, normalVec, colorRatios.r)).r;
+    refractColor.g = textureCube(skybox, refract(I, normalVec, colorRatios.g)).g;
+    refractColor.b = textureCube(skybox, refract(I, normalVec, colorRatios.b)).b;
 
     vec3 reflectColor = textureCube(skybox, reflect(I, normalVec)).rgb;
 
