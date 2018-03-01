@@ -9,17 +9,22 @@
 #define M_PI 3.1415926535
 #endif
 
+#ifndef SPHERE_H
+#define SPHERE_H
+
 class Sphere : public Mesh{
     public:
         // Initialize with radius and number of vertical segments
-        Sphere(float rad, uint segs);
-		Sphere(const Sphere&) = delete;
+        Sphere(float rad, unsigned int segs);
+        Sphere(const Sphere& s);
         ~Sphere();
-		float getRadius() const { return radius; }
 
-    protected:
+        Sphere& operator=(const Sphere& rhs);
+
+        float getRadius() const;
+    private:
         float radius;
-        uint verticalSegs, flatSegs;
+        unsigned int verticalSegs, flatSegs;
 
         void init();
         // Create the sphere, the methods below it
@@ -31,6 +36,7 @@ class Sphere : public Mesh{
         void generateIndices() override;
 
         // Initialize values
-        void setVertexValues(uint index, std::initializer_list<float> values);
-        void setIndexValues(uint index, std::initializer_list<uint> values);
+        void setIndexValues(unsigned int index, std::initializer_list<unsigned int> values);
 };
+
+#endif

@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <initializer_list>
 #include "Shader.h"
 #include "Renderer.h"
 
@@ -10,18 +11,6 @@
 #endif
 
 #include "dependencies/include/glew.h"
-
-
-#ifndef GL_DEBUG
-#define GL_DEBUG 0
-#endif
-
-#if GL_DEBUG == 1
-#define LOG(x) std::cout << x << "\n";
-#else
-#define LOG(x)
-#endif
-
 
 #ifndef VEC3_H
 #define VEC3_H
@@ -52,20 +41,21 @@ struct Vertex{
 
 #endif
 
-typedef unsigned int uint;
+#ifndef MESH_H
+#define MESH_H
 
 class Mesh{
     public:
         Mesh();
         virtual ~Mesh();
 
-        uint getNumberOfVertices() const;
-        uint getNumberOfIndices() const;
+        unsigned int getNumberOfVertices() const;
+        unsigned int getNumberOfIndices() const;
 
         // Return pointer to list of vertices
-        Vertex* getVertices();
+        Vertex* getVertices() const;
         // Return pointer to list of indices
-        uint* getIndices() const;
+        unsigned int* getIndices() const;
 
         // Construct the mesh
         virtual void generateVertices() = 0;
@@ -75,13 +65,19 @@ class Mesh{
         // Render object (uses Renderer*)
         void render() const;
 
+        void render(unsigned int texID) const;
+
     protected:
         Vertex* vertices;
-        uint* indices;
-        uint nVertices, nIndices;
+        unsigned int* indices;
+        unsigned int nVertices, nIndices;
 
         graphics::Renderer* renderer;
 
         // initialize renderer
-        void genRenderer();
+        void generateRenderer();
+
+        void setVertexValues(unsigned int index, std::initializer_list<float> values);
 };
+
+#endif

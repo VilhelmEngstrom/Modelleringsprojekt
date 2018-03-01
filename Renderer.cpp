@@ -19,6 +19,17 @@ void graphics::Renderer::render() const{
     glBindVertexArray(0);
 }
 
+void graphics::Renderer::render(unsigned int texID) const{
+    glDepthFunc(GL_LEQUAL);
+
+    glBindVertexArray(vertexArrayObj);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, texID);
+
+    glDrawElements(GL_TRIANGLES, nIndices, GL_UNSIGNED_INT, (void*)0);
+
+    glDepthFunc(GL_LESS);
+}
+
 
 void graphics::Renderer::init(){
     glGenVertexArrays(1, &vertexArrayObj);

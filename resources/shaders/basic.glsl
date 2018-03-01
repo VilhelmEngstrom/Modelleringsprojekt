@@ -30,8 +30,10 @@ in vec2 st;
 out vec4 color;
 
 void main(void){
-    vec4 col = vec4(1.0, 0.5, 1.0, 1.0);
+    vec4 col = vec4(1.0, 0.5, 1.0, 0.8);
     vec3 normalizedNormal = normalize(interpolatedNormal);
     float diffuse = max(0.0, normalizedNormal.z);
+
     color = col * diffuse;
+
 }

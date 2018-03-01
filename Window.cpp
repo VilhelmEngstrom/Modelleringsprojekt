@@ -1,93 +1,142 @@
 #include "Window.h"
 
-graphics::Window::Window(const char* name, int width, int height) : m_width(width), m_height(height), m_title(name){
-    init();
-}
 
-graphics::Window::~Window() {
-    glfwDestroyWindow(m_window);
-    glfwTerminate();
-}
+namespace graphics {
+
+	Window& Window::getInstance(const std::string& name, int width, int height) {
+		static Window instance(&name[0], width, height);
+		return instance;
+	}
+
+	Window::Window(const char* name, int width, int height)
+		: m_Width(width), m_Height(height), m_Title(name), m_CurrentFrame(0.0f), m_DeltaTime(0.0f), m_LastFrame(0.0f) {
+		init();
+	}
+
+	Window::~Window() {
+		glfwDestroyWindow(m_Window);
+		glfwTerminate();
+	}
 
 
-void graphics::Window::init(){
-    if(!glfwInit()){
-        std::cout << "Failed to initialize GLFW\n";
-        return;
-    }
+	void Window::init() {
+		if (!glfwInit()) {
+			std::cout << "Failed to initialize GLFW\n";
+			return;
+		}
 
-    // OpenGL 4
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		// OpenGL 4
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_window = glfwCreateWindow(m_width, m_height, m_title, NULL, NULL);
+		// To fix compilation on OS X
+		#ifdef __APPLE__
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		#endif
 
-    if(!m_window){
-        std::cout << "Could not initialize GLFW window\n";
-        glfwTerminate();
-        return;
-    }
+		m_Window = glfwCreateWindow(m_Width, m_Height, m_Title, NULL, NULL);
 
-    glfwMakeContextCurrent(m_window);
-    glfwSetWindowSizeCallback(m_window, windowResize);
+		if (!m_Window) {
+			std::cout << "Could not initialize GLFW window\n";
+			glfwTerminate();
+			return;
+		}
 
-    glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GL_TRUE);
+		glfwMakeContextCurrent(m_Window);
 
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+		// Load OpenGL extensions
+		glewExperimental = GL_TRUE;
+		if (GLEW_OK != glewInit()) {
+			std::cout << "Error initalizing glew\n";
+			return;
+		}
 
-}
+		glfwSetWindowUserPointer(m_Window, this);
+		glfwSetWindowSizeCallback(m_Window, window_resize);
 
-bool graphics::Window::shouldClose() const{
-    return glfwWindowShouldClose(m_window) || glfwGetKey(m_window, GLFW_KEY_ESCAPE);
-}
 
-Vector graphics::Window::addKeyInput() const {
-	Vector force(0);
-	if (glfwGetKey(m_window, GLFW_KEY_UP))
-		force.setY(1);
-		
-	if (glfwGetKey(m_window, GLFW_KEY_RIGHT))
-		force.setX(1);
-		
-	if (glfwGetKey(m_window, GLFW_KEY_DOWN))
-		force.setY(-1); 
-		
-	if (glfwGetKey(m_window, GLFW_KEY_LEFT))
-		force.setX(-1);
+		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	return force;
-}
+		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+		glEnable(GL_DEPTH_TEST);
 
-bool graphics::Window::spaceActive()
-{
-	if (glfwGetKey(m_window, GLFW_KEY_SPACE))
-		return true;
-	else
+	}
+
+	bool Window::shouldClose() const {
+		return glfwWindowShouldClose(m_Window);
+	}
+
+
+	void Window::clear() const {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
+	void Window::cullBackFace() const {
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+	}
+
+	void Window::processInput(Camera* camera) const {
+		if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+			glfwSetWindowShouldClose(m_Window, true);
+
+		if (glfwGetKey(m_Window, GLFW_KEY_W) == GLFW_PRESS)
+			camera->processKeyboardInput(CameraMovement::FORWARD, m_DeltaTime);
+		if (glfwGetKey(m_Window, GLFW_KEY_S) == GLFW_PRESS)
+			camera->processKeyboardInput(CameraMovement::BACKWARD, m_DeltaTime);
+		if (glfwGetKey(m_Window, GLFW_KEY_A) == GLFW_PRESS)
+			camera->processKeyboardInput(CameraMovement::LEFT, m_DeltaTime);
+		if (glfwGetKey(m_Window, GLFW_KEY_D) == GLFW_PRESS)
+			camera->processKeyboardInput(CameraMovement::RIGHT, m_DeltaTime);
+
+
+	}
+
+	Vector Window::addKeyInput() const{
+		Vector force(0);
+		if(glfwGetKey(m_Window, GLFW_KEY_UP))
+			force.setY(1);
+		if(glfwGetKey(m_Window, GLFW_KEY_RIGHT))
+			force.setX(1);
+		if(glfwGetKey(m_Window, GLFW_KEY_DOWN))
+			force.setY(-1);
+		if(glfwGetKey(m_Window, GLFW_KEY_LEFT))
+			force.setX(-1);
+
+		return force;
+	}
+
+	bool Window::spaceActive(){
+		if(glfwGetKey(m_Window, GLFW_KEY_SPACE))
+			return true;
+
 		return false;
-}
+	}
 
+	void Window::update() const {
 
+		m_CurrentFrame = (float)glfwGetTime();
+		m_DeltaTime = m_CurrentFrame - m_LastFrame;
+		m_LastFrame = m_CurrentFrame;
 
-void graphics::Window::clear() const{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-}
+		glfwSwapBuffers(m_Window);
+		glfwPollEvents();
+	}
 
-void graphics::Window::cullBackFace() const{
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-}
+	int Window::getWidth() const {
+		return m_Width;
+	}
 
-void graphics::Window::update() const{
-    glfwSwapBuffers(m_window);
-    glfwPollEvents();
-}
+	int Window::getHeight() const {
+		return m_Height;
+	}
 
-GLFWwindow* graphics::Window::getWindow() const{
-    return m_window;
-}
+	void Window::window_resize(GLFWwindow* window, int width, int height) {
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+		win->m_Width = width;
+		win->m_Height = height;
+		glViewport(0, 0, width, height);
+	}
 
-void graphics::windowResize(GLFWwindow* window, int width, int height){
-    glViewport(0, 0, width, height);
 }
