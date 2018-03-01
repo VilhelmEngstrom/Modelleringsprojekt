@@ -47,6 +47,8 @@ namespace graphics{
             void passScalar(const std::string& handle, int uniform) const;
             void passScalar(const std::string& handle, float uniform) const;
 
+			void passVec3(const std::string& handle, const glm::vec3& vec) const;
+
             // Pass Mat4 to shader, handle is the name of the uniform in the shader,
             // matrix is a poirnter to the Mat4 (a float[16])
             void passMat4(const std::string& handle, float* matrix) const;
