@@ -8,14 +8,11 @@ layout(location = 2) in vec2 texCoords;
 out vec3 Position;
 out vec3 Normal;
 
-
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
 void main(void){
-
-
     Normal = mat3(transpose(inverse(model))) * mNormal;
     Position = vec3(model * vec4(mPos, 1.0));
     gl_Position = (projection * model) * vec4(mPos, 1.0);
@@ -48,8 +45,6 @@ float fast_fresnel(vec3 I, vec3 N, vec3 fresnelValues){
 
     return bias + scale * pow(1.0 - dot(I,N), power);
 }
-
-
 
 void main(void){
 

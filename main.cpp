@@ -68,7 +68,7 @@ int main(int argc, char** argv){
 
 	// Pass fresnel values to the sphere's shader
 	//									    power scale bias
-	sphereShader.passVec3("fresnelValues", {0.5f, 1.5f, 0.0f});
+	sphereShader.passVec3("fresnelValues", {0.4f, 1.5f, 0.0f});
 
 	// Color ratios for refraction
 	// Refraction ratio for soapy water
@@ -115,8 +115,8 @@ int main(int argc, char** argv){
 
         model.push();
 			// Translate bubble
-            model.translate({-1.0f, 0.3f, -8.0f});
-
+            model.translate({1.0f, 0.5f, -8.0f});
+			
 			// Pass model view to shader
             sphereShader.passMat4("model", model.getTopMatrix());
             // Render the sphere
