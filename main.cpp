@@ -31,44 +31,63 @@ int main(int argc, char** argv){
 
 
     #if GLM_DEBUG == 1
-
+	
+	// Create the window, this must e done thorugh getInstance as the class 
+	// uses the singleton design pattern (all ctors are either private or deleted)
+	Window& win = Window::getInstance("glm test", 960, 540);
+	
+	// Create a camera and place it in the scene
     Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
-	Window& win = Window::getInstance("glm test", 960, 540);
-
     
-
+	// Path to folder containing skybox images
     std::string location = "resources/textures/skybox/";
+	// Skybox images
     std::array<std::string, 6> faces = {location + "right.jpg", location + "left.jpg", location + "top.jpg",
                                         location + "bottom.jpg", location + "front.jpg", location + "back.jpg"};
-
+	// Create the skybox texture
     CubemapTexture tex(faces);
+	// Create skybox, passing its texture
     Skybox skybox(tex);
 
     Shader skyboxShader("resources/shaders/skybox.glsl");
-
+	
+	// Pass uniform to skybox shader
     skyboxShader.use();
     skyboxShader.passScalar("skybox", 0);
 
 
     glm::mat4 view, projection;
 
+	// Create sphere
     Sphere sphere(1.0f, 30);
     Shader sphereShader("resources/shaders/bubble.glsl");
 
 	
 	sphereShader.use();
-	//										1.0f, 2.5f, 0.0f
-	sphereShader.passVec3("fresnelValues", {1.0f, 2.5f, 0.0f});
+
+	// Pass fresnel values to the sphere's shader
+	//									    power scale bias
+	sphereShader.passVec3("fresnelValues", {0.5f, 1.5f, 0.0f});
+
+	// Color ratios for refraction
+	// Refraction ratio for soapy water
+	float refractionRatio = 1.0f / 1.34f;
+	// Values in vector correspond to rgb. Results are best when values are between 0 and 1
+	sphereShader.passVec3("colorRatios", {refractionRatio, refractionRatio, 1.0f});
 	
 
     MatrixStack model;
 
     while(!win.shouldClose()){
         win.clear();
-        win.processInput(&camera);
+		// For esc key
+		win.processInput(&camera);
 
+		// Projection matrix
         projection = glm::perspective(glm::radians(camera.getZoom()), (float)win.getWidth()/(float)win.getHeight(), 0.1f, 100.0f);
+
+
 
         // *************
         //    Skybox
@@ -76,8 +95,10 @@ int main(int argc, char** argv){
 
         skyboxShader.use();
 
+		// The view matrix
         view = glm::mat4(glm::mat3(camera.getViewMatrix()));
 
+		// Pass view and projectin
         skyboxShader.passMat4("view", view);
         skyboxShader.passMat4("projection", projection);
 
@@ -88,12 +109,15 @@ int main(int argc, char** argv){
         // *************
 
         sphereShader.use();
+		// Pass view and projection
         sphereShader.passMat4("view", view);
         sphereShader.passMat4("projection", projection);
 
         model.push();
+			// Translate bubble
             model.translate({-1.0f, 0.3f, -8.0f});
 
+			// Pass model view to shader
             sphereShader.passMat4("model", model.getTopMatrix());
             // Render the sphere
             sphere.render();
@@ -103,7 +127,7 @@ int main(int argc, char** argv){
 
 
 
-
+		// Detach all shaders
         Shader::detachAll();
 
         win.update();
