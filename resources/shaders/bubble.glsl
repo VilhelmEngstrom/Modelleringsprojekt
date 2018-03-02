@@ -13,6 +13,8 @@ uniform mat4 view;
 uniform mat4 projection;
 
 void main(void){
+
+
     Normal = mat3(transpose(inverse(model))) * mNormal;
     Position = vec3(model * vec4(mPos, 1.0));
     gl_Position = (projection * model) * vec4(mPos, 1.0);
@@ -37,28 +39,41 @@ uniform vec3 fresnelValues;
 uniform vec3 colorRatios;
 uniform samplerCube skybox;
 
+
 // Empirical approximation of fresnel reflection
 float fast_fresnel(vec3 I, vec3 N, vec3 fresnelValues){
     float power = fresnelValues.x;
     float scale = fresnelValues.y;
     float bias = fresnelValues.z;
 
-    return bias + scale * pow(1.0 - dot(I,N), power);
+    return max(0, min(1, bias + scale * pow(1.0 + dot(I,N), power)));
 }
+
+
+vec3 modified_refraction(vec3 I, vec3 N, float eta){
+    float cosi = dot(-I, N);
+    float cost2 = 1.0 - eta * eta * (1.0 - cosi*cosi);
+    vec3 t = eta * I + ((eta * cosi - sqrt(abs(cost2))) * N);
+
+    return t * vec3(cost2 > 0.0);
+}
+
 
 void main(void){
 
     vec3 I = normalize(Position - cameraPos);
     vec3 normalVec = normalize(Normal);
-    vec3 refractColor;
 
-    refractColor.r = textureCube(skybox, refract(I, normalVec, colorRatios.r)).r;
-    refractColor.g = textureCube(skybox, refract(I, normalVec, colorRatios.g)).g;
-    refractColor.b = textureCube(skybox, refract(I, normalVec, colorRatios.b)).b;
+    vec3 refractColor;
+    refractColor.r = textureCube(skybox, modified_refraction(I, normalVec, colorRatios.r)).r;
+    refractColor.g = textureCube(skybox, modified_refraction(I, normalVec, colorRatios.g)).g;
+    refractColor.b = textureCube(skybox, modified_refraction(I, normalVec, colorRatios.b)).b;
 
     vec3 reflectColor = textureCube(skybox, reflect(I, normalVec)).rgb;
 
     vec3 fresnelTerm = vec3(fast_fresnel(-I, normalVec, fresnelValues));
 
-    FragColor = vec4(mix(refractColor, reflectColor, fresnelTerm), 1.0);
+
+    FragColor = vec4(mix(refractColor, reflectColor, fresnelTerm), 0.4);
+
 }

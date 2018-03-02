@@ -29,9 +29,11 @@ int main(int argc, char** argv) {
 	// Create the window, this must e done thorugh getInstance as the class
 	// uses the singleton design pattern (all ctors are either private or deleted)
 	Window& win = Window::getInstance("glm test", 960, 540);
+	// Enable blending for transparancy
+	win.enableBlend();
 
 	// Create a camera and place it in the scene
-	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+	Camera camera(glm::vec3(0.0f, 0.0f, -10.0f));
 
 	// ********************
 	//    Skybox setup
@@ -70,13 +72,13 @@ int main(int argc, char** argv) {
 
 	// Pass fresnel values to the sphere's shader
 	//									    power scale bias
-	sphereShader.passVec3("fresnelValues", { 0.4f, 2.5f, 0.0f });
+	sphereShader.passVec3("fresnelValues", {2.0f, 2.0f, 0.1f});
 
 	// Color ratios for refraction
 	// Refraction ratio for soapy water
 	float refractionRatio = 1.0f / 1.34f;
 	// Values in vector correspond to rgb. Results are best when values are between 0 and 1
-	sphereShader.passVec3("colorRatios", { refractionRatio, refractionRatio, 1.0f });
+	sphereShader.passVec3("colorRatios", {0.1f, 1.0f, 0.1f});
 
 
 	// **************
@@ -90,14 +92,10 @@ int main(int argc, char** argv) {
 
 
 
-
 	// random tid
 	srand((unsigned int)time(0));
 	// definiera ett partikelsystem
 	BubbleSystem bubbleSystem;
-
-
-
 
 	while (!win.shouldClose()) {
 
@@ -133,8 +131,14 @@ int main(int argc, char** argv) {
 		sphereShader.passMat4("projection", projection);
 
 		model.push();
-		model.translate({ 0.0f, 0.0f, -2.0f });
+		model.translate({ 0.0f, 0.0f, -5.0f });
+			
 
+			sphereShader.passMat4("model", model.getTopMatrix());
+
+			sphere.render();
+
+			#if false
 
 			// Kolla om vi aktiverar space
 			if (win.spaceActive()){
@@ -169,7 +173,7 @@ int main(int argc, char** argv) {
 
 
 			}
-
+			#endif
 		model.pop();
 
 		// Detach all shaders
