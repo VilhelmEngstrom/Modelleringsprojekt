@@ -33,7 +33,9 @@ Vector Physics::getPositionDelta(Vector& currentAcc, Vector& currentVelocity, fl
 	Vector acc = currentAcc + (totalForce * (1 / mass));
 
 	currentVelocity = currentVelocity + acc * STEP; // ber�kna ny hastighet
-	Vector delta = currentVelocity * STEP; // Ber�kna skillnad i position
+
+	// Steglängd satt till tiden det tar att rita en frame
+	Vector delta = currentVelocity * graphics::Window::getDeltaTime(); // Ber�kna skillnad i position
 	return delta;
 
 }

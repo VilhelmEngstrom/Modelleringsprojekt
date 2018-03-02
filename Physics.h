@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Vector.h"
-#include "Mesh.h"
 #include <cmath>
 #include <ctime>
+#include "Vector.h"
+#include "Mesh.h"
+#include "Window.h"
 
 #ifndef VEC2_H
 #define VEC2_H

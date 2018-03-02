@@ -9,7 +9,7 @@ namespace graphics {
 	}
 
 	Window::Window(const char* name, int width, int height)
-		: m_Width(width), m_Height(height), m_Title(name), m_CurrentFrame(0.0f), m_DeltaTime(0.0f), m_LastFrame(0.0f) {
+		: m_Width(width), m_Height(height), m_Title(name){
 		init();
 	}
 
@@ -75,9 +75,13 @@ namespace graphics {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void Window::cullBackFace() const {
+	void Window::enableBackfaceCulling() const {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
+	}
+
+	void Window::disableBackfaceCulling() const {
+		glDisable(GL_CULL_FACE);
 	}
 
 	void Window::processInput(Camera* camera) const {
@@ -110,7 +114,12 @@ namespace graphics {
 		return force;
 	}
 
-	bool Window::isPressed(int keycode){		
+	bool Window::isPressed(int keycode){	
+		if (MAX_KEYS <= keycode) {
+			std::cout << "Unknown key pressed\n";
+			return false;
+		}
+
 		int newState = glfwGetKey(m_Window, keycode);
 		bool isPressed = false;
 
@@ -149,6 +158,10 @@ namespace graphics {
 		glDisable(GL_BLEND);
 	}
 
+	float Window::getDeltaTime(){
+		return m_DeltaTime;
+	}
+
 	void Window::window_resize(GLFWwindow* window, int width, int height) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		win->m_Width = width;
@@ -157,4 +170,8 @@ namespace graphics {
 	}
 
 	int Window::keyStates[MAX_KEYS] = { GLFW_RELEASE };
+
+	float Window::m_CurrentFrame = 0.0f;
+	float Window::m_DeltaTime = 0.0f;
+	float Window::m_LastFrame = 0.0f;
 }

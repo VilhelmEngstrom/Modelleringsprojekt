@@ -92,6 +92,7 @@ int main(int argc, char** argv) {
 
 	// definiera ett partikelsystem
 	BubbleSystem bubbleSystem;
+	float deltaTime;
 
 	while (!win.shouldClose()) {
 
@@ -127,14 +128,14 @@ int main(int argc, char** argv) {
 		sphereShader.passMat4("projection", projection);
 
 		model.push();
-		model.translate({ 0.0f, 0.0f, -5.0f });
+		model.translate({ 0.0f, 0.0f, -2.0f });
 			
 			#if false
+			model.translate({ 0.0f, 0.0f, -3.0f });
 			sphereShader.passMat4("model", model.getTopMatrix());
 			sphere.render();
 
-			#endif
-
+			#endif		
 			#if true
 
 			// Kolla om vi aktiverar space
@@ -152,8 +153,9 @@ int main(int argc, char** argv) {
 						bubbleSystem.myBubblyBubbles[i].update(win.addKeyInput());
 						// Liten optimering
 						const auto& pos = bubbleSystem.myBubblyBubbles[i].getPos();
+						deltaTime = Window::getDeltaTime();
 
-						model.translate({ pos.getX(), pos.getY(), pos.getZ() });
+						model.translate({pos.getX(), pos.getY(), pos.getZ()});
 
 						// Scale the object
 						model.scale(bubbleSystem.myBubblyBubbles[i].getRadius());

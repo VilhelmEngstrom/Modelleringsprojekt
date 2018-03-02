@@ -34,7 +34,9 @@ namespace graphics{
             void clear() const;
 
             // Cull back faces
-            void cullBackFace() const;
+            void enableBackfaceCulling() const;
+			void disableBackfaceCulling() const;
+
 
             void processInput(Camera* camera) const;
 
@@ -52,14 +54,17 @@ namespace graphics{
 			void enableBlend() const;
 			void disableBlend() const;
 
+			static float getDeltaTime();
+
         private:
             GLFWwindow* m_Window;
             int m_Width, m_Height;
             const char* m_Title;
-
+			
+			// Holds info on last action for all the keys (GLFW_PRESS or GLFW_RELEASE)
 			static int keyStates[MAX_KEYS];
 
-            mutable float m_CurrentFrame, m_DeltaTime, m_LastFrame;
+			static float m_CurrentFrame, m_DeltaTime, m_LastFrame;
 
             Window(const char* name, int width, int height);
 

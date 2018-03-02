@@ -29,6 +29,7 @@ Vector operator*(const Vector& v1, const Vector& v2) {
 	return Vector(v1.x*v2.x, v1.y*v2.y, v1.z*v2.z);
 }
 
+
 float Vector::dotProduct(const Vector &v) const{
 	return ((x*v.x) + (y*v.y) + (z*v.z));
 }
