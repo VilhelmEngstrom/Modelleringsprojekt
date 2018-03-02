@@ -17,9 +17,9 @@ class Time{
 		static const unsigned short MEAN_FACTORS;
 	private:
 		Time();
-		static std::deque<float> m_PreviousDeltas;
+		static std::deque<float> previousDeltas;
 
-		static float m_CurrentFrame, m_DeltaTime, m_LastFrame;
+		static float currentFrame, deltaTime, lastFrame;
 
 };
 

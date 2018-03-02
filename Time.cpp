@@ -6,28 +6,29 @@ Time::Time() {}
 Time::~Time() {}
 
 float Time::getDeltaTime() {
-	return m_DeltaTime;
+	return deltaTime;
 }
 
 void Time::update() {
 	// Update time
-	m_CurrentFrame = (float)glfwGetTime();
-	m_DeltaTime = m_CurrentFrame - m_LastFrame;
-	m_LastFrame = m_CurrentFrame;
+	currentFrame = (float)glfwGetTime();
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
 	
 	
-	m_PreviousDeltas.push_front(1 / m_DeltaTime);
-	m_PreviousDeltas.pop_back();
+	previousDeltas.push_front(1 / deltaTime);
+	previousDeltas.pop_back();
 }
 
 void Time::displayFPS() {
-	std::cout << std::accumulate(m_PreviousDeltas.begin(), m_PreviousDeltas.end(), 0) / MEAN_FACTORS << " fps" << '\r' << std::flush;
+	std::cout << std::accumulate(previousDeltas.begin(), previousDeltas.end(), 0) / MEAN_FACTORS 
+			  << " fps" << '\r' << std::flush;
 }
 
 
-float Time::m_CurrentFrame = 0.0f;
-float Time::m_DeltaTime = 0.0f;
-float Time::m_LastFrame = 0.0f;
+float Time::currentFrame = 0.0f;
+float Time::deltaTime = 0.0f;
+float Time::lastFrame = 0.0f;
 
 const unsigned short Time::MEAN_FACTORS = 500;
 
@@ -39,4 +40,4 @@ std::deque<float> init() {
 
 	return tmp;
 }
-std::deque<float> Time::m_PreviousDeltas(init());
+std::deque<float> Time::previousDeltas(init());
