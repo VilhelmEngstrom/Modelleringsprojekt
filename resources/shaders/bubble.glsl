@@ -1,37 +1,36 @@
 #shader vertex
 #version 330 core
 
-layout(location = 0) in vec3 mPos;
-layout(location = 1) in vec3 mNormal;
-layout(location = 2) in vec2 texCoords;
 
-out vec3 Position;
-out vec3 Normal;
+
+layout(location = 0) in vec3 VertexPosition;
+layout(location = 1) in vec3 VertexNormal;
+layout(location = 2) in vec2 TexCoords;
+
+out vec3 ModelPosition;
+out vec3 ModelNormal;
 
 uniform mat4 model;
-uniform mat4 view;
 uniform mat4 projection;
 
-void main(void){
-
-
-    Normal = mat3(transpose(inverse(model))) * mNormal;
-    Position = vec3(model * vec4(mPos, 1.0));
-    gl_Position = (projection * model) * vec4(mPos, 1.0);
+void main(){
+    ModelNormal = mat3(transpose(inverse(model))) * VertexNormal;
+    ModelPosition = vec3(model * vec4(VertexPosition, 1.0));
+    gl_Position = (projection * model) * vec4(VertexPosition, 1.0);
 }
 
 
 #shader fragment
 #version 330 core
 
-// Outputs
+
+
 out vec4 FragColor;
 
-// Inputs
-in vec3 Position;
-in vec3 Normal;
+in vec3 ModelPosition;
+in vec3 ModelNormal;
 
-// Uniforms
+
 uniform vec3 cameraPos;
 // power, scale and bias
 uniform vec3 fresnelValues;
@@ -40,40 +39,79 @@ uniform vec3 colorRatios;
 uniform samplerCube skybox;
 
 
+struct LightSource{
+    vec3 Position;
+    float Intensity;
+};
+
+struct Material{
+    vec3 Color;
+    float Shininess;
+};
+
+LightSource Light = LightSource(
+    vec3(5.0, 15.0, 5.0),
+    200.0
+);
+
+Material SoapFilm = Material(
+    vec3(1.0, 0.2, 1.0),
+    1000.0
+);
+
+
 // Empirical approximation of fresnel reflection
-float fast_fresnel(vec3 I, vec3 N, vec3 fresnelValues){
-    float power = fresnelValues.x;
-    float scale = fresnelValues.y;
-    float bias = fresnelValues.z;
+float fast_fresnel(vec3 I, vec3 N, vec3 FresnelValues){
+    float Power = FresnelValues.x;
+    float Scale = FresnelValues.y;
+    float Bias = FresnelValues.z;
 
-    return max(0, min(1, bias + scale * pow(1.0 + dot(I,N), power)));
+    return max(0, min(1, Bias + Scale * pow(1.0 + dot(I,N), Power)));
 }
 
 
-vec3 modified_refraction(vec3 I, vec3 N, float eta){
-    float cosi = dot(-I, N);
-    float cost2 = 1.0 - eta * eta * (1.0 - cosi*cosi);
-    vec3 t = eta * I + ((eta * cosi - sqrt(abs(cost2))) * N);
+vec3 modified_refraction(vec3 I, vec3 N, float Eta){
+    float Cosi = dot(-I, N);
+    float Cost2 = 1.0 - Eta * Eta * (1.0 - Cosi*Cosi);
+    vec3 T = Eta * I + ((Eta * Cosi - sqrt(abs(Cost2))) * N);
 
-    return t * vec3(cost2 > 0.0);
+    return T * vec3(Cost2 > 0.0);
+}
+
+vec3 calculate_refraction(vec3 ViewDirection, vec3 Normal){
+    vec3 RefractColor;
+
+    RefractColor.r = textureCube(skybox, modified_refraction(ViewDirection, Normal, colorRatios.r)).r;
+    RefractColor.g = textureCube(skybox, modified_refraction(ViewDirection, Normal, colorRatios.g)).g;
+    RefractColor.b = textureCube(skybox, modified_refraction(ViewDirection, Normal, colorRatios.b)).b;
+
+    return RefractColor;
+}
+
+vec3 specular_highlight(vec3 ViewDirection, vec3 Normal){
+    vec3 IncidentLight = normalize(ModelPosition - Light.Position);
+    vec3 SpecularDirection = reflect(IncidentLight, Normal);
+
+    float Angle = max(0.0, dot(-ViewDirection, SpecularDirection));
+
+    float SpecularCoefficient = pow(Angle, SoapFilm.Shininess);
+
+    return SpecularCoefficient * SoapFilm.Color * Light.Intensity;
 }
 
 
-void main(void){
+void main(){
+    vec3 ViewDirection = normalize(ModelPosition - cameraPos);
+    vec3 Normal = normalize(ModelNormal);
 
-    vec3 I = normalize(Position - cameraPos);
-    vec3 normalVec = normalize(Normal);
+    vec3 RefractColor = calculate_refraction(ViewDirection, Normal);
 
-    vec3 refractColor;
-    refractColor.r = textureCube(skybox, modified_refraction(I, normalVec, colorRatios.r)).r;
-    refractColor.g = textureCube(skybox, modified_refraction(I, normalVec, colorRatios.g)).g;
-    refractColor.b = textureCube(skybox, modified_refraction(I, normalVec, colorRatios.b)).b;
+    vec3 ReflectColor = textureCube(skybox, reflect(ViewDirection, Normal)).rgb;
 
-    vec3 reflectColor = textureCube(skybox, reflect(I, normalVec)).rgb;
+    vec3 FresnelTerm = vec3(fast_fresnel(-ViewDirection, Normal, fresnelValues));
 
-    vec3 fresnelTerm = vec3(fast_fresnel(-I, normalVec, fresnelValues));
+    vec3 SpecularComponent = specular_highlight(ViewDirection, Normal);
 
-
-    FragColor = vec4(mix(refractColor, reflectColor, fresnelTerm), 0.2);
+    FragColor = vec4(mix(RefractColor, ReflectColor, FresnelTerm) + SpecularComponent, 0.2);
 
 }
