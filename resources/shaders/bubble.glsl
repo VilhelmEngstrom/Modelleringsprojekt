@@ -74,6 +74,6 @@ void main(void){
     vec3 fresnelTerm = vec3(fast_fresnel(-I, normalVec, fresnelValues));
 
 
-    FragColor = vec4(mix(refractColor, reflectColor, fresnelTerm), 0.4);
+    FragColor = vec4(mix(refractColor, reflectColor, fresnelTerm), 0.2);
 
 }
