@@ -9,6 +9,7 @@
 #include "Skybox.h"
 #include "Bubble.h"
 #include "BubbleSystem.h"
+#include "Time.h"
 
 
 // glm
@@ -93,9 +94,16 @@ int main(int argc, char** argv) {
 	// definiera ett partikelsystem
 	BubbleSystem bubbleSystem;
 	float deltaTime;
+	
 
 	while (!win.shouldClose()) {
-		deltaTime = Window::getDeltaTime();
+		
+		// Time
+		deltaTime = Time::getDeltaTime();
+		Time::update();
+		Time::displayFPS();
+
+		
 		win.clear();
 		win.processInput(&camera);
 

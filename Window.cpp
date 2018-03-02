@@ -88,14 +88,16 @@ namespace graphics {
 		if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(m_Window, true);
 
+		float deltaTime = Time::getDeltaTime();
+
 		if (glfwGetKey(m_Window, GLFW_KEY_W) == GLFW_PRESS)
-			camera->processKeyboardInput(CameraMovement::FORWARD, m_DeltaTime);
+			camera->processKeyboardInput(CameraMovement::FORWARD, deltaTime);
 		if (glfwGetKey(m_Window, GLFW_KEY_S) == GLFW_PRESS)
-			camera->processKeyboardInput(CameraMovement::BACKWARD, m_DeltaTime);
+			camera->processKeyboardInput(CameraMovement::BACKWARD, deltaTime);
 		if (glfwGetKey(m_Window, GLFW_KEY_A) == GLFW_PRESS)
-			camera->processKeyboardInput(CameraMovement::LEFT, m_DeltaTime);
+			camera->processKeyboardInput(CameraMovement::LEFT, deltaTime);
 		if (glfwGetKey(m_Window, GLFW_KEY_D) == GLFW_PRESS)
-			camera->processKeyboardInput(CameraMovement::RIGHT, m_DeltaTime);
+			camera->processKeyboardInput(CameraMovement::RIGHT, deltaTime);
 
 
 	}
@@ -119,7 +121,7 @@ namespace graphics {
 			std::cout << "Unknown key pressed\n";
 			return false;
 		}
-
+		
 		int newState = glfwGetKey(m_Window, keycode);
 		bool isPressed = false;
 
@@ -132,11 +134,6 @@ namespace graphics {
 	}
 
 	void Window::update() const {
-
-		m_CurrentFrame = (float)glfwGetTime();
-		m_DeltaTime = m_CurrentFrame - m_LastFrame;
-		m_LastFrame = m_CurrentFrame;
-
 		glfwSwapBuffers(m_Window);
 		glfwPollEvents();
 	}
@@ -158,10 +155,6 @@ namespace graphics {
 		glDisable(GL_BLEND);
 	}
 
-	float Window::getDeltaTime(){
-		return m_DeltaTime;
-	}
-
 	void Window::window_resize(GLFWwindow* window, int width, int height) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		win->m_Width = width;
@@ -171,7 +164,5 @@ namespace graphics {
 
 	int Window::keyStates[MAX_KEYS] = { GLFW_RELEASE };
 
-	float Window::m_CurrentFrame = 0.0f;
-	float Window::m_DeltaTime = 0.0f;
-	float Window::m_LastFrame = 0.0f;
+	
 }

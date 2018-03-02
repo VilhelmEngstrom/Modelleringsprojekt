@@ -11,6 +11,7 @@
 
 #include "Camera.h"
 #include "Vector.h"
+#include "Time.h"
 
 #define MAX_KEYS 1024
 
@@ -51,10 +52,9 @@ namespace graphics{
             int getWidth() const;
             int getHeight() const;
 
+			// Enable blending for using the alpha channel
 			void enableBlend() const;
 			void disableBlend() const;
-
-			static float getDeltaTime();
 
         private:
             GLFWwindow* m_Window;
@@ -64,18 +64,13 @@ namespace graphics{
 			// Holds info on last action for all the keys (GLFW_PRESS or GLFW_RELEASE)
 			static int keyStates[MAX_KEYS];
 
-			static float m_CurrentFrame, m_DeltaTime, m_LastFrame;
-
             Window(const char* name, int width, int height);
 
             // Initialize window
             void init();
 
+			// Resize the viewport and update height and width
 			static void window_resize(GLFWwindow* window, int width, int height);
     };
-
-
-
-
 }
 #endif
