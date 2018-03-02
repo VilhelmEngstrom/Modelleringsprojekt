@@ -101,15 +101,15 @@ vec3 specular_highlight(vec3 ViewDirection, vec3 Normal){
 }
 
 #ifdef MOTHER_OF_PEARL
-vec3 mother_of_pearl(vec3 ViewDirection, vec3 Normal, vec3 NormalizedReflection){
+vec3 mother_of_pearl(vec3 ViewDirection, vec3 Normal, vec3 NormalizedReflection, vec3 Colors){
     float ViewNormalAngle = max(0.0, dot(Normal, ViewDirection));
     float ViewNormalAngleInverse = 1.0 - ViewNormalAngle;
 
     vec3 Reflection = textureCube(skybox, NormalizedReflection).rgb * ViewNormalAngle;
 
-    Reflection.r += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.1, 0.0, 0.0) * ViewNormalAngleInverse).r * ViewNormalAngleInverse;
-    Reflection.g += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.0, 0.1, 0.0) * ViewNormalAngleInverse).g * ViewNormalAngleInverse;
-    Reflection.b += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.0, 0.0, 0.1) * ViewNormalAngleInverse).b * ViewNormalAngleInverse;
+    Reflection.r += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(Colors.r, 0.0, 0.0) * ViewNormalAngleInverse).r * ViewNormalAngleInverse;
+    Reflection.g += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.0, Colors.g, 0.0) * ViewNormalAngleInverse).g * ViewNormalAngleInverse;
+    Reflection.b += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.0, 0.0, Colors.b) * ViewNormalAngleInverse).b * ViewNormalAngleInverse;
 
     return Reflection;
 }
@@ -132,8 +132,9 @@ void main(){
 
 
     #ifdef MOTHER_OF_PEARL
-    vec3 MotherOfPearlEffect = mother_of_pearl(ViewDirection, Normal, NormalizedReflection);
-    FragColor = vec4(mix(RefractColor, ReflectColor, FresnelTerm) + SpecularComponent, 0.15);
+    vec3 MotherOfPearlEffect = mother_of_pearl(ViewDirection, Normal, NormalizedReflection, vec3(1.0, 0.1, 1.0));
+    vec3 Color = mix(mix(RefractColor, ReflectColor, FresnelTerm), MotherOfPearlEffect, 0.5);
+    FragColor = vec4(Color + SpecularComponent, 0.15);
     #else
     FragColor = vec4(mix(RefractColor, ReflectColor, FresnelTerm) + SpecularComponent, 0.15);
     #endif
