@@ -12,6 +12,9 @@
 #include "Camera.h"
 #include "Vector.h"
 
+#define MAX_KEYS 1024
+
+
 #ifndef WINDOW_H
 #define WINDOW_H
 namespace graphics{
@@ -38,7 +41,7 @@ namespace graphics{
             // check if keyinput is used
             Vector addKeyInput() const;
 
-            bool spaceActive();
+            bool isPressed(int keycode);
 
             // Updates the window by clearing it and swapping buffers
             void update() const;
@@ -53,6 +56,8 @@ namespace graphics{
             GLFWwindow* m_Window;
             int m_Width, m_Height;
             const char* m_Title;
+
+			static int keyStates[MAX_KEYS];
 
             mutable float m_CurrentFrame, m_DeltaTime, m_LastFrame;
 

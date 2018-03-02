@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
 	// Refraction ratio for soapy water
 	float refractionRatio = 1.0f / 1.34f;
 	// Values in vector correspond to rgb. Results are best when values are between 0 and 1
-	sphereShader.passVec3("colorRatios", {0.1f, 1.0f, 0.1f});
+	sphereShader.passVec3("colorRatios", {refractionRatio, refractionRatio, 1.0f});
 
 
 	// **************
@@ -90,10 +90,6 @@ int main(int argc, char** argv) {
 
 
 
-
-
-	// random tid
-	srand((unsigned int)time(0));
 	// definiera ett partikelsystem
 	BubbleSystem bubbleSystem;
 
@@ -133,19 +129,17 @@ int main(int argc, char** argv) {
 		model.push();
 		model.translate({ 0.0f, 0.0f, -5.0f });
 			
-
+			#if false
 			sphereShader.passMat4("model", model.getTopMatrix());
-
 			sphere.render();
 
-			#if false
+			#endif
+
+			#if true
 
 			// Kolla om vi aktiverar space
-			if (win.spaceActive()){
-				int randome = rand() % 1500;
-				if (randome == 1)
-					bubbleSystem.addBubble(&sphere); // l�gg till ny bubbla i systemet
-			}
+			if (win.isPressed(GLFW_KEY_SPACE))
+				bubbleSystem.addBubble(&sphere); // l�gg till ny bubbla i systemet
 
 			// rendera bubblorna i systemet om de "lever"
 			for (int i = 0; i < bubbleSystem.getNumberOfBubbles(); ++i){
@@ -156,11 +150,13 @@ int main(int argc, char** argv) {
 					model.push();
 
 						bubbleSystem.myBubblyBubbles[i].update(win.addKeyInput());
-						model.translate({ bubbleSystem.myBubblyBubbles[i].getPos().getX(),bubbleSystem.myBubblyBubbles[i].getPos().getY(),bubbleSystem.myBubblyBubbles[i].getPos().getZ() });
+						// Liten optimering
+						const auto& pos = bubbleSystem.myBubblyBubbles[i].getPos();
+
+						model.translate({ pos.getX(), pos.getY(), pos.getZ() });
 
 						// Scale the object
 						model.scale(bubbleSystem.myBubblyBubbles[i].getRadius());
-						//std::cout << bubbleSystem.myBubblyBubbles[i].getPos();
 
 						// Pass topmost matrix in the stack to the shader
 						sphereShader.passMat4("model", model.getTopMatrix());

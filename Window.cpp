@@ -58,10 +58,13 @@ namespace graphics {
 
 		glfwSetInputMode(m_Window, GLFW_STICKY_KEYS, GL_TRUE);
 
-		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
 
+
 	}
+
+	
+	
 
 	bool Window::shouldClose() const {
 		return glfwWindowShouldClose(m_Window);
@@ -107,11 +110,16 @@ namespace graphics {
 		return force;
 	}
 
-	bool Window::spaceActive(){
-		if(glfwGetKey(m_Window, GLFW_KEY_SPACE))
-			return true;
+	bool Window::isPressed(int keycode){		
+		int newState = glfwGetKey(m_Window, keycode);
+		bool isPressed = false;
 
-		return false;
+		if (GLFW_RELEASE == newState && GLFW_PRESS == keyStates[keycode])
+			isPressed = true;
+		
+		keyStates[keycode] = newState;
+
+		return isPressed;
 	}
 
 	void Window::update() const {
@@ -148,4 +156,5 @@ namespace graphics {
 		glViewport(0, 0, width, height);
 	}
 
+	int Window::keyStates[MAX_KEYS] = { GLFW_RELEASE };
 }
