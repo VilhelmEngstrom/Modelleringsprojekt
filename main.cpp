@@ -95,7 +95,7 @@ int main(int argc, char** argv) {
 	float deltaTime;
 
 	while (!win.shouldClose()) {
-
+		deltaTime = Window::getDeltaTime();
 		win.clear();
 		win.processInput(&camera);
 
@@ -150,10 +150,16 @@ int main(int argc, char** argv) {
 					// Add new matrix to the stack
 					model.push();
 
-						bubbleSystem.myBubblyBubbles[i].update(win.addKeyInput());
+						
+						while (Physics::realtime < deltaTime) {
+							bubbleSystem.myBubblyBubbles[i].update(win.addKeyInput());
+							Physics::realtime += Physics::STEP;
+						}
+						Physics::realtime = 0.0f;
+					
 						// Liten optimering
 						const auto& pos = bubbleSystem.myBubblyBubbles[i].getPos();
-						deltaTime = Window::getDeltaTime();
+						
 
 						model.translate({pos.getX(), pos.getY(), pos.getZ()});
 

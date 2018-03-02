@@ -4,28 +4,26 @@
 #include "Physics.h"
 class Bubble
 {
-public:
+	public:
 
-	Bubble(float r, Sphere* s, Vector pos = Vector(0))
-		:position(pos), radius(r), sphere(s), currentVelocity(0), currentAcc(0) {
+		Bubble(float r, Sphere* s, Vector pos = Vector(0))
+			:position(pos), radius(r), sphere(s), currentVelocity(0), currentAcc(0) {
 
-		mass = (float) M_PI * radius * radius * Physics::THICKNESS;
+			mass = (float) M_PI * radius * radius * Physics::THICKNESS;
 
-		area = r*r*3.14f;
+			area = r*r*3.14f;
 
-		lifetime = rand() % 30000 + 40000;
+			lifetime = rand() % 30000 + 40000;
 
-	}
-	~Bubble();
+		}
+		~Bubble();
 
-	void update(const Vector& externalForce);
-	Vector getPos() const { return position; }
-	float getRadius() const { return radius; }
-	bool alive = true;
+		void update(const Vector& externalForce);
+		Vector getPos() const { return position; }
+		float getRadius() const { return radius; }
+		bool alive = true;
 
-
-
-private:
+	private:
 		float mass;
 		Vector position;
 		float radius;
@@ -42,6 +40,7 @@ private:
 
 		int life = 0;
 		int lifetime;
+
 
 
 };

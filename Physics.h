@@ -4,7 +4,6 @@
 #include <ctime>
 #include "Vector.h"
 #include "Mesh.h"
-#include "Window.h"
 
 #ifndef VEC2_H
 #define VEC2_H
@@ -41,6 +40,8 @@ public:
 										// Step size
 	static const float STEP;
 
+	// Time since the last frame was drawn
+	static float realtime;
 	
 
 	static Vector calculate_drag_force(Vector velocity, float area);
@@ -50,6 +51,8 @@ public:
 	static void makeItWobble(Mesh* mesh,float radius, float area, const Vector& force);
 	static Vector addNoice(Vector& position);
 	static Vector addWind(const Vector& external,const Vector& position);
+
+
 
 private:
 		Physics() {}

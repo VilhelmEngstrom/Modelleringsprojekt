@@ -10,6 +10,8 @@ const float Physics::SURFACE_TENSION = 0.025f;
 
 const float Physics::STEP = 0.001f;
 
+float Physics::realtime = 0.0f;
+
 
 
 Vector Physics::calculate_drag_force(Vector velocity, float area)
@@ -34,8 +36,8 @@ Vector Physics::getPositionDelta(Vector& currentAcc, Vector& currentVelocity, fl
 
 	currentVelocity = currentVelocity + acc * STEP; // ber�kna ny hastighet
 
-	// Steglängd satt till tiden det tar att rita en frame
-	Vector delta = currentVelocity * graphics::Window::getDeltaTime(); // Ber�kna skillnad i position
+	
+	Vector delta = currentVelocity * STEP; // Ber�kna skillnad i position
 	return delta;
 
 }
