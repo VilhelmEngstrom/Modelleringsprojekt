@@ -46,6 +46,9 @@ namespace graphics{
             int getWidth() const;
             int getHeight() const;
 
+			void enableBlend() const;
+			void disableBlend() const;
+
         private:
             GLFWwindow* m_Window;
             int m_Width, m_Height;

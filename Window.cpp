@@ -132,6 +132,15 @@ namespace graphics {
 		return m_Height;
 	}
 
+	void Window::enableBlend() const {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	void Window::disableBlend() const {
+		glDisable(GL_BLEND);
+	}
+
 	void Window::window_resize(GLFWwindow* window, int width, int height) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		win->m_Width = width;
