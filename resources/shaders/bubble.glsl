@@ -101,17 +101,18 @@ vec3 specular_highlight(vec3 ViewDirection, vec3 Normal){
 }
 
 #ifdef MOTHER_OF_PEARL
+// Calculate a mother of pearl effect (collor patterns)
 vec3 mother_of_pearl(vec3 ViewDirection, vec3 Normal, vec3 NormalizedReflection, vec3 Colors){
     float ViewNormalAngle = max(0.0, dot(Normal, ViewDirection));
     float ViewNormalAngleInverse = 1.0 - ViewNormalAngle;
 
-    vec3 Reflection = textureCube(skybox, NormalizedReflection).rgb * ViewNormalAngle;
+    vec3 Effect = textureCube(skybox, NormalizedReflection).rgb * ViewNormalAngle;
 
-    Reflection.r += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(Colors.r, 0.0, 0.0) * ViewNormalAngleInverse).r * ViewNormalAngleInverse;
-    Reflection.g += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.0, Colors.g, 0.0) * ViewNormalAngleInverse).g * ViewNormalAngleInverse;
-    Reflection.b += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.0, 0.0, Colors.b) * ViewNormalAngleInverse).b * ViewNormalAngleInverse;
+    Effect.r += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(Colors.r, 0.0, 0.0) * ViewNormalAngleInverse).r * ViewNormalAngleInverse;
+    Effect.g += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.0, Colors.g, 0.0) * ViewNormalAngleInverse).g * ViewNormalAngleInverse;
+    Effect.b += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.0, 0.0, Colors.b) * ViewNormalAngleInverse).b * ViewNormalAngleInverse;
 
-    return Reflection;
+    return Effect;
 }
 #endif
 
