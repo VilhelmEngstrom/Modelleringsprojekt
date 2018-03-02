@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
 	// Refraction ratio for soapy water
 	float refractionRatio = 1.0f / 1.34f;
 	// Values in vector correspond to rgb. Results are best when values are between 0 and 1
-	sphereShader.passVec3("colorRatios", {refractionRatio, refractionRatio, 1.0f});
+	sphereShader.passVec3("colorRatios", {1.0f, refractionRatio, 1.0f});
 
 
 	// **************
@@ -132,11 +132,11 @@ int main(int argc, char** argv) {
 
 		sphereShader.use();
 		// Pass view and projection
-		sphereShader.passMat4("view", view);
+		
 		sphereShader.passMat4("projection", projection);
 
 		model.push();
-		model.translate({ 0.0f, 0.0f, -2.0f });
+			model.translate({ 0.0f, 0.0f, -2.0f });
 			
 			#if false
 			model.translate({ 0.0f, 0.0f, -3.0f });
@@ -191,12 +191,12 @@ int main(int argc, char** argv) {
 		// Detach all shaders
 		Shader::detachAll();
 
-		// Swap buffers and get poll events
+		// Swap buffers and poll events
 		win.update();
 
 
 	}
-
+	
 
 	return 0;
 }

@@ -23,7 +23,7 @@ void main(){
 #shader fragment
 #version 330 core
 
-
+#define MOTHER_OF_PEARL
 
 out vec4 FragColor;
 
@@ -49,16 +49,17 @@ struct Material{
     float Shininess;
 };
 
-LightSource Light = LightSource(
+const LightSource Light = LightSource(
     vec3(5.0, 15.0, 5.0),
     200.0
 );
 
-Material SoapFilm = Material(
+const Material SoapFilm = Material(
     vec3(1.0, 0.2, 1.0),
     1000.0
 );
 
+const float MotherPearlBrightness = 1.5;
 
 // Empirical approximation of fresnel reflection
 float fast_fresnel(vec3 I, vec3 N, vec3 FresnelValues){
@@ -99,19 +100,42 @@ vec3 specular_highlight(vec3 ViewDirection, vec3 Normal){
     return SpecularCoefficient * SoapFilm.Color * Light.Intensity;
 }
 
+#ifdef MOTHER_OF_PEARL
+vec3 mother_of_pearl(vec3 ViewDirection, vec3 Normal, vec3 NormalizedReflection){
+    float ViewNormalAngle = max(0.0, dot(Normal, ViewDirection));
+    float ViewNormalAngleInverse = 1.0 - ViewNormalAngle;
+
+    vec3 Reflection = textureCube(skybox, NormalizedReflection).rgb * ViewNormalAngle;
+
+    Reflection.r += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.1, 0.0, 0.0) * ViewNormalAngleInverse).r * ViewNormalAngleInverse;
+    Reflection.g += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.0, 0.1, 0.0) * ViewNormalAngleInverse).g * ViewNormalAngleInverse;
+    Reflection.b += MotherPearlBrightness * textureCube(skybox, NormalizedReflection + vec3(0.0, 0.0, 0.1) * ViewNormalAngleInverse).b * ViewNormalAngleInverse;
+
+    return Reflection;
+}
+#endif
+
 
 void main(){
     vec3 ViewDirection = normalize(ModelPosition - cameraPos);
     vec3 Normal = normalize(ModelNormal);
+    vec3 NormalizedReflection = normalize(reflect(ViewDirection, Normal));
+
 
     vec3 RefractColor = calculate_refraction(ViewDirection, Normal);
 
-    vec3 ReflectColor = textureCube(skybox, reflect(ViewDirection, Normal)).rgb;
+    vec3 ReflectColor = textureCube(skybox, NormalizedReflection).rgb;
 
     vec3 FresnelTerm = vec3(fast_fresnel(-ViewDirection, Normal, fresnelValues));
 
     vec3 SpecularComponent = specular_highlight(ViewDirection, Normal);
 
-    FragColor = vec4(mix(RefractColor, ReflectColor, FresnelTerm) + SpecularComponent, 0.2);
+
+    #ifdef MOTHER_OF_PEARL
+    vec3 MotherOfPearlEffect = mother_of_pearl(ViewDirection, Normal, NormalizedReflection);
+    FragColor = vec4(mix(RefractColor, ReflectColor, FresnelTerm) + SpecularComponent, 0.15);
+    #else
+    FragColor = vec4(mix(RefractColor, ReflectColor, FresnelTerm) + SpecularComponent, 0.15);
+    #endif
 
 }
