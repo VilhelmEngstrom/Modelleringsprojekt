@@ -19,8 +19,18 @@
 
 
 
+#ifdef RELEASE_BUILD_WINDOWS
+#include <windows.h>
+#endif
+
 
 int main(int argc, char** argv) {
+	#ifdef RELEASE_BUILD_WINDOWS
+
+	ShowWindow(FindWindowA("ConsoleWindowClass", NULL), false);
+
+	#endif
+
 	using namespace graphics;
 
 	// ***************
@@ -29,7 +39,7 @@ int main(int argc, char** argv) {
 
 	// Create the window, this must be done thorugh getInstance as the class
 	// uses the singleton design pattern (all ctors are either private or deleted)
-	Window& win = Window::getInstance("glm test", 960, 540);
+	Window& win = Window::getInstance("Soap Bubbles", 960, 540);
 	// Enable blending for transparency
 	win.enableBlend();
 
@@ -102,8 +112,12 @@ int main(int argc, char** argv) {
 		// Time
 		deltaTime = Time::getDeltaTime();
 		Time::update();
-		Time::displayFPS();
 
+		#ifndef RELEASE_BUILD_WINDOWS
+
+		Time::displayFPS();
+		
+		#endif
 		
 		win.clear();
 		win.processInput(&camera);
@@ -194,6 +208,13 @@ int main(int argc, char** argv) {
 
 
 	}
+
+
+	#ifdef RELEASE_BUILD_WINDOWS
+	
+	FreeConsole();
+
+	#endif
 	
 
 	return 0;

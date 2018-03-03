@@ -101,7 +101,7 @@ vec3 specular_highlight(vec3 ViewDirection, vec3 Normal){
 }
 
 #ifdef MOTHER_OF_PEARL
-// Calculate a mother of pearl effect (collor patterns)
+// Calculate a mother of pearl effect (color patterns)
 vec3 mother_of_pearl(vec3 ViewDirection, vec3 Normal, vec3 NormalizedReflection, vec3 Colors){
     float ViewNormalAngle = max(0.0, dot(Normal, ViewDirection));
     float ViewNormalAngleInverse = 1.0 - ViewNormalAngle;
