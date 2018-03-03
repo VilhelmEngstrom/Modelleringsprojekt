@@ -44,12 +44,12 @@ public:
 	static float realtime;
 	
 
-	static Vector calculate_drag_force(Vector velocity, float area);
+	static Vector calculate_drag_force(const Vector& velocity, float area);
 	static Vector calculate_gravity_force(float mass);
-	static Vector getPositionDelta(Vector& currentAcc, Vector& currentVelocity, float mass, const Vector& totalForce);
-	static Vector wind_effect_on_vertex(Vector vertexNormal, Vector windForce);
+	static Vector getPositionDelta(const Vector& currentAcc, Vector& currentVelocity, float mass, const Vector& totalForce);
+	static Vector wind_effect_on_vertex(const Vector& vertexNormal, const Vector& windForce);
 	static void makeItWobble(Mesh* mesh,float radius, float area, const Vector& force);
-	static Vector addNoice(Vector& position);
+	static Vector addNoice(const Vector& position);
 	static Vector addWind(const Vector& external,const Vector& position);
 
 

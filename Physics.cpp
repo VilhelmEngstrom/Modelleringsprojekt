@@ -14,7 +14,7 @@ float Physics::realtime = 0.0f;
 
 
 
-Vector Physics::calculate_drag_force(Vector velocity, float area)
+Vector Physics::calculate_drag_force(const Vector& velocity, float area)
 {
 
 	return ((-1)*velocity.sign()*velocity*velocity*AIR_DENSITY*AIR_RESISTANCE*area*(0.5));
@@ -28,7 +28,7 @@ Vector Physics::calculate_gravity_force(float mass)
 
 }
 
-Vector Physics::getPositionDelta(Vector& currentAcc, Vector& currentVelocity, float mass, const Vector& totalForce)
+Vector Physics::getPositionDelta(const Vector& currentAcc, Vector& currentVelocity, float mass, const Vector& totalForce)
 {
 
 	// ber�kna accelerationen
@@ -42,15 +42,16 @@ Vector Physics::getPositionDelta(Vector& currentAcc, Vector& currentVelocity, fl
 
 }
 
+// Vad gör den här metoden?
 // returns the effect off the force vector
-Vector Physics::wind_effect_on_vertex(Vector vertexNormal, Vector windForce)
+Vector Physics::wind_effect_on_vertex(const Vector& vertexNormal, const Vector& windForce)
 {
 	vertexNormal.dotProduct(windForce);
 	return vertexNormal;
 
 }
 
-void Physics::makeItWobble(Mesh* mesh, float radius, float area,const Vector& force)
+void Physics::makeItWobble(Mesh* mesh, float radius, float area, const Vector& force)
 {
 
 	float innerPressure = 4 * SURFACE_TENSION/ radius;
@@ -86,7 +87,7 @@ void Physics::makeItWobble(Mesh* mesh, float radius, float area,const Vector& fo
 	}
 }
 
-Vector Physics::addNoice(Vector& position)
+Vector Physics::addNoice(const Vector& position)
 {
 	float a = -3.00f;
 	float b = -3.00f;
