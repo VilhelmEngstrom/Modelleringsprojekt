@@ -13,11 +13,15 @@ class Time{
 		// Update the time
 		static void update();
 
-		// Prints the average FPS for the last 500 frames
+		// Prints the average FPS for the last 250 frames
 		static void displayFPS();
+
+		static float uptime();
 
 		// Number of factors to take the mean of for FPS
 		static const unsigned short MEAN_FACTORS;
+		
+		static const float START_TIME;
 	private:
 		Time();
 		// Holds previous FPSs
