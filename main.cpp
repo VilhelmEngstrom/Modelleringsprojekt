@@ -94,6 +94,7 @@ int main(int argc, char** argv) {
 
 	// definiera ett partikelsystem
 	BubbleSystem bubbleSystem;
+	std::srand(std::time(NULL));
 	
 
 	while (!win.shouldClose()) {

@@ -1,4 +1,5 @@
 #pragma once
+#include <ctime>
 #include "Vector.h"
 #include "Sphere.h"
 #include "Physics.h"
