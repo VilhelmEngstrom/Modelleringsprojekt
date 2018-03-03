@@ -27,10 +27,10 @@ int main(int argc, char** argv) {
 	// Window & camera
 	// ***************
 
-	// Create the window, this must e done thorugh getInstance as the class
+	// Create the window, this must be done thorugh getInstance as the class
 	// uses the singleton design pattern (all ctors are either private or deleted)
 	Window& win = Window::getInstance("glm test", 960, 540);
-	// Enable blending for transparancy
+	// Enable blending for transparency
 	win.enableBlend();
 
 	// Create a camera and place it in the scene
@@ -88,12 +88,12 @@ int main(int argc, char** argv) {
 	// Model view
 	MatrixStack model;
 	glm::mat4 view, projection;
+	float deltaTime;
 
 
 
 	// definiera ett partikelsystem
 	BubbleSystem bubbleSystem;
-	float deltaTime;
 	
 
 	while (!win.shouldClose()) {
@@ -151,28 +151,24 @@ int main(int argc, char** argv) {
 				bubbleSystem.addBubble(&sphere); // l�gg till ny bubbla i systemet
 
 			// rendera bubblorna i systemet om de "lever"
-			for (int i = 0; i < bubbleSystem.getNumberOfBubbles(); ++i){
+			for (auto& bubble : bubbleSystem.bubbles){
 
-				if (bubbleSystem.myBubblyBubbles[i].alive){
+				if (bubble.alive){
 					// Model transformations
 					// Add new matrix to the stack
 					model.push();
 
 						
 						while (Physics::realtime < deltaTime) {
-							bubbleSystem.myBubblyBubbles[i].update(win.addKeyInput());
+							bubble.update(win.addKeyInput());
 							Physics::realtime += Physics::STEP;
 						}
 						Physics::realtime = 0.0f;
-					
-						// Liten optimering
-						const auto& pos = bubbleSystem.myBubblyBubbles[i].getPos();
-						
-
-						model.translate({pos.getX(), pos.getY(), pos.getZ()});
+											
+						model.translate(bubble.getPos().returnVec3());
 
 						// Scale the object
-						model.scale(bubbleSystem.myBubblyBubbles[i].getRadius());
+						model.scale(bubble.getRadius());
 
 						// Pass topmost matrix in the stack to the shader
 						sphereShader.passMat4("model", model.getTopMatrix());
@@ -182,9 +178,10 @@ int main(int argc, char** argv) {
 					// Remove topmost matrix from stack
 					model.pop();
 				}
-
-
 			}
+			// Remove "dead" bubbles
+			bubbleSystem.clean();
+
 			#endif
 		model.pop();
 

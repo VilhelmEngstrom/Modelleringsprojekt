@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
 #include "Bubble.h"
 #include <cstdlib>
+#include <forward_list>
 
 
 class BubbleSystem
@@ -11,11 +11,10 @@ public:
 	~BubbleSystem() {}
 
 	void addBubble(Sphere* s);
-	std::vector<Bubble> myBubblyBubbles;
-	int getNumberOfBubbles() { return nrOfBubbles; }
 
-private:
-	
-	int nrOfBubbles = 0;
+	// Remove "dead" bubbles
+	void clean();
+
+	std::forward_list<Bubble> bubbles;
 };
 
