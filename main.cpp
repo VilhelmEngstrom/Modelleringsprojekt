@@ -152,14 +152,6 @@ int main(int argc, char** argv) {
 
 		model.push();
 			model.translate({ 0.0f, 0.0f, -2.0f });
-			
-			#if false
-			model.translate({ 0.0f, 0.0f, -3.0f });
-			sphereShader.passMat4("model", model.getTopMatrix());
-			sphere.render();
-
-			#endif		
-			#if true
 
 			// Kolla om vi aktiverar space
 			if (win.isPressed(GLFW_KEY_SPACE))
@@ -197,7 +189,6 @@ int main(int argc, char** argv) {
 			// Remove "dead" bubbles
 			bubbleSystem.clean();
 
-			#endif
 		model.pop();
 
 		// Detach all shaders
