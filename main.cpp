@@ -43,8 +43,8 @@ int main(int argc, char** argv) {
 	// Path to folder containing skybox images
 	std::string location = "resources/textures/skybox/";
 	// Skybox images
-	std::array<std::string, 6> faces = { location + "right.jpg", location + "left.jpg", location + "top.jpg",
-		location + "bottom.jpg", location + "front.jpg", location + "back.jpg" };
+	std::array<std::string, 6> faces = { location + "posx.jpg", location + "negx.jpg", location + "posy.jpg",
+		location + "negy.jpg", location + "posz.jpg", location + "negz.jpg" };
 	// Create the skybox texture
 	CubemapTexture tex(faces);
 	// Create skybox, passing its texture
