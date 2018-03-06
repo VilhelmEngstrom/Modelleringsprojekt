@@ -178,7 +178,7 @@ int main(int argc, char** argv) {
 						model.scale(bubble.getRadius());
 
 						// Pass topmost matrix in the stack to the shader
-						sphereShader.passMat4("model", model.getTopMatrix());
+						sphereShader.passMat4("model", model.top());
 						// Render the sphere
 						sphere.render();
 
