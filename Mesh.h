@@ -56,12 +56,7 @@ class Mesh{
         Vertex* getVertices() const;
         // Return pointer to list of indices
         unsigned int* getIndices() const;
-
-        // Construct the mesh
-        virtual void generateVertices() = 0;
-        // Generate index list for reusing vertices
-        virtual void generateIndices() = 0;
-
+       
         // Render object (uses Renderer*)
         void render() const;
 
@@ -73,6 +68,12 @@ class Mesh{
         unsigned int nVertices, nIndices;
 
         graphics::Renderer* renderer;
+
+		// Construct the mesh
+		virtual void generateVertices() = 0;
+		// Generate index list for reusing vertices
+		virtual void generateIndices() = 0;
+
 
         // initialize renderer
         void generateRenderer();
