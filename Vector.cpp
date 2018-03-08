@@ -72,7 +72,7 @@ Vector operator-(const Vector& v1, const Vector& v2) {
 }
 
 
-Vector Vector::sign()
+Vector Vector::sign() const
 {
 	Vector newV(1.0, 1.0, 1.0);
 

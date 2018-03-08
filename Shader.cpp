@@ -112,7 +112,7 @@ namespace graphics {
 
 		// Error
 		if (stream == NULL) {
-			printf("Error opening stream %s \n", path);
+			printf("Error opening file %s for reading\n", path);
 			exit(EXIT_FAILURE);
 		}
 
@@ -160,7 +160,7 @@ namespace graphics {
 
 		// Error
 		if (stream == NULL) {
-			printf("Error opening stream %s \n", vertexShader);
+			printf("Error opening file %s  for reading\n", vertexShader);
 			exit(EXIT_FAILURE);
 		}
 
@@ -179,7 +179,7 @@ namespace graphics {
 
 		// Error
 		if (stream == NULL) {
-			printf("Error opening stream %s \n", fragmentShader);
+			printf("Error opening file %s for reading\n", fragmentShader);
 			exit(EXIT_FAILURE);
 		}
 
@@ -195,25 +195,44 @@ namespace graphics {
 		return { ss[0].str(), ss[1].str() };
 	}
 
-	void Shader::passScalar(const std::string& handle, int uniform) const {
-		glUniform1i(glGetUniformLocation(shaderProgramID, &handle[0]), uniform);
+	int Shader::getUniformLocation(const std::string& handle){
+		// Check if uniform is stored in map
+		auto mapIdx = uniformLocations.find(handle);
+
+		// If not, add it
+		if (uniformLocations.end() == mapIdx) {
+			int location = glGetUniformLocation(shaderProgramID, &handle[0]);
+			uniformLocations.emplace(std::make_pair(handle, location));
+
+			// Return location
+			// No need to look for it in the map
+			return location;
+		}
+
+		// Return location
+		return mapIdx->second;
 	}
 
-	void Shader::passScalar(const std::string& handle, float uniform) const {
-		glUniform1f(glGetUniformLocation(shaderProgramID, &handle[0]), uniform);
+
+	void Shader::passScalar(const std::string& handle, int scalar){
+		glUniform1i(getUniformLocation(handle), scalar);
 	}
 
-	void Shader::passVec3(const std::string& handle, const glm::vec3& vec) const {
-		glUniform3fv(glGetUniformLocation(shaderProgramID, &handle[0]), 1, &vec[0]);
+	void Shader::passScalar(const std::string& handle, float scalar){
+		glUniform1f(getUniformLocation(handle), scalar);
+	}
+
+	void Shader::passVec3(const std::string& handle, const glm::vec3& vec){
+		glUniform3fv(getUniformLocation(handle), 1, &vec[0]);
 	}
 
 
-	void Shader::passMat4(const std::string& handle, float* matrix) const {
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, &handle[0]), 1, GL_FALSE, matrix);
+	void Shader::passMat4(const std::string& handle, float* matrix){
+		glUniformMatrix4fv(getUniformLocation(handle), 1, GL_FALSE, matrix);
 	}
 
-	void Shader::passMat4(const std::string& handle, const glm::mat4& matrix) const {
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgramID, &handle[0]), 1, GL_FALSE, &matrix[0][0]);
+	void Shader::passMat4(const std::string& handle, const glm::mat4& matrix){
+		glUniformMatrix4fv(getUniformLocation(handle), 1, GL_FALSE, &matrix[0][0]);
 	}
 
 }

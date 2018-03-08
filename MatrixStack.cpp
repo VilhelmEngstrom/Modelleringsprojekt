@@ -49,7 +49,7 @@ void MatrixStack::flush(){
 
 // Getters
 
-float* MatrixStack::getTopMatrix() const{
+float* MatrixStack::top() const{
     return current ? current->v : NULL;
 }
 

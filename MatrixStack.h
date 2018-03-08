@@ -73,7 +73,7 @@ class MatrixStack{
 
 
         // Getters
-        float* getTopMatrix() const;
+        float* top() const;
 
         // Get number of matrices in stack
         unsigned int getDepth() const;

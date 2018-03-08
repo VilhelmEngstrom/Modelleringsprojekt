@@ -46,7 +46,7 @@ public:
 	Vector crossProduct(const Vector& v);
 
 	// sign of vector
-	Vector sign();
+	Vector sign() const;
 
 	//set variables
 	void setX(float d);

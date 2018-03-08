@@ -116,6 +116,20 @@ namespace graphics {
 		return force;
 	}
 
+	bool Window::mousePress(double& xpos, double& ypos) 
+	{
+		int state = glfwGetMouseButton(m_Window, GLFW_MOUSE_BUTTON_LEFT);
+		if (state == GLFW_PRESS)
+		{
+			glfwGetCursorPos(m_Window, &xpos, &ypos);
+			xpos = (xpos - getWidth() / 2)* 5/getWidth();
+			ypos = (ypos - getHeight() / 2)* -3/getHeight() ;
+			return true;
+		}
+		else
+			return false;
+	}
+
 	bool Window::isPressed(int keycode){	
 		if (MAX_KEYS <= keycode) {
 			std::cout << "Unknown key pressed\n";

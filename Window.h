@@ -18,6 +18,7 @@
 
 #ifndef WINDOW_H
 #define WINDOW_H
+
 namespace graphics{
     class Window{
         public:

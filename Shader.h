@@ -44,22 +44,27 @@ namespace graphics{
 
             // Pass scalar to shader, handle is the name of the variable in
             // the shader
-            void passScalar(const std::string& handle, int uniform) const;
-            void passScalar(const std::string& handle, float uniform) const;
+            void passScalar(const std::string& handle, int scalar);
+            void passScalar(const std::string& handle, float scalar);
 
-			void passVec3(const std::string& handle, const glm::vec3& vec) const;
+			void passVec3(const std::string& handle, const glm::vec3& vec);
 
             // Pass Mat4 to shader, handle is the name of the uniform in the shader,
             // matrix is a poirnter to the Mat4 (a float[16])
-            void passMat4(const std::string& handle, float* matrix) const;
-            void passMat4(const std::string& handle, const glm::mat4& matrix) const;
+            void passMat4(const std::string& handle, float* matrix);
+            void passMat4(const std::string& handle, const glm::mat4& matrix);
 
         private:
             unsigned int shaderProgramID;
+			std::map<std::string, int> uniformLocations;
 
             enum class ShaderType {
                 NONE=-1, VERTEX, FRAGMENT
             };
+
+			// Get the location of the uniform, either from uniformLocations or from the 
+			// shader. In the latter case, the pair is added to the map for future use
+			int getUniformLocation(const std::string& handle);
 
 
             // Compile and link shaders, return 0 if this fails

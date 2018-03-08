@@ -19,18 +19,28 @@
 
 
 
+#ifdef RELEASE_BUILD_WINDOWS
+#include <windows.h>
+#endif
+
 
 int main(int argc, char** argv) {
+	#ifdef RELEASE_BUILD_WINDOWS
+
+	ShowWindow(FindWindowA("ConsoleWindowClass", NULL), false);
+
+	#endif
+
 	using namespace graphics;
 
 	// ***************
 	// Window & camera
 	// ***************
 
-	// Create the window, this must e done thorugh getInstance as the class
+	// Create the window, this must be done thorugh getInstance as the class
 	// uses the singleton design pattern (all ctors are either private or deleted)
-	Window& win = Window::getInstance("glm test", 960, 540);
-	// Enable blending for transparancy
+	Window& win = Window::getInstance("Soap Bubbles", 960, 540);
+	// Enable blending for transparency
 	win.enableBlend();
 
 	// Create a camera and place it in the scene
@@ -43,8 +53,8 @@ int main(int argc, char** argv) {
 	// Path to folder containing skybox images
 	std::string location = "resources/textures/skybox/";
 	// Skybox images
-	std::array<std::string, 6> faces = { location + "right.jpg", location + "left.jpg", location + "top.jpg",
-		location + "bottom.jpg", location + "front.jpg", location + "back.jpg" };
+	std::array<std::string, 6> faces = { location + "posx.jpg", location + "negx.jpg", location + "posy.jpg",
+		location + "negy.jpg", location + "posz.jpg", location + "negz.jpg" };
 	// Create the skybox texture
 	CubemapTexture tex(faces);
 	// Create skybox, passing its texture
@@ -79,7 +89,7 @@ int main(int argc, char** argv) {
 	// Refraction ratio for soapy water
 	float refractionRatio = 1.0f / 1.34f;
 	// Values in vector correspond to rgb. Results are best when values are between 0 and 1
-	sphereShader.passVec3("colorRatios", {refractionRatio, refractionRatio, 1.0f});
+	sphereShader.passVec3("colorRatios", {1.0f, refractionRatio, 1.0f});
 
 
 	// **************
@@ -88,22 +98,27 @@ int main(int argc, char** argv) {
 	// Model view
 	MatrixStack model;
 	glm::mat4 view, projection;
+	float deltaTime;
 
 
 
 	// definiera ett partikelsystem
 	BubbleSystem bubbleSystem;
-	float deltaTime;
-	
+	std::srand(std::time(NULL));
+
 
 	while (!win.shouldClose()) {
-		
+
 		// Time
 		deltaTime = Time::getDeltaTime();
 		Time::update();
+
+		#ifndef RELEASE_BUILD_WINDOWS
+
 		Time::displayFPS();
 
-		
+		#endif
+
 		win.clear();
 		win.processInput(&camera);
 
@@ -132,19 +147,11 @@ int main(int argc, char** argv) {
 
 		sphereShader.use();
 		// Pass view and projection
-		sphereShader.passMat4("view", view);
+
 		sphereShader.passMat4("projection", projection);
 
 		model.push();
-		model.translate({ 0.0f, 0.0f, -2.0f });
-			
-			#if false
-			model.translate({ 0.0f, 0.0f, -3.0f });
-			sphereShader.passMat4("model", model.getTopMatrix());
-			sphere.render();
-
-			#endif		
-			#if true
+			model.translate({ 0.0f, 0.0f, -2.0f });
 
 			// Kolla om vi aktiverar space
 			if (win.isPressed(GLFW_KEY_SPACE))
@@ -154,61 +161,64 @@ int main(int argc, char** argv) {
 			double xpos, ypos = 0;
 
 			// rendera bubblorna i systemet om de "lever"
-			for (int i = 0; i < bubbleSystem.getNumberOfBubbles(); ++i){
+			for (auto& bubble : bubbleSystem.bubbles){
 
 				// kolla om vi trycker
 				if (win.mousePress(xpos, ypos))
 				{
-					
-					
-					bubbleSystem.myBubblyBubbles[i].killBubble(xpos, ypos, projection);
+
+
+					bubble.killBubble(xpos, ypos, projection);
 				}
 
-				
 
-				if (bubbleSystem.myBubblyBubbles[i].alive){
+
+				if (bubble.alive){
 					// Model transformations
 					// Add new matrix to the stack
 					model.push();
 
-						
+
 						while (Physics::realtime < deltaTime) {
-							bubbleSystem.myBubblyBubbles[i].update(win.addKeyInput());
+							bubble.update(win.addKeyInput());
 							Physics::realtime += Physics::STEP;
 						}
 						Physics::realtime = 0.0f;
-					
-						// Liten optimering
-						const auto& pos = bubbleSystem.myBubblyBubbles[i].getPos();
-						
 
-						model.translate({pos.getX(), pos.getY(), pos.getZ()});
+						model.translate(bubble.getPos().returnVec3());
 
 						// Scale the object
-						model.scale(bubbleSystem.myBubblyBubbles[i].getRadius());
+						model.scale(bubble.getRadius());
 
 						// Pass topmost matrix in the stack to the shader
-						sphereShader.passMat4("model", model.getTopMatrix());
+						sphereShader.passMat4("model", model.top());
 						// Render the sphere
 						sphere.render();
 
 					// Remove topmost matrix from stack
 					model.pop();
 				}
-
-
 			}
-			#endif
+			// Remove "dead" bubbles
+			bubbleSystem.clean();
+
 		model.pop();
 
 		// Detach all shaders
 		Shader::detachAll();
 
-		// Swap buffers and get poll events
+		// Swap buffers and poll events
 		win.update();
 
 
 	}
+
+
+	#ifdef RELEASE_BUILD_WINDOWS
+
+	FreeConsole();
+
+	#endif
 
 
 	return 0;
