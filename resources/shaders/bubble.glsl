@@ -38,6 +38,8 @@ uniform vec3 fresnelValues;
 uniform vec3 colorRatios;
 uniform samplerCube skybox;
 
+uniform mat4 model;
+
 
 struct LightSource{
     vec3 Position;
@@ -50,7 +52,7 @@ struct Material{
 };
 
 const LightSource Light = LightSource(
-    vec3(5.0, 15.0, 5.0),
+    vec3(10.0, 1.0, 30.0),
     200.0
 );
 
@@ -91,7 +93,9 @@ vec3 calculate_refraction(vec3 ViewDirection, vec3 Normal){
 
 vec3 specular_highlight(vec3 ViewDirection, vec3 Normal){
     vec3 IncidentLight = normalize(ModelPosition - Light.Position);
-    vec3 SpecularDirection = reflect(IncidentLight, Normal);
+
+    vec3 TransformedNormal = normalize(mat3(model) * Normal);
+    vec3 SpecularDirection = reflect(IncidentLight, TransformedNormal);
 
     float Angle = max(0.0, dot(-ViewDirection, SpecularDirection));
 
