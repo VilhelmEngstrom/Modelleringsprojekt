@@ -105,6 +105,8 @@ int main(int argc, char** argv) {
 	// definiera ett partikelsystem
 	BubbleSystem bubbleSystem;
 	std::srand(std::time(NULL));
+	// Position för mystryckning
+	double xpos, ypos = 0;
 
 
 	while (!win.shouldClose()) {
@@ -157,15 +159,12 @@ int main(int argc, char** argv) {
 			if (win.isPressed(GLFW_KEY_SPACE))
 				bubbleSystem.addBubble(&sphere); // l�gg till ny bubbla i systemet
 
-			// Position för mystryckning
-			double xpos, ypos = 0;
 
 			// rendera bubblorna i systemet om de "lever"
 			for (auto& bubble : bubbleSystem.bubbles){
 
 				// kolla om vi trycker på en bubbla
-				if (win.mousePress(xpos, ypos))
-				{
+				if (win.mousePress(xpos, ypos)){
 					bubble.killBubble(xpos, ypos);
 				}
 

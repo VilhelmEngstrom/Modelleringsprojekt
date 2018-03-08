@@ -116,18 +116,16 @@ namespace graphics {
 		return force;
 	}
 
-	bool Window::mousePress(double& xpos, double& ypos) 
-	{
-		int state = glfwGetMouseButton(m_Window, GLFW_MOUSE_BUTTON_LEFT);
-		if (state == GLFW_PRESS)
-		{
+	bool Window::mousePress(double& xpos, double& ypos){
+
+		if (GLFW_PRESS == glfwGetMouseButton(m_Window, GLFW_MOUSE_BUTTON_LEFT)){
 			glfwGetCursorPos(m_Window, &xpos, &ypos);
-			xpos = (xpos - getWidth() / 2)* 5/getWidth();
-			ypos = (ypos - getHeight() / 2)* -3/getHeight() ;
+			xpos = (xpos - m_Width / 2)* 5/m_Width;
+			ypos = (ypos - m_Height / 2)* -3/m_Height ;
 			return true;
 		}
-		else
-			return false;
+		
+		return false;
 	}
 
 	bool Window::isPressed(int keycode){	
