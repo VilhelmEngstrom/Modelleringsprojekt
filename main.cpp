@@ -150,8 +150,21 @@ int main(int argc, char** argv) {
 			if (win.isPressed(GLFW_KEY_SPACE))
 				bubbleSystem.addBubble(&sphere); // l�gg till ny bubbla i systemet
 
+			// Position för mystryckning
+			double xpos, ypos = 0;
+
 			// rendera bubblorna i systemet om de "lever"
 			for (int i = 0; i < bubbleSystem.getNumberOfBubbles(); ++i){
+
+				// kolla om vi trycker
+				if (win.mousePress(xpos, ypos))
+				{
+					
+					
+					bubbleSystem.myBubblyBubbles[i].killBubble(xpos, ypos, projection);
+				}
+
+				
 
 				if (bubbleSystem.myBubblyBubbles[i].alive){
 					// Model transformations

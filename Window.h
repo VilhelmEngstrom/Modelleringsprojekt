@@ -46,6 +46,8 @@ namespace graphics{
 
             bool isPressed(int keycode);
 
+			bool mousePress(double& xpos, double& ypos);
+
             // Updates the window by clearing it and swapping buffers
             void update() const;
 

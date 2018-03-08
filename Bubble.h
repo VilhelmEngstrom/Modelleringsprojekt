@@ -18,6 +18,8 @@ class Bubble
 		}
 		~Bubble();
 
+
+		void killBubble(double& xpos, double& ypos, glm::mat4& proj);
 		void update(const Vector& externalForce);
 		Vector getPos() const { return position; }
 		float getRadius() const { return radius; }
