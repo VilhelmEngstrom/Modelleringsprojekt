@@ -6,12 +6,9 @@ Bubble::~Bubble()
 {
 }
 
-void Bubble::killBubble(double& xpos, double& ypos, glm::mat4& proj)
+void Bubble::killBubble(double& xpos, double& ypos)
 {
-	glm::dvec4 mousePos(xpos, ypos, position.getZ(), 0);
-	mousePos = mousePos * proj;
-	//xpos = mousePos.a;
-	//ypos = mousePos.b;
+	
 
 	if (xpos < (position + radius).getX() && xpos >(position - radius).getX() && ypos >(position - radius).getY() && ypos < (position + radius).getY())
 		alive = false;

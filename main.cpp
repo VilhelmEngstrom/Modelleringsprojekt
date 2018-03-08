@@ -163,21 +163,16 @@ int main(int argc, char** argv) {
 			// rendera bubblorna i systemet om de "lever"
 			for (auto& bubble : bubbleSystem.bubbles){
 
-				// kolla om vi trycker
+				// kolla om vi trycker på en bubbla
 				if (win.mousePress(xpos, ypos))
 				{
-
-
-					bubble.killBubble(xpos, ypos, projection);
+					bubble.killBubble(xpos, ypos);
 				}
-
-
 
 				if (bubble.alive){
 					// Model transformations
 					// Add new matrix to the stack
 					model.push();
-
 
 						while (Physics::realtime < deltaTime) {
 							bubble.update(win.addKeyInput());
