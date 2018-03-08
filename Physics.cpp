@@ -8,7 +8,7 @@ const float Physics::THICKNESS = 0.00006f;
 
 const float Physics::SURFACE_TENSION = 0.025f;
 
-const float Physics::STEP = 0.001f;
+const float Physics::STEP = 0.0005f;
 
 float Physics::realtime = 0.0f;
 
@@ -102,7 +102,7 @@ Vector Physics::addNoice(const Vector& position)
 
 	Vector vectorField = Vector(i, j, k);
 
-	float scaling = 0.000001f;
+	float scaling = 0.00001f;
 	return scaling * vectorField;
 }
 
@@ -111,6 +111,6 @@ Vector Physics::addNoice(const Vector& position)
 Vector Physics::addWind(const Vector& external, const Vector& position)
 {
 	Vector wind(external.getX() / (1 + abs(-2*external.getX() - position.getX())), external.getY() / (1 + abs(-2*external.getY() - position.getY())), 0);
-	wind = wind * 0.0005f;
+	wind = wind * 0.005f;
 	return wind;
 }
