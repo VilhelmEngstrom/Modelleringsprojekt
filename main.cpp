@@ -124,7 +124,7 @@ int main(int argc, char** argv) {
 		win.clear();
 		win.processInput(&camera);
 
-		// Update projectin matrix
+		// Update projection matrix
 		projection = glm::perspective(glm::radians(camera.getZoom()), (float)win.getWidth() / (float)win.getHeight(), 0.1f, 100.0f);
 
 

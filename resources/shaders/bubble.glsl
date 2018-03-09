@@ -52,7 +52,7 @@ struct Material{
 };
 
 const LightSource Light = LightSource(
-    vec3(10.0, 1.0, 30.0),
+    vec3(-10.0, 1.0, 30.0),
     200.0
 );
 
@@ -139,9 +139,9 @@ void main(){
     #ifdef MOTHER_OF_PEARL
     vec3 MotherOfPearlEffect = mother_of_pearl(ViewDirection, Normal, NormalizedReflection, vec3(1.0, 0.1, 1.0));
     vec3 Color = mix(mix(RefractColor, ReflectColor, FresnelTerm), MotherOfPearlEffect, 0.5);
-    FragColor = vec4(Color + SpecularComponent, 0.15);
+    FragColor = vec4(Color + SpecularComponent, 0.17);
     #else
-    FragColor = vec4(mix(RefractColor, ReflectColor, FresnelTerm) + SpecularComponent, 0.15);
+    FragColor = vec4(mix(RefractColor, ReflectColor, FresnelTerm) + SpecularComponent, 0.17);
     #endif
 
 }
