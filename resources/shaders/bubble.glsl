@@ -139,9 +139,9 @@ void main(){
     #ifdef MOTHER_OF_PEARL
     vec3 MotherOfPearlEffect = mother_of_pearl(ViewDirection, Normal, NormalizedReflection, vec3(1.0, 0.1, 1.0));
     vec3 Color = mix(mix(RefractColor, ReflectColor, FresnelTerm), MotherOfPearlEffect, 0.5);
-    FragColor = vec4(Color + SpecularComponent, 0.17);
+    FragColor = vec4(Color + SpecularComponent, 0.2);
     #else
-    FragColor = vec4(mix(RefractColor, ReflectColor, FresnelTerm) + SpecularComponent, 0.17);
+    FragColor = vec4(mix(RefractColor, ReflectColor, FresnelTerm) + SpecularComponent, 0.2);
     #endif
 
 }
